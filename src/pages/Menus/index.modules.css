@@ -1,0 +1,18 @@
+.buttons-menu-menu {
+    min-width: 50%;
+    margin: 20px auto
+}
+
+.header-options {
+    background-color: #3f3f3f;
+    height: 50px;
+    border-radius: 5px;
+    padding: 7px;
+    margin-bottom: 10%;
+}
+
+
+.header-options p{
+    margin-left: 50px;
+    color: #ebebeb;
+}

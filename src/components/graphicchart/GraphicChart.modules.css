@@ -1,0 +1,16 @@
+.graphicchart {
+    background: #272727;
+    border: 1px solid #fec80a;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+.graphicchart text {
+    color: #ffdf29!important
+}
+
+.GraphicChartContainer {
+    margin: 20px;
+    background-color: #3f3f3f;
+    border-radius: 10px;
+}
