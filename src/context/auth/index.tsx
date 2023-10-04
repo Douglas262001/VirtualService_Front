@@ -23,21 +23,21 @@ export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(null);
+  
   useEffect(() => {
     const { "yellowsoftware.token": token } = parseCookies();
     setToken(token);
     if (!token) {
       localStorage.clear();
-      setToken(null)
+      setToken(null);
     }
   }, []);
 
   function signOut() {
     destroyCookie(undefined, "yellowsoftware.token");
     setToken(null);
-    redirect('/');
+    redirect("/");
     api.defaults.headers["Authorization"] = null;
-
   }
 
   async function signIn({ email, password }: SignInCredentials) {
@@ -50,16 +50,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (!success) {
       throw new Error(reasonPhrase);
     }
+
     const token = JSON.stringify(body);
 
     localStorage.setItem("token", JSON.stringify(token));
-    setToken(token)
+    setToken(token);
     setCookie(undefined, "yellowsoftware.token", token, {
       maxAge: 60 * 60,
       path: "/",
     });
 
-    api.defaults.headers["Authorization"] = `${token}`;
+    api.defaults.headers["Authorization"] = token.replace(/"/g, "");
     redirect("/analytics");
   }
 

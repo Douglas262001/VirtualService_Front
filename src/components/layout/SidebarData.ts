@@ -1,4 +1,12 @@
-import { ChartLineUp, Bell, ClipboardText, Kanban, ShoppingCart, AppWindow, Gear, ChatCenteredDots } from "phosphor-react";
+import {
+  ChartLineUp,
+  Bell,
+  ClipboardText,
+  Kanban,
+  ShoppingCart,
+  AppWindow,
+  Ticket,
+} from "phosphor-react";
 
 type SidebarDataType = {
   id: number;
@@ -52,15 +60,9 @@ const SidebarData: SidebarDataType[] = [
   },
   {
     id: 7,
-    description: "Configurações",
-    icon: Gear,
-    path: "/teachers",
-  },
-  {
-    id: 8,
-    description: "Feedbacks",
-    icon: ChatCenteredDots,
-    path: "/teachers",
+    description: "Acomodações",
+    icon: Ticket,
+    path: "/accommodations",
   },
 ];
 
