@@ -12,9 +12,10 @@ type AccommodationFormType = {
   descricao: string;
 };
 
-interface IAccommodationProps extends AccommodationFormType {
+interface IAccommodationProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<boolean>;
+  accommodation?: AccommodationFormType;
 }
 
 const formSchema = yup.object({
@@ -24,22 +25,26 @@ const formSchema = yup.object({
 const AccommodationWindow = ({
   isOpen,
   setIsOpen,
-  id,
-  descricao,
+  accommodation,
 }: IAccommodationProps) => {
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<AccommodationFormType>({
     resolver: yupResolver(formSchema),
     defaultValues: import.meta.env.DEV
       ? {
-          descricao: descricao,
+          descricao: accommodation?.descricao ?? "",
         }
       : {},
   });
+
+  if (accommodation) {
+    setValue("id", accommodation.id);
+  }
 
   const mutationCreate = useMutation(
     (s: AccommodationFormType) => api.post(`Acomodacao/NovaArea`, s),
@@ -48,20 +53,19 @@ const AccommodationWindow = ({
         await queryClient.invalidateQueries(["getAccommodations"]);
         setIsOpen(false);
         toast.success("Acomodação cadastrada com sucesso!");
-        reset({
-          descricao: "",
-        });
       },
     }
   );
 
   const mutationUpdate = useMutation(
-    (s: AccommodationFormType) => api.post(`Acomodacao/AlterarArea`, s),
+    (s: AccommodationFormType) => {
+      return api.post(`Acomodacao/AlterarArea`, s);
+    },
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getAccommodations"]);
         setIsOpen(false);
-        toast.success("Acomodação cadastrada com sucesso!");
+        toast.success("Acomodação alterada com sucesso!");
         reset({
           descricao: "",
         });
@@ -70,11 +74,11 @@ const AccommodationWindow = ({
   );
 
   const onSubmit: SubmitHandler<AccommodationFormType> = async (data) => {
-    if (id) {
-      mutationUpdate.mutate({ ...data, id });
-    } else {
-      mutationCreate.mutate(data);
+    if (data.id) {
+      mutationUpdate.mutate(data);
+      return;
     }
+    mutationCreate.mutate(data);
   };
 
   return (
@@ -87,7 +91,10 @@ const AccommodationWindow = ({
               type="text"
               placeholder="Escreva aqui sua descrição"
               className="input input-bordered w-full mb-4"
-              {...register("descricao")}
+              {...register("descricao", {
+                shouldUnregister: true,
+                value: accommodation?.descricao ?? "",
+              })}
             />
           </div>
           <p className="text-red-500">{errors.descricao?.message}</p>

@@ -12,6 +12,7 @@ type SignInCredentials = {
 interface AuthContextData {
   signIn: (credentials: SignInCredentials) => Promise<void>;
   signOut: () => void;
+  setAuthorizationToken: (token: string | null) => void;
   token: string | null;
 }
 
@@ -23,7 +24,7 @@ export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const { "yellowsoftware.token": token } = parseCookies();
     setToken(token);
@@ -33,11 +34,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
+  function setAuthorizationToken(token: string | null) {
+    api.defaults.headers["Authorization"] = token
+      ? token.replace(/"/g, "")
+      : null;
+  }
+
   function signOut() {
     destroyCookie(undefined, "yellowsoftware.token");
     setToken(null);
     redirect("/");
-    api.defaults.headers["Authorization"] = null;
+    setAuthorizationToken(null);
   }
 
   async function signIn({ email, password }: SignInCredentials) {
@@ -60,12 +67,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       path: "/",
     });
 
-    api.defaults.headers["Authorization"] = token.replace(/"/g, "");
+    setAuthorizationToken(token);
     redirect("/analytics");
   }
 
   return (
-    <AuthContext.Provider value={{ signIn, token, signOut }}>
+    <AuthContext.Provider
+      value={{ signIn, token, signOut, setAuthorizationToken }}
+    >
       {children}
     </AuthContext.Provider>
   );

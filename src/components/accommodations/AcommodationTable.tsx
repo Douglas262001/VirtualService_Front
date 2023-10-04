@@ -5,10 +5,16 @@ import useGetAccommodations from "@hooks/useGetAccommodations";
 // import { PencilSimple } from "phosphor-react";
 import { useEffect, useState } from "react";
 import AccommodationWindow from "./AcommodationWindow";
+import { PencilSimple } from "phosphor-react";
 
 type Props = {
   searchText?: string;
   reload?: boolean;
+};
+
+type AccommodationType = {
+  id?: number;
+  descricao: string;
 };
 
 const AccommodationTable = ({ searchText, reload }: Props) => {
@@ -18,9 +24,11 @@ const AccommodationTable = ({ searchText, reload }: Props) => {
     isLoading,
     refetch,
   } = useGetAccommodations();
+
   const filteredAccommodations = useFilterData(accommodations, searchText);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  // const [selectedAccommodation, setSelectedAccommodation] = useState<any>();
+  const [selectedAccommodation, setSelectedAccommodation] =
+    useState<AccommodationType>();
 
   useEffect(() => {
     if (reload) refetch().then();
@@ -30,22 +38,30 @@ const AccommodationTable = ({ searchText, reload }: Props) => {
   if (error) return <div>ERRO</div>;
   if (!accommodations?.length)
     return <div>Não existem acomodações cadastradas</div>;
-  // const tableValuesWithIcons = (filteredAccommodations ?? accommodations).map(
-  //   (accommodation) => ({
-  //     "": <PencilSimple size={24} />,
-  //     ...accommodation,
-  //   })
-  // );
+
+  const tableValuesWithIcons = (filteredAccommodations ?? accommodations).map(
+    (accommodation) => ({
+      "": <PencilSimple className="cursor-pointer" size={24} />,
+      ...accommodation,
+    })
+  );
+
   return (
     <>
       <GenericTable
-        values={filteredAccommodations ?? accommodations}
-        columns={Object.keys(accommodations[0])}
+        // values={filteredAccommodations ?? accommodations}
+        values={tableValuesWithIcons}
+        // columns={Object.keys(tableValuesWithIcons[0])}
+        onClickRow={(p) => {
+          setSelectedAccommodation(p);
+          setIsOpen(true);
+        }}
+        columns={Object.keys(tableValuesWithIcons[0])}
       />
       <AccommodationWindow
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        descricao="teste"
+        accommodation={selectedAccommodation}
       />
     </>
   );
