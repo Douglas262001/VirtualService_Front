@@ -4,7 +4,9 @@ import { PublicRoutes } from "./publicRoutes";
 import useAuth from "@hooks/auth";
 
 export default function Router() {
-  const { token } = useAuth();
+  const { token, setAuthorizationToken } = useAuth();
+
+  setAuthorizationToken(token);
 
   const router = createBrowserRouter([
     token ? PrivateRoutes() : {},

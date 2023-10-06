@@ -1,5 +1,4 @@
 import { CircleNotch } from "phosphor-react";
-import { FC } from "react";
 
 const GenericLoading = ({ size = 32 }) => {
   return (
