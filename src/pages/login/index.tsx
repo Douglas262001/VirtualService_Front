@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useAuth from "@hooks/auth";
+import "./index.modules.css";
 
 type LoginFormType = {
   email: string;
@@ -44,10 +45,10 @@ function Login() {
   };
 
   return (
-    <div className="grid place-items-center h-screen">
+    <div className="grid place-items-center h-screen background-login">
       <div className="card w-[500px] bg-neutral shadow-xl">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-control">
+          <div className="form-control card-background">
             <div className="card-body">
               <div className="flex justify-center h-[10rem] w-full">
                 <Logo />
