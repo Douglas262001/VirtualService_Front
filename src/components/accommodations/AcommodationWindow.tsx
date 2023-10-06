@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@utils/queryClient";
 import GenericWindow from "../base/GenericWindow";
@@ -53,6 +54,9 @@ const AccommodationWindow = ({
         await queryClient.invalidateQueries(["getAccommodations"]);
         setIsOpen(false);
         toast.success("Acomodação cadastrada com sucesso!");
+      },
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
       },
     }
   );

@@ -6,6 +6,7 @@ import {
   ShoppingCart,
   AppWindow,
   Ticket,
+  ListChecks,
 } from "phosphor-react";
 
 type SidebarDataType = {
@@ -63,6 +64,12 @@ const SidebarData: SidebarDataType[] = [
     description: "Acomodações",
     icon: Ticket,
     path: "/accommodations",
+  },
+  {
+    id: 8,
+    description: "Etapas",
+    icon: ListChecks,
+    path: "/steps",
   },
 ];
 
