@@ -7,14 +7,16 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Etapa, EtapaItem } from "types/Etapa";
 import GenericTable from "@components/base/GenericTable";
+import SearchField from "@components/base/SearchField";
 
 type EtapaFormType = {
   id?: number;
   descricao: string;
   multiplaEscolha?: boolean;
+  itemCadastrado?: boolean;
 };
 
 interface IStepProps {
@@ -23,15 +25,33 @@ interface IStepProps {
   step?: EtapaFormType;
 }
 
+type ProdutoServicoEtapaItem = {
+  id: number;
+  nome: string;
+  tipo: number;
+  urlImagem: string;
+  valor: number;
+};
+
 const formSchema = yup.object({
   descricao: yup.string().required("Você precisa informar o campo descrição"),
 });
 
-const formItemSchema = yup.object({
-  descricao: yup.string().required("Você precisa informar o campo descrição"),
-});
-
 const StepWindow = ({ isOpen, setIsOpen, step }: IStepProps) => {
+  useEffect(() => {
+    listarProdutosTipoEtapaItem();
+  }, []);
+
+  const listarProdutosTipoEtapaItem = async () => {
+    try {
+      const response = await api.get("ProdutoServico/ListarItensEtapas");
+
+      setProdutosServicos(response.data.body);
+    } catch (error: any) {
+      console.log(error.response.data.reasonPhrase);
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -51,12 +71,22 @@ const StepWindow = ({ isOpen, setIsOpen, step }: IStepProps) => {
     register: registerItem,
     handleSubmit: handleSubmitItem,
     reset: resetItem,
-    formState: { errors: errorsItem },
-  } = useForm<EtapaItem>({
-    resolver: yupResolver(formItemSchema),
-  });
+  } = useForm<EtapaItem>({});
 
   const [etapasItens, setEtapasItens] = useState<EtapaItem[]>([]);
+  const [itemCadastrado, setItemCadastrado] = useState<boolean>(false);
+  const [produtosServicos, setProdutosServicos] = useState<
+    ProdutoServicoEtapaItem[]
+  >([]);
+  const [produtoServico, setProdutoServico] = useState<ProdutoServicoEtapaItem>(
+    {
+      id: 0,
+      nome: "",
+      tipo: 0,
+      urlImagem: "",
+      valor: 0,
+    }
+  );
 
   if (step) {
     setValue("id", step.id);
@@ -109,6 +139,8 @@ const StepWindow = ({ isOpen, setIsOpen, step }: IStepProps) => {
   };
 
   const handleClickAdicioanr = (etapaItem: EtapaItem) => {
+    if (!etapaItem.descricao && !itemCadastrado)
+      return toast.error("Preencha o campo descrição do item");
     const newItem = {
       ...etapaItem,
       itemCadastrado: false,
@@ -151,26 +183,52 @@ const StepWindow = ({ isOpen, setIsOpen, step }: IStepProps) => {
             </div>
           </div>
           <span className="text-2xl">Itens</span>
+
+          <div className="flex items-center gap-2 my-3">
+            <span>Item cadastrado</span>
+            <input
+              type="checkbox"
+              className="checkbox"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setItemCadastrado(e.target.checked)
+              }
+            />
+          </div>
           <div className="flex w-full items-center gap-2">
-            <div className="w-full flex flex-col">
-              <span className="label-text">Descrição</span>
-              <input
-                type="text"
-                placeholder="Descrição do item"
-                className="input input-bordered w-full mb-4"
-                {...registerItem("descricao")}
-              />
-            </div>
-            <div className="w-full flex flex-col">
-              <span className="label-text">Valor</span>
-              <input
-                type="number"
-                min={0}
-                placeholder="Valor do item"
-                className="input input-bordered w-full mb-4"
-                {...registerItem("valor")}
-              />
-            </div>
+            {itemCadastrado ? (
+              <>
+                <SearchField
+                  value={produtoServico}
+                  setValue={setProdutoServico}
+                  data={produtosServicos}
+                  displayValue="nome"
+                  valueField="id"
+                />
+              </>
+            ) : (
+              <>
+                <div className="w-full flex flex-col">
+                  <span className="label-text">Descrição</span>
+                  <input
+                    type="text"
+                    placeholder="Descrição do item"
+                    className="input input-bordered w-full mb-4"
+                    required={!itemCadastrado}
+                    {...registerItem("descricao")}
+                  />
+                </div>
+                <div className="w-full flex flex-col">
+                  <span className="label-text">Valor</span>
+                  <input
+                    type="number"
+                    min={0}
+                    placeholder="Valor do item"
+                    className="input input-bordered w-full mb-4"
+                    {...registerItem("valor")}
+                  />
+                </div>
+              </>
+            )}
             <button
               type="button"
               onClick={handleSubmitItem((data) => handleClickAdicioanr(data))}
@@ -179,7 +237,6 @@ const StepWindow = ({ isOpen, setIsOpen, step }: IStepProps) => {
               Adicionar
             </button>
           </div>
-          <p className="text-red-500">{errorsItem.descricao?.message}</p>
           <GenericTable values={etapasItens} columns={["descricao", "valor"]} />
         </div>
         <div className="modal-action">

@@ -2,14 +2,28 @@ import { Combobox, Transition } from "@headlessui/react";
 import { CaretDown, Check } from "phosphor-react";
 import { Fragment, useState } from "react";
 
-const Select = ({ data, displayValue, value, setValue }: any) => {
+interface SearchFieldProps<T> {
+  data: T[];
+  displayValue: Extract<keyof T, string>;
+  valueField: Extract<keyof T, string>;
+  value: T;
+  setValue: React.Dispatch<T>;
+}
+
+function SearchField<T>({
+  data,
+  displayValue,
+  valueField,
+  value,
+  setValue,
+}: SearchFieldProps<T>) {
   const [query, setQuery] = useState("");
 
   const filteredData =
     query === ""
       ? data
-      : data?.filter((person: any) =>
-          person[displayValue]
+      : data.filter((item) =>
+          (item[displayValue] as string)
             .toLowerCase()
             .replace(/\s+/g, "")
             .includes(query.toLowerCase().replace(/\s+/g, ""))
@@ -22,8 +36,8 @@ const Select = ({ data, displayValue, value, setValue }: any) => {
           <div className="relative w-full cursor-default overflow-hidden rounded-lg  text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm">
             <Combobox.Input
               className="w-full border-none py-3 pl-3 pr-10 text-sm bg-[color:var(--w-base-100)] leading-5 text-white focus:ring-0"
-              displayValue={(person: any) =>
-                person ? person[displayValue] : ""
+              displayValue={(item: T) =>
+                item ? (item[displayValue] as string) : ""
               }
               onChange={(event) => setQuery(event.target.value)}
             />
@@ -44,15 +58,15 @@ const Select = ({ data, displayValue, value, setValue }: any) => {
                   Nenhum resultado.
                 </div>
               ) : (
-                filteredData.map((person: any) => (
+                filteredData.map((item) => (
                   <Combobox.Option
-                    key={person.id}
+                    key={item[valueField] as string}
                     className={({ active }) =>
                       `relative cursor-default select-none py-2 pl-10 pr-4 text-white ${
                         active ? "bg-[color:var(--w-bg-color)]" : ""
                       }`
                     }
-                    value={person}
+                    value={item}
                   >
                     {({ selected }) => (
                       <>
@@ -61,12 +75,10 @@ const Select = ({ data, displayValue, value, setValue }: any) => {
                             selected ? "font-medium" : "font-normal"
                           }`}
                         >
-                          {person.name}
+                          {item[displayValue] as string}
                         </span>
                         {selected ? (
-                          <span
-                            className={`absolute inset-y-0 left-0 flex items-center pl-3 text-white`}
-                          >
+                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-white">
                             <Check size={20} />
                           </span>
                         ) : null}
@@ -81,6 +93,6 @@ const Select = ({ data, displayValue, value, setValue }: any) => {
       </Combobox>
     </div>
   );
-};
+}
 
-export default Select;
+export default SearchField;

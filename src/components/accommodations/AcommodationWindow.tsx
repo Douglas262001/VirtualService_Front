@@ -86,7 +86,7 @@ const AccommodationWindow = ({
   };
 
   return (
-    <GenericWindow title="Área" isOpen={isOpen} setIsOpen={setIsOpen}>
+    <GenericWindow title="Acomodação" isOpen={isOpen} setIsOpen={setIsOpen}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-control">
           <div className="w-full flex flex-col">
