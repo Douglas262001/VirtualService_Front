@@ -44,7 +44,7 @@ const SidebarData: SidebarDataType[] = [
     id: 4,
     description: "Caixa",
     icon: ShoppingCart,
-    path: "/Caixa",
+    path: "/ComandaList",
   },
   {
     id: 5,

@@ -14,7 +14,6 @@ const themesStructure: { [key: string]: any } = {
 };
 
 const TopBar = () => {
-  debugger
   const [theme, setTheme] = useState(localStorage.setItem("theme", "dark"));
 
   useEffect(() => {
