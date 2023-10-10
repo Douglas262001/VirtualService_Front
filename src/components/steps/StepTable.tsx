@@ -18,7 +18,7 @@ type Props = {
 
 type StepsType = {
   id?: number;
-  descricao: string;
+  nome: string;
   multipla: "Sim" | "Não";
 };
 
@@ -27,8 +27,7 @@ const StepsTable = ({ searchText }: Props) => {
 
   const filteredSteps = useFilterData(steps, searchText);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  /*    const [selectedSteps, setSelectedSteps] =
-      useState<StepsType>(); */
+  const [codigoEtapa, setCodigoEtapa] = useState<number | undefined>();
 
   const mutationDelete = useMutation(
     (s?: number) => api.put(`Etapa/RemoverEtapa/${s}`),
@@ -55,15 +54,15 @@ const StepsTable = ({ searchText }: Props) => {
 
   if (isLoading) return <GenericLoading size={60} />;
   if (error) return <div>ERRO</div>;
-  if (!steps?.length) return <div>Não existem acomodações cadastradas</div>;
+  if (!steps?.length) return <div>Não existem etapas cadastradas</div>;
 
   const tableValuesWithIcons = (filteredSteps ?? steps).map(
     (step: StepsType) => ({
       Editar: (
         <PencilSimple
           onClick={() => {
-            /* setSelectedSteps(Steps);
-            setIsOpen(true); */
+            setCodigoEtapa(step.id);
+            setIsOpen(true);
           }}
           className="cursor-pointer"
           size={24}
@@ -89,7 +88,8 @@ const StepsTable = ({ searchText }: Props) => {
       <StepWindow
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        // Steps={selectedSteps}
+        codigoEtapa={codigoEtapa}
+        setCodigoEtapa={setCodigoEtapa}
       />
     </>
   );

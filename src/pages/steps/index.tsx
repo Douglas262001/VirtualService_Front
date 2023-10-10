@@ -30,7 +30,7 @@ const Steps = () => {
           onClick={() => setIsAddModalOpen(true)}
           className="btn modal-button btn-secondary"
         >
-          Adicionar
+          Novo
         </label>
         <input type="checkbox" id="my-modal-subject" className="modal-toggle" />
         <StepWindow

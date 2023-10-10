@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "@utils/api";
 
-export type AccommodationType = {
+export type StepType = {
   id: number;
-  descricao: string;
+  nome: string;
   multiplaEscolha: boolean;
 };
 
@@ -12,11 +12,11 @@ const useGetSteps = () => {
 };
 
 const getSteps = () => {
-  return (): Promise<AccommodationType[]> =>
+  return (): Promise<StepType[]> =>
     api.get(`Etapa/Listar`).then(({ data }) =>
       data.body?.map((item: any) => ({
         id: item.id,
-        descricao: item.descricao,
+        nome: item.nome,
         multipla: item.multiplaEscolha ? "Sim" : "Não",
       }))
     );
