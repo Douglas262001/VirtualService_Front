@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@utils/queryClient";
 import GenericWindow from "../base/GenericWindow";
