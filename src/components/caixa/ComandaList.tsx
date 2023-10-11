@@ -1,4 +1,3 @@
-import React from 'react';
 import CardList from './CardList';
 
 const IndexCards: React.FC = () => {
@@ -15,6 +14,8 @@ const IndexCards: React.FC = () => {
     { id: 10, title: 'comanda 10' },
     { id: 11, title: 'comanda 11' },
     { id: 12, title: 'comanda 12' },
+    { id: 11, title: 'comanda 11' },
+    { id: 12, title: 'comanda 12' },
   ];
 
   const handleCardClick = (id: number) => {
@@ -24,7 +25,6 @@ const IndexCards: React.FC = () => {
 
   return (
     <div className="IndexCards">
-      <h1></h1>
       <CardList data={data} onCardClick={handleCardClick} />
     </div>
   );

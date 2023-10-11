@@ -5,7 +5,7 @@ import Home from "@pages/home";
 import Menus from "@pages/Menus";
 import Subject from "@pages/subject";
 import Teacher from "@pages/teacher";
-import ComandaList from "@components/caixa/ComandaList"
+import Caixa from "@components/caixa/Caixa"
 
 export const PrivateRoutes = () => {
   return {
@@ -16,7 +16,7 @@ export const PrivateRoutes = () => {
       { path: "/teachers", element: <Teacher /> },
       { path: "/menus", element: <Menus /> },
       { path: "/analytics", element: <Analytics /> },
-      { path: "/ComandaList", element: <ComandaList /> },
+      { path: "/caixa", element: <Caixa /> },
       { path: "/accommodations", element: <Acommodations /> },
     ],
   };
