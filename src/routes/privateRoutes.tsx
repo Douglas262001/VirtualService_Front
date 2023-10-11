@@ -3,6 +3,7 @@ import Acommodations from "@pages/accommodations";
 import Analytics from "@pages/analytics";
 import Home from "@pages/home";
 import Menus from "@pages/Menus";
+import Products from "@pages/products";
 import Steps from "@pages/steps";
 import Subject from "@pages/subject";
 import Teacher from "@pages/teacher";
@@ -18,6 +19,7 @@ export const PrivateRoutes = () => {
       { path: "/analytics", element: <Analytics /> },
       { path: "/accommodations", element: <Acommodations /> },
       { path: "/steps", element: <Steps /> },
+      { path: "/products", element: <Products /> },
     ],
   };
 };
