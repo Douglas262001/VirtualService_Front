@@ -2,7 +2,7 @@ import GenericLoading from "@components/base/GenericLoading";
 import GenericTable from "@components/base/GenericTable";
 import useFilterData from "@hooks/useFilterData";
 import useGetAccommodations from "@hooks/useGetAccommodations";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AccommodationWindow from "./AcommodationWindow";
 import { PencilSimple, TrashSimple } from "phosphor-react";
 import api from "@utils/api";
@@ -20,22 +20,13 @@ type AccommodationType = {
   descricao: string;
 };
 
-const AccommodationTable = ({ searchText, reload }: Props) => {
-  const {
-    data: accommodations,
-    error,
-    isLoading,
-    refetch,
-  } = useGetAccommodations();
+const AccommodationTable = ({ searchText }: Props) => {
+  const { data: accommodations, error, isLoading } = useGetAccommodations();
 
   const filteredAccommodations = useFilterData(accommodations, searchText);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedAccommodation, setSelectedAccommodation] =
     useState<AccommodationType>();
-
-  useEffect(() => {
-    if (reload) refetch().then();
-  }, [reload, refetch]);
 
   const mutationDelete = useMutation(
     (s?: number) => api.delete(`Acomodacao/DeletarArea/${s}`),
@@ -90,8 +81,8 @@ const AccommodationTable = ({ searchText, reload }: Props) => {
   return (
     <>
       <GenericTable
-        values={tableValuesWithIcons}
-        columns={Object.keys(tableValuesWithIcons[0])}
+        values={tableValuesWithIcons || []}
+        columns={Object.keys(tableValuesWithIcons[0] || {})}
       />
       <AccommodationWindow
         isOpen={isOpen}

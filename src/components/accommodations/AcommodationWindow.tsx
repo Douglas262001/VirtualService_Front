@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@utils/queryClient";
 import GenericWindow from "../base/GenericWindow";
@@ -54,6 +55,9 @@ const AccommodationWindow = ({
         setIsOpen(false);
         toast.success("Acomodação cadastrada com sucesso!");
       },
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
+      },
     }
   );
 
@@ -82,7 +86,7 @@ const AccommodationWindow = ({
   };
 
   return (
-    <GenericWindow title="Área" isOpen={isOpen} setIsOpen={setIsOpen}>
+    <GenericWindow title="Acomodação" isOpen={isOpen} setIsOpen={setIsOpen}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-control">
           <div className="w-full flex flex-col">
