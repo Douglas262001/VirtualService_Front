@@ -1,10 +1,10 @@
 import ProductsTable from "@components/products/ProductsTable";
-// import StepWindow from "@components/steps/StepWindow";
-import {/*  useEffect,  */useState } from "react";
+import ProductsWindow from "@components/products/ProductsWindow";
+import { useState } from "react";
 
 const Products = () => {
   const [searchText, setSearchText] = useState("");
-//   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const searchInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -21,16 +21,13 @@ const Products = () => {
         />
         <label
           htmlFor="my-modal-subject"
-        //   onClick={() => setIsAddModalOpen(true)}
+          onClick={() => setIsAddModalOpen(true)}
           className="btn modal-button btn-secondary"
         >
           Adicionar
         </label>
         <input type="checkbox" id="my-modal-subject" className="modal-toggle" />
-        {/*  <StepWindow
-          setIsOpen={setIsAddModalOpen}
-          isOpen={isAddModalOpen}
-        /> */}
+        <ProductsWindow setIsOpen={setIsAddModalOpen} isOpen={isAddModalOpen} />
       </div>
       <ProductsTable searchText={searchText} />
     </div>
