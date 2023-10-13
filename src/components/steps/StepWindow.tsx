@@ -74,7 +74,7 @@ const StepWindow = ({
 
   const buscarEtapaPorId = async () => {
     try {
-      const response = await api.get(`Etapa/BuscarEtapa/${codigoEtapa}`);
+      const response = await api.get(`Etapa/Buscar/${codigoEtapa}`);
       const etapa: Etapa = response.data.body;
 
       setValue("nome", etapa.nome);
@@ -126,7 +126,7 @@ const StepWindow = ({
   const [indexEditing, setIndexEditing] = useState<number | null>(null);
 
   const mutationCreate = useMutation(
-    (s: Etapa) => api.post(`Etapa/NovaEtapa`, s),
+    (s: Etapa) => api.post(`Etapa/Inserir`, s),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getSteps"]);

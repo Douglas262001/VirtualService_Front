@@ -8,6 +8,7 @@ interface SearchFieldProps<T> {
   valueField: Extract<keyof T, string>;
   value: T;
   setValue: React.Dispatch<T>;
+  optionsHeight?: string;
 }
 
 function SearchField<T>({
@@ -16,6 +17,7 @@ function SearchField<T>({
   valueField,
   value,
   setValue,
+  optionsHeight,
 }: SearchFieldProps<T>) {
   const [query, setQuery] = useState("");
 
@@ -33,7 +35,7 @@ function SearchField<T>({
     <div className="w-80">
       <Combobox value={value} onChange={setValue}>
         <div className="relative mt-1">
-          <div className="relative w-full cursor-default overflow-hidden rounded-lg  text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm">
+          <div className="relative w-full cursor-default rounded-lg text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm">
             <Combobox.Input
               className="w-full border-none py-3 pl-3 pr-10 text-sm bg-[color:var(--w-base-100)] leading-5 text-white focus:ring-0"
               displayValue={(item: T) =>
@@ -42,7 +44,7 @@ function SearchField<T>({
               onChange={(event) => setQuery(event.target.value)}
             />
             <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-              <CaretDown size={20} />
+              <CaretDown aria-hidden="true" size={20} />
             </Combobox.Button>
           </div>
           <Transition
@@ -52,7 +54,11 @@ function SearchField<T>({
             leaveTo="opacity-0"
             afterLeave={() => setQuery("")}
           >
-            <Combobox.Options className="absolute z-20  mt-1 max-h-60 w-full overflow-auto rounded-md bg-[color:var(--w-base-100)] py-1 text-base shadow-lg ring-1 ring-white ring-opacity-5 focus:outline-none sm:text-sm">
+            <Combobox.Options
+              className={`absolute overflow-auto z-20 ${
+                optionsHeight ? `h-${optionsHeight}` : ""
+              } mt-1 w-full rounded-md bg-[color:var(--w-base-100)] py-1 text-base shadow-lg ring-1 ring-white ring-opacity-5 focus:outline-none sm:text-sm`}
+            >
               {filteredData.length === 0 && query !== "" ? (
                 <div className="relative cursor-default select-none py-2 px-4 text-white">
                   Nenhum resultado.

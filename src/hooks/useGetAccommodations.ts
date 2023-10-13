@@ -12,14 +12,12 @@ const useGetAccommodations = () => {
 
 const getAccommodations = () => {
   return (): Promise<AccommodationType[]> =>
-    api
-      .get(`Acomodacao/ListarAreas`)
-      .then(({ data }) =>
-        data.body?.map((item: any) => ({
-          id: item.id,
-          descricao: item.descricao,
-        }))
-      );
+    api.get(`Area/Listar`).then(({ data }) =>
+      data.body?.map((item: any) => ({
+        id: item.id,
+        descricao: item.descricao,
+      }))
+    );
 };
 
 export default useGetAccommodations;

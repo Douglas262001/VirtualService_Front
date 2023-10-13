@@ -6,6 +6,7 @@ import Menus from "@pages/Menus";
 import Products from "@pages/products";
 import Steps from "@pages/steps";
 import Subject from "@pages/subject";
+import Tables from "@pages/table";
 import Teacher from "@pages/teacher";
 
 export const PrivateRoutes = () => {
@@ -20,6 +21,7 @@ export const PrivateRoutes = () => {
       { path: "/accommodations", element: <Acommodations /> },
       { path: "/steps", element: <Steps /> },
       { path: "/products", element: <Products /> },
+      { path: "/tables", element: <Tables /> },
     ],
   };
 };

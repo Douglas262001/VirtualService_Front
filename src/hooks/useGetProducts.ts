@@ -15,7 +15,7 @@ const useGetProducts = () => {
 
 const getProducts = () => {
   return (): Promise<ProductType[]> =>
-    api.get(`ProdutoServico/ListarProdutosServicos`).then(({ data }) =>
+    api.get(`ProdutoServico/Listar`).then(({ data }) =>
       data.body.map((product: ProductType) => ({
         id: product.id,
         nome: product.nome,
