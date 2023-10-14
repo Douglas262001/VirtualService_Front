@@ -1,42 +1,25 @@
+import SearchField from "@components/base/SearchField";
 import { ProductFormType } from "@components/products/ProductsWindow";
-import { convertBase64 } from "@utils/convert";
-import { UploadSimple } from "phosphor-react";
+import { EnumType, getArray } from "@utils/enums";
 import React from "react";
 import { UseFormRegister } from "react-hook-form";
+import { EnumMedidaTempoPreparo, EnumTipoProdutoServico } from "types/Produto";
 
 export type GeneralProductPanelType = {
-  setBase64Image: React.Dispatch<string>;
   register: UseFormRegister<ProductFormType>;
-  imagem: string;
-  setImagem: React.Dispatch<React.SetStateAction<string>>;
+  tipoProduto: EnumType;
+  setTipoProduto: React.Dispatch<EnumType>;
+  medidaTempoPreparo: EnumType;
+  setMedidaTempoPreparo: React.Dispatch<EnumType>;
 };
 
 const General = ({
-  setBase64Image,
   register,
-  imagem,
-  setImagem,
+  tipoProduto,
+  setTipoProduto,
+  medidaTempoPreparo,
+  setMedidaTempoPreparo,
 }: GeneralProductPanelType) => {
-  const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
-    setImagem(file?.name || "");
-
-    if (!file) return;
-
-    const base64Image = await convertBase64(file);
-
-    setBase64Image(base64Image as string);
-  };
-
-  const handleClickAddImage = () => {
-    const imageFileInput = document.getElementById(
-      "image-file-input"
-    ) as HTMLInputElement;
-
-    imageFileInput.click();
-  };
-
   return (
     <div className="w-full flex flex-col">
       <div className="w-full flex gap-2">
@@ -51,37 +34,68 @@ const General = ({
             })}
           />
         </div>
+        <div className="w-full flex flex-col">
+          <span className="label-text">Tipo</span>
+          <SearchField
+            value={tipoProduto}
+            setValue={setTipoProduto}
+            data={getArray(EnumTipoProdutoServico)}
+            valueField="identificador"
+            displayValue="value"
+          />
+        </div>
       </div>
       <div className="w-full flex gap-2">
         <div className="w-full flex flex-col">
-          <span className="label-text">Imagem</span>
+          <span className="label-text">Valor</span>
           <input
-            id="image-file-input"
-            onChange={handleUploadImage}
-            multiple={false}
-            accept="image/png, image/gif, image/jpeg"
-            type="file"
-            hidden={true}
+            type="number"
+            placeholder="Valor do item"
+            className="input input-bordered w-full mb-4"
+            min={0}
+            {...register("valor", {
+              shouldUnregister: true,
+            })}
           />
-          <button
-            type="button"
-            className="btn btn-info"
-            onClick={handleClickAddImage}
-          >
-            Upload
-            <UploadSimple size={24} />
-          </button>
         </div>
         <div className="w-full flex flex-col">
-          <span className="label-text">Nome da imagem</span>
+          <span className="label-text">Serve quantas pessoas?</span>
           <input
-            className="input input-bordered"
-            type="text"
-            disabled={true}
-            value={imagem}
+            type="number"
+            placeholder="Quantidade de pessoas"
+            className="input input-bordered w-full mb-4"
+            min={0}
+            {...register("serveQuantasPessoas", {
+              shouldUnregister: true,
+            })}
           />
         </div>
       </div>
+      <div className="w-full flex gap-2">
+        <div className="w-full flex flex-col">
+          <span className="label-text">Tempo de preparo</span>
+          <input
+            type="number"
+            placeholder="Tempo de preparo"
+            className="input input-bordered w-full mb-4"
+            min={0}
+            {...register("tempoPreparo", {
+              shouldUnregister: true,
+            })}
+          />
+        </div>
+        <div className="w-full flex flex-col">
+          <span className="label-text">Medida do tempo</span>
+          <SearchField
+            value={medidaTempoPreparo}
+            setValue={setMedidaTempoPreparo}
+            data={getArray(EnumMedidaTempoPreparo)}
+            valueField="identificador"
+            displayValue="value"
+          />
+        </div>
+      </div>
+
       <div className="w-full flex flex-col">
         <span className="label-text">Descrição</span>
         <textarea

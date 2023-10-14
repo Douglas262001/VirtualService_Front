@@ -14,3 +14,8 @@ export type Etapa = {
   etapaItems: EtapaItem[];
   obrigatoria: boolean;
 };
+
+export type EtapaSearch = {
+  id: number;
+  nome: string;
+};

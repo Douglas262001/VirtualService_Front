@@ -1,15 +1,23 @@
 import ButtonCancel from "@components/base/ButtonCancel";
 import ButtonSave from "@components/base/ButtonSave";
-import GenericTable from "@components/base/GenericTable";
 import GenericWindow from "@components/base/GenericWindow";
-import { TrashSimple } from "phosphor-react";
 import React from "react";
 import * as yup from "yup";
-import { useForm, SubmitHandler, useWatch } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ProductsTab } from "./productstab";
 import { Tab } from "@headlessui/react";
-
+import {
+  EnumMedidaTempoPreparo,
+  EnumTipoProdutoServico,
+  ProdutoType,
+} from "types/Produto";
+import { useMutation } from "@tanstack/react-query";
+import api from "@utils/api";
+import { queryClient } from "@utils/queryClient";
+import { toast } from "sonner";
+import { EnumType, getArray } from "@utils/enums";
+import { Etapa, EtapaSearch } from "types/Etapa";
 interface IProductsProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<boolean>;
@@ -21,6 +29,9 @@ export type ProductFormType = {
   id?: number;
   nome: string;
   descricao?: string;
+  valor?: number;
+  serveQuantasPessoas?: number;
+  tempoPreparo?: number;
 };
 
 const formSchema = yup.object({
@@ -44,20 +55,101 @@ const ProductsWindow = ({
     defaultValues: import.meta.env.DEV
       ? {
           nome: "",
+          valor: 0,
         }
       : {},
   });
 
   const [base64Image, setBase64Image] = React.useState<string>("");
-  const [imagem, setImagem] = React.useState<string>("");
+  const [tipoProduto, setTipoProduto] = React.useState<EnumType>(
+    getArray(EnumTipoProdutoServico)[0]
+  );
+  const [medidaTempoPreparo, setMedidaTempoPreparo] = React.useState<EnumType>(
+    getArray(EnumMedidaTempoPreparo)[0]
+  );
+
+  const [etapa, setEtapa] = React.useState<EtapaSearch>({
+    id: 0,
+    nome: "",
+  });
+
+  const [etapas, setEtapas] = React.useState<EtapaSearch[]>([]);
+
+  const [etapasSelecionadas, setEtapasSelecionadas] = React.useState<
+    EtapaSearch[]
+  >([]);
+
+  React.useEffect(() => {
+    buscarEtapas();
+  }, []);
+
+  const buscarEtapas = async () => {
+    try {
+      const response = await api.get(`Etapa/Listar`);
+
+      setEtapas(
+        response.data.body.map((e: Etapa) => ({ id: e.id, nome: e.nome }))
+      );
+    } catch (error: any) {
+      toast.error(error.response.data.reasonPhrase);
+    }
+  };
+
+  const mutationCreate = useMutation(
+    (s: ProdutoType) => api.post(`ProdutoServico/Inserir`, s),
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(["getProducts"]);
+        setIsOpen(false);
+        toast.success("Produto cadastrado com sucesso!");
+      },
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
+      },
+    }
+  );
+
+  const mutationUpdate = useMutation(
+    (s: ProdutoType) => {
+      return api.post(`ProdutoServico/Salvar`, s);
+    },
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(["getProducts"]);
+        setIsOpen(false);
+        toast.success("Produto alterado com sucesso!");
+        reset({
+          nome: "",
+          descricao: "",
+        });
+      },
+    }
+  );
 
   const onSubmit: SubmitHandler<ProductFormType> = async (data) => {
+    
+
+    const product: ProdutoType = {
+      id: codigoProduto,
+      tipo: tipoProduto.identificador,
+      serveQuantasPessoas: data.serveQuantasPessoas
+        ? Number(data.serveQuantasPessoas)
+        : 0,
+      tempoPreparo: data.tempoPreparo ? Number(data.tempoPreparo) : 0,
+      medidaTempoPreparo: medidaTempoPreparo.identificador,
+      valor: data.valor ? Number(data.valor) : 0,
+      nome: data.nome,
+      descricao: data.descricao,
+      base64Image: base64Image,
+      codigosEtapas: etapasSelecionadas.map((e) => e.id),
+    };
+
     if (data.id) {
-      //editar
+      mutationUpdate.mutate(product);
       return;
     }
 
-    //cadastrar
+    mutationCreate.mutate(product);
   };
 
   const handleClickCancelar = () => {
@@ -73,13 +165,26 @@ const ProductsWindow = ({
               <Tab.Panel>
                 <ProductsTab.General
                   register={register}
-                  setBase64Image={setBase64Image}
-                  imagem={imagem}
-                  setImagem={setImagem}
+                  tipoProduto={tipoProduto}
+                  setTipoProduto={setTipoProduto}
+                  medidaTempoPreparo={medidaTempoPreparo}
+                  setMedidaTempoPreparo={setMedidaTempoPreparo}
                 />
               </Tab.Panel>
               <Tab.Panel>
-                <ProductsTab.Steps />
+                <ProductsTab.Steps
+                  etapasSelecionadas={etapasSelecionadas}
+                  setEtapasSelecionadas={setEtapasSelecionadas}
+                  etapa={etapa}
+                  setEtapa={setEtapa}
+                  etapas={etapas}
+                />
+              </Tab.Panel>
+              <Tab.Panel>
+                <ProductsTab.Image
+                  setBase64Image={setBase64Image}
+                  base64Image={base64Image}
+                />
               </Tab.Panel>
             </ProductsTab.Root>
           </div>

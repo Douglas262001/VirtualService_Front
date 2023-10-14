@@ -17,6 +17,10 @@ const ProductsTabRoot = ({ children }: React.PropsWithChildren) => {
       id: 2,
       title: "Etapas",
     },
+    {
+      id: 3,
+      title: "Imagem",
+    },
   ];
   return (
     <div className="w-full max-w-3xl px-2 mt-2 sm:px-0">
