@@ -91,6 +91,7 @@ const ProductsTable = ({ searchText }: Props) => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         codigoProduto={codigoProduto}
+        setCodigoProduto={setCodigoProduto}
       />
     </>
   );

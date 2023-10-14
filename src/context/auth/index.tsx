@@ -13,6 +13,7 @@ interface AuthContextData {
   signIn: (credentials: SignInCredentials) => Promise<void>;
   signOut: () => void;
   setAuthorizationToken: (token: string | null) => void;
+  getAuthorizationToken: () => string | null;
   token: string | null;
 }
 
@@ -38,6 +39,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     api.defaults.headers["Authorization"] = token
       ? token.replace(/"/g, "")
       : null;
+  }
+
+  function getAuthorizationToken() {
+    return localStorage.getItem("token");
   }
 
   function signOut() {
@@ -73,7 +78,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, token, signOut, setAuthorizationToken }}
+      value={{
+        signIn,
+        token,
+        signOut,
+        setAuthorizationToken,
+        getAuthorizationToken,
+      }}
     >
       {children}
     </AuthContext.Provider>

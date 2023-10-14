@@ -16,7 +16,6 @@ export const convertBase64 = (file: File) => {
 export const toDataUrl = (url: string) => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
     xhr.onload = function () {
       const reader = new FileReader();
       reader.onloadend = function () {
@@ -28,6 +27,8 @@ export const toDataUrl = (url: string) => {
       reject(new Error("Failed to load image"));
     };
     xhr.open("GET", url);
+    const token = JSON.parse(JSON.parse(localStorage.getItem("token") || ""));
+    xhr.setRequestHeader("Authorization", `${token.replace(/"/g, "")}`);
     xhr.responseType = "blob";
     xhr.send();
   });

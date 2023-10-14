@@ -2,7 +2,6 @@ import ButtonCancel from "@components/base/ButtonCancel";
 import ButtonSave from "@components/base/ButtonSave";
 import GenericWindow from "@components/base/GenericWindow";
 import React from "react";
-import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { ProductsTab } from "./productstab";
 import { Tab } from "@headlessui/react";
 import {
@@ -18,6 +17,7 @@ import { queryClient } from "@utils/queryClient";
 import { toast } from "sonner";
 import { EnumType, getArray } from "@utils/enums";
 import { Etapa, EtapaSearch } from "types/Etapa";
+// import { toDataUrl } from "@utils/convert";
 
 interface IProductsProps {
   isOpen: boolean;
@@ -41,15 +41,6 @@ const ProductsWindow = ({
   codigoProduto,
   setCodigoProduto,
 }: IProductsProps) => {
-  const methods = useForm<ProductFormType>({
-    defaultValues: import.meta.env.DEV
-      ? {
-          nome: "",
-          valor: 0,
-        }
-      : {},
-  });
-
   const [base64Image, setBase64Image] = React.useState<string>("");
   const [tipoProduto, setTipoProduto] = React.useState<EnumType>(
     getArray(EnumTipoProdutoServico)[0]
@@ -69,8 +60,18 @@ const ProductsWindow = ({
     EtapaSearch[]
   >([]);
 
+  const [produtoForm, setProdutoForm] = React.useState<ProductFormType>({
+    nome: "",
+    descricao: "",
+    valor: 0,
+    serveQuantasPessoas: 0,
+    tempoPreparo: 0,
+  });
+
   const [isTipoProdutoProduto, setIsTipoProdutoProduto] =
     React.useState<boolean>(false);
+
+  const [isImgUploaded, setIsImgUploaded] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     buscarEtapas();
@@ -89,7 +90,8 @@ const ProductsWindow = ({
   React.useEffect(() => {
     if (isTipoProdutoProduto) return;
 
-    methods.reset({
+    setProdutoForm({
+      ...produtoForm,
       serveQuantasPessoas: 0,
       tempoPreparo: 0,
       descricao: "",
@@ -97,6 +99,23 @@ const ProductsWindow = ({
     setEtapasSelecionadas([]);
     setBase64Image("");
   }, [isTipoProdutoProduto]);
+
+  const handleChangeProduto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const name = e.target.name;
+
+    setProdutoForm({
+      ...produtoForm,
+      [name]: e.target.value,
+    });
+  };
+
+  const handleChangeDescricao = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setProdutoForm({
+      ...produtoForm,
+      descricao: e.target.value,
+    });
+  };
 
   const buscarEtapas = async () => {
     try {
@@ -115,11 +134,14 @@ const ProductsWindow = ({
       const response = await api.get(`ProdutoServico/Buscar/${codigoProduto}`);
 
       const produto = response.data.body;
-      methods.setValue("nome", produto.nome);
-      methods.setValue("descricao", produto.descricao);
-      methods.setValue("valor", produto.valor);
-      methods.setValue("serveQuantasPessoas", produto.serveQuantasPessoas);
-      methods.setValue("tempoPreparo", produto.tempoPreparo);
+
+      setProdutoForm({
+        nome: produto.nome,
+        descricao: produto.descricao,
+        valor: produto.valor,
+        serveQuantasPessoas: produto.serveQuantasPessoas,
+        tempoPreparo: produto.tempoPreparo,
+      });
       setTipoProduto(
         getArray(EnumTipoProdutoServico).find(
           (t) => t.identificador === produto.tipo
@@ -131,9 +153,9 @@ const ProductsWindow = ({
         )!
       );
 
-      // const base64ByUrl = await toDataUrl(produto.urlImagem);
-
-      setBase64Image(produto.urlImagem);
+      if (produto.urlImagem) {
+        setBase64Image(produto.urlImagem);
+      }
 
       if (produto.etapas.length > 0) {
         setEtapasSelecionadas(
@@ -165,7 +187,7 @@ const ProductsWindow = ({
 
   const mutationUpdate = useMutation(
     (s: ProdutoType) => {
-      return api.post(`ProdutoServico/Salvar`, s);
+      return api.put(`ProdutoServico/Salvar`, s);
     },
     {
       onSuccess: async () => {
@@ -177,23 +199,27 @@ const ProductsWindow = ({
     }
   );
 
-  const onSubmit: SubmitHandler<ProductFormType> = async (data) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     const product: ProdutoType = {
       id: codigoProduto,
       tipo: tipoProduto.identificador,
-      serveQuantasPessoas: data.serveQuantasPessoas
-        ? Number(data.serveQuantasPessoas)
+      serveQuantasPessoas: produtoForm.serveQuantasPessoas
+        ? Number(produtoForm.serveQuantasPessoas)
         : 0,
-      tempoPreparo: data.tempoPreparo ? Number(data.tempoPreparo) : 0,
+      tempoPreparo: produtoForm.tempoPreparo
+        ? Number(produtoForm.tempoPreparo)
+        : 0,
       medidaTempoPreparo: medidaTempoPreparo.identificador,
-      valor: data.valor ? Number(data.valor) : 0,
-      nome: data.nome,
-      descricao: data.descricao,
-      base64Image: base64Image,
+      valor: produtoForm.valor ? Number(produtoForm.valor) : 0,
+      nome: produtoForm.nome,
+      descricao: produtoForm.descricao,
+      base64Image: isImgUploaded ? base64Image : "",
       codigosEtapas: etapasSelecionadas.map((e) => e.id),
     };
 
-    if (data.id) {
+    if (codigoProduto) {
       mutationUpdate.mutate(product);
       return;
     }
@@ -207,12 +233,12 @@ const ProductsWindow = ({
   };
 
   const limparCampos = () => {
-    methods.reset({
+    setProdutoForm({
       nome: "",
       descricao: "",
       valor: 0,
-      tempoPreparo: 0,
       serveQuantasPessoas: 0,
+      tempoPreparo: 0,
     });
     setBase64Image("");
     setTipoProduto(getArray(EnumTipoProdutoServico)[0]);
@@ -224,46 +250,48 @@ const ProductsWindow = ({
 
   return (
     <GenericWindow isOpen={isOpen} setIsOpen={setIsOpen} title="Produtos">
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="form-control">
-            <div className="w-full h-full flex flex-col">
-              <ProductsTab.Root>
-                <Tab.Panel>
-                  <ProductsTab.General
-                    tipoProduto={tipoProduto}
-                    setTipoProduto={setTipoProduto}
-                    medidaTempoPreparo={medidaTempoPreparo}
-                    setMedidaTempoPreparo={setMedidaTempoPreparo}
-                    isTipoProdutoProduto={isTipoProdutoProduto}
-                  />
-                </Tab.Panel>
-                <Tab.Panel>
-                  <ProductsTab.Steps
-                    etapasSelecionadas={etapasSelecionadas}
-                    setEtapasSelecionadas={setEtapasSelecionadas}
-                    etapa={etapa}
-                    setEtapa={setEtapa}
-                    etapas={etapas}
-                    isTipoProdutoProduto={isTipoProdutoProduto}
-                  />
-                </Tab.Panel>
-                <Tab.Panel>
-                  <ProductsTab.Image
-                    setBase64Image={setBase64Image}
-                    base64Image={base64Image}
-                    isTipoProdutoProduto={isTipoProdutoProduto}
-                  />
-                </Tab.Panel>
-              </ProductsTab.Root>
-            </div>
-            <div className="modal-action">
-              <ButtonCancel type="button" onClick={handleClickCancelar} />
-              <ButtonSave type="submit" />
-            </div>
+      <form onSubmit={onSubmit}>
+        <div className="form-control">
+          <div className="w-full h-full flex flex-col">
+            <ProductsTab.Root>
+              <Tab.Panel>
+                <ProductsTab.General
+                  tipoProduto={tipoProduto}
+                  setTipoProduto={setTipoProduto}
+                  medidaTempoPreparo={medidaTempoPreparo}
+                  setMedidaTempoPreparo={setMedidaTempoPreparo}
+                  isTipoProdutoProduto={isTipoProdutoProduto}
+                  handleChangeProduto={handleChangeProduto}
+                  handleChangeDescricao={handleChangeDescricao}
+                  produto={produtoForm}
+                />
+              </Tab.Panel>
+              <Tab.Panel>
+                <ProductsTab.Steps
+                  etapasSelecionadas={etapasSelecionadas}
+                  setEtapasSelecionadas={setEtapasSelecionadas}
+                  etapa={etapa}
+                  setEtapa={setEtapa}
+                  etapas={etapas}
+                  isTipoProdutoProduto={isTipoProdutoProduto}
+                />
+              </Tab.Panel>
+              <Tab.Panel>
+                <ProductsTab.Image
+                  setBase64Image={setBase64Image}
+                  base64Image={base64Image}
+                  isTipoProdutoProduto={isTipoProdutoProduto}
+                  setIsImgUploaded={setIsImgUploaded}
+                />
+              </Tab.Panel>
+            </ProductsTab.Root>
           </div>
-        </form>
-      </FormProvider>
+          <div className="modal-action">
+            <ButtonCancel type="button" onClick={handleClickCancelar} />
+            <ButtonSave type="submit" />
+          </div>
+        </div>
+      </form>
     </GenericWindow>
   );
 };
