@@ -11,6 +11,7 @@ type StepProductPanelType = {
   etapas: EtapaSearch[];
   etapasSelecionadas: EtapaSearch[];
   setEtapasSelecionadas: React.Dispatch<EtapaSearch[]>;
+  isTipoProdutoProduto: boolean;
 };
 
 const Steps = ({
@@ -19,8 +20,10 @@ const Steps = ({
   etapas,
   etapasSelecionadas,
   setEtapasSelecionadas,
+  isTipoProdutoProduto,
 }: StepProductPanelType) => {
-  const handleClickAdiconar = () => {
+  const handleClickAdiconar = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
     if (etapa.id === 0) return toast.error("Selecione uma etapa!");
 
     if (etapasSelecionadas.some((c) => c.id === etapa.id))
@@ -39,13 +42,15 @@ const Steps = ({
             setValue={setEtapa}
             displayValue="nome"
             valueField="id"
-            optionsHeight="5"
+            optionsHeight="150"
+            disabled={!isTipoProdutoProduto}
           />
         </div>
         <button
           onClick={handleClickAdiconar}
           type="button"
           className="btn btn-info mt-5"
+          disabled={!isTipoProdutoProduto}
         >
           Adicionar
           <Plus size={24} />

@@ -1,7 +1,7 @@
 import GenericLoading from "@components/base/GenericLoading";
 import GenericTable from "@components/base/GenericTable";
 import useFilterData from "@hooks/useFilterData";
-// import { useState } from "react";
+import { useState } from "react";
 // import StepsWindow from "./AcommodationWindow";
 import { PencilSimple, TrashSimple } from "phosphor-react";
 // import StepWindow from "./StepWindow";
@@ -10,6 +10,7 @@ import api from "@utils/api";
 import { queryClient } from "@utils/queryClient";
 import { toast } from "sonner";
 import useGetProducts from "@hooks/useGetProducts";
+import ProductsWindow from "./ProductsWindow";
 
 type Props = {
   searchText?: string;
@@ -27,11 +28,11 @@ const ProductsTable = ({ searchText }: Props) => {
   const { data: steps, error, isLoading } = useGetProducts();
 
   const filteredProducts = useFilterData(steps, searchText);
-  //   const [isOpen, setIsOpen] = useState<boolean>(false);
-  //   const [codigoEtapa, setCodigoEtapa] = useState<number | undefined>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [codigoProduto, setCodigoProduto] = useState<number | undefined>();
 
   const mutationDelete = useMutation(
-    (s?: number) => api.delete(`ProdutoServico/RemoverProdutoServico/${s}`),
+    (s?: number) => api.delete(`ProdutoServico/Deletar/${s}`),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getProducts"]);
@@ -62,8 +63,8 @@ const ProductsTable = ({ searchText }: Props) => {
       Editar: (
         <PencilSimple
           onClick={() => {
-            /*   setCodigoEtapa(step.id);
-            setIsOpen(true); */
+            setCodigoProduto(step.id);
+            setIsOpen(true);
           }}
           className="cursor-pointer"
           size={24}
@@ -86,12 +87,12 @@ const ProductsTable = ({ searchText }: Props) => {
         values={tableValuesWithIcons}
         columns={Object.keys(tableValuesWithIcons[0] || {})}
       />
-      {/*  <StepWindow
+      <ProductsWindow
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        codigoEtapa={codigoEtapa}
-        setCodigoEtapa={setCodigoEtapa}
-      /> */}
+        codigoProduto={codigoProduto}
+        setCodigoProduto={setCodigoProduto}
+      />
     </>
   );
 };

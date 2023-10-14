@@ -2,15 +2,14 @@ import ButtonCancel from "@components/base/ButtonCancel";
 import ButtonSave from "@components/base/ButtonSave";
 import GenericWindow from "@components/base/GenericWindow";
 import React from "react";
-import * as yup from "yup";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { ProductsTab } from "./productstab";
 import { Tab } from "@headlessui/react";
 import {
   EnumMedidaTempoPreparo,
   EnumTipoProdutoServico,
+  EtapaProdutoType,
   ProdutoType,
+  TipoProduto,
 } from "types/Produto";
 import { useMutation } from "@tanstack/react-query";
 import api from "@utils/api";
@@ -18,6 +17,8 @@ import { queryClient } from "@utils/queryClient";
 import { toast } from "sonner";
 import { EnumType, getArray } from "@utils/enums";
 import { Etapa, EtapaSearch } from "types/Etapa";
+// import { toDataUrl } from "@utils/convert";
+
 interface IProductsProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<boolean>;
@@ -34,32 +35,12 @@ export type ProductFormType = {
   tempoPreparo?: number;
 };
 
-const formSchema = yup.object({
-  nome: yup.string().required("Você precisa informar o campo nome"),
-});
-
 const ProductsWindow = ({
   isOpen,
   setIsOpen,
   codigoProduto,
   setCodigoProduto,
 }: IProductsProps) => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm<ProductFormType>({
-    resolver: yupResolver(formSchema),
-    defaultValues: import.meta.env.DEV
-      ? {
-          nome: "",
-          valor: 0,
-        }
-      : {},
-  });
-
   const [base64Image, setBase64Image] = React.useState<string>("");
   const [tipoProduto, setTipoProduto] = React.useState<EnumType>(
     getArray(EnumTipoProdutoServico)[0]
@@ -79,9 +60,62 @@ const ProductsWindow = ({
     EtapaSearch[]
   >([]);
 
+  const [produtoForm, setProdutoForm] = React.useState<ProductFormType>({
+    nome: "",
+    descricao: "",
+    valor: 0,
+    serveQuantasPessoas: 0,
+    tempoPreparo: 0,
+  });
+
+  const [isTipoProdutoProduto, setIsTipoProdutoProduto] =
+    React.useState<boolean>(false);
+
+  const [isImgUploaded, setIsImgUploaded] = React.useState<boolean>(false);
+
   React.useEffect(() => {
     buscarEtapas();
   }, []);
+
+  React.useEffect(() => {
+    if (!codigoProduto) return;
+
+    buscarProdutoPorId(codigoProduto);
+  }, [codigoProduto]);
+
+  React.useEffect(() => {
+    setIsTipoProdutoProduto(tipoProduto.identificador === TipoProduto.Produto);
+  }, [tipoProduto]);
+
+  React.useEffect(() => {
+    if (isTipoProdutoProduto) return;
+
+    setProdutoForm({
+      ...produtoForm,
+      serveQuantasPessoas: 0,
+      tempoPreparo: 0,
+      descricao: "",
+    });
+    setEtapasSelecionadas([]);
+    setBase64Image("");
+  }, [isTipoProdutoProduto]);
+
+  const handleChangeProduto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const name = e.target.name;
+
+    setProdutoForm({
+      ...produtoForm,
+      [name]: e.target.value,
+    });
+  };
+
+  const handleChangeDescricao = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setProdutoForm({
+      ...produtoForm,
+      descricao: e.target.value,
+    });
+  };
 
   const buscarEtapas = async () => {
     try {
@@ -95,12 +129,54 @@ const ProductsWindow = ({
     }
   };
 
+  const buscarProdutoPorId = async (codigoProduto: number) => {
+    try {
+      const response = await api.get(`ProdutoServico/Buscar/${codigoProduto}`);
+
+      const produto = response.data.body;
+
+      setProdutoForm({
+        nome: produto.nome,
+        descricao: produto.descricao,
+        valor: produto.valor,
+        serveQuantasPessoas: produto.serveQuantasPessoas,
+        tempoPreparo: produto.tempoPreparo,
+      });
+      setTipoProduto(
+        getArray(EnumTipoProdutoServico).find(
+          (t) => t.identificador === produto.tipo
+        )!
+      );
+      setMedidaTempoPreparo(
+        getArray(EnumMedidaTempoPreparo).find(
+          (t) => t.identificador === produto.medidaTempoPreparo
+        )!
+      );
+
+      if (produto.urlImagem) {
+        setBase64Image(produto.urlImagem);
+      }
+
+      if (produto.etapas.length > 0) {
+        setEtapasSelecionadas(
+          produto.etapas.map((e: EtapaProdutoType) => ({
+            id: e.etapa.id,
+            nome: e.etapa.nome,
+          }))
+        );
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.reasonPhrase);
+    }
+  };
+
   const mutationCreate = useMutation(
     (s: ProdutoType) => api.post(`ProdutoServico/Inserir`, s),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getProducts"]);
         setIsOpen(false);
+        limparCampos();
         toast.success("Produto cadastrado com sucesso!");
       },
       onError: (error: any) => {
@@ -111,40 +187,39 @@ const ProductsWindow = ({
 
   const mutationUpdate = useMutation(
     (s: ProdutoType) => {
-      return api.post(`ProdutoServico/Salvar`, s);
+      return api.put(`ProdutoServico/Salvar`, s);
     },
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getProducts"]);
         setIsOpen(false);
         toast.success("Produto alterado com sucesso!");
-        reset({
-          nome: "",
-          descricao: "",
-        });
+        limparCampos();
       },
     }
   );
 
-  const onSubmit: SubmitHandler<ProductFormType> = async (data) => {
-    
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
     const product: ProdutoType = {
       id: codigoProduto,
       tipo: tipoProduto.identificador,
-      serveQuantasPessoas: data.serveQuantasPessoas
-        ? Number(data.serveQuantasPessoas)
+      serveQuantasPessoas: produtoForm.serveQuantasPessoas
+        ? Number(produtoForm.serveQuantasPessoas)
         : 0,
-      tempoPreparo: data.tempoPreparo ? Number(data.tempoPreparo) : 0,
+      tempoPreparo: produtoForm.tempoPreparo
+        ? Number(produtoForm.tempoPreparo)
+        : 0,
       medidaTempoPreparo: medidaTempoPreparo.identificador,
-      valor: data.valor ? Number(data.valor) : 0,
-      nome: data.nome,
-      descricao: data.descricao,
-      base64Image: base64Image,
+      valor: produtoForm.valor ? Number(produtoForm.valor) : 0,
+      nome: produtoForm.nome,
+      descricao: produtoForm.descricao,
+      base64Image: isImgUploaded ? base64Image : "",
       codigosEtapas: etapasSelecionadas.map((e) => e.id),
     };
 
-    if (data.id) {
+    if (codigoProduto) {
       mutationUpdate.mutate(product);
       return;
     }
@@ -154,21 +229,41 @@ const ProductsWindow = ({
 
   const handleClickCancelar = () => {
     setIsOpen(false);
+    limparCampos();
+  };
+
+  const limparCampos = () => {
+    setProdutoForm({
+      nome: "",
+      descricao: "",
+      valor: 0,
+      serveQuantasPessoas: 0,
+      tempoPreparo: 0,
+    });
+    setBase64Image("");
+    setTipoProduto(getArray(EnumTipoProdutoServico)[0]);
+    setMedidaTempoPreparo(getArray(EnumMedidaTempoPreparo)[0]);
+    setEtapasSelecionadas([]);
+    setEtapa({ id: 0, nome: "" });
+    setCodigoProduto && setCodigoProduto(0);
   };
 
   return (
     <GenericWindow isOpen={isOpen} setIsOpen={setIsOpen} title="Produtos">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={onSubmit}>
         <div className="form-control">
           <div className="w-full h-full flex flex-col">
             <ProductsTab.Root>
               <Tab.Panel>
                 <ProductsTab.General
-                  register={register}
                   tipoProduto={tipoProduto}
                   setTipoProduto={setTipoProduto}
                   medidaTempoPreparo={medidaTempoPreparo}
                   setMedidaTempoPreparo={setMedidaTempoPreparo}
+                  isTipoProdutoProduto={isTipoProdutoProduto}
+                  handleChangeProduto={handleChangeProduto}
+                  handleChangeDescricao={handleChangeDescricao}
+                  produto={produtoForm}
                 />
               </Tab.Panel>
               <Tab.Panel>
@@ -178,12 +273,15 @@ const ProductsWindow = ({
                   etapa={etapa}
                   setEtapa={setEtapa}
                   etapas={etapas}
+                  isTipoProdutoProduto={isTipoProdutoProduto}
                 />
               </Tab.Panel>
               <Tab.Panel>
                 <ProductsTab.Image
                   setBase64Image={setBase64Image}
                   base64Image={base64Image}
+                  isTipoProdutoProduto={isTipoProdutoProduto}
+                  setIsImgUploaded={setIsImgUploaded}
                 />
               </Tab.Panel>
             </ProductsTab.Root>

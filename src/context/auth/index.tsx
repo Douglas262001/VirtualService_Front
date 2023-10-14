@@ -13,6 +13,7 @@ interface AuthContextData {
   signIn: (credentials: SignInCredentials) => Promise<void>;
   signOut: () => void;
   setAuthorizationToken: (token: string | null) => void;
+  getAuthorizationToken: () => string | null;
   token: string | null;
 }
 
@@ -40,6 +41,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       : null;
   }
 
+  function getAuthorizationToken() {
+    return localStorage.getItem("token");
+  }
+
   function signOut() {
     destroyCookie(undefined, "yellowsoftware.token");
     setToken(null);
@@ -58,7 +63,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       throw new Error(reasonPhrase);
     }
 
-    const token = JSON.stringify(body);
+    const token = JSON.stringify(body.bearer);
 
     localStorage.setItem("token", JSON.stringify(token));
     setToken(token);
@@ -73,7 +78,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, token, signOut, setAuthorizationToken }}
+      value={{
+        signIn,
+        token,
+        signOut,
+        setAuthorizationToken,
+        getAuthorizationToken,
+      }}
     >
       {children}
     </AuthContext.Provider>

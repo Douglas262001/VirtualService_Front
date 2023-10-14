@@ -1,3 +1,5 @@
+import { Etapa } from "./Etapa";
+
 export type ProdutoType = {
   id?: number;
   tipo: TipoProduto;
@@ -11,13 +13,19 @@ export type ProdutoType = {
   codigosEtapas: number[];
 };
 
-enum TipoProduto {
+export type EtapaProdutoType = {
+  codigoEtapa: number;
+  codigoProdutoServico: number;
+  etapa: Etapa;
+};
+
+export enum TipoProduto {
   Produto = 0,
   // Servico = 1,  Descomentar posteriormente
   ItemEtapa = 2,
 }
 
-enum MedidaTempoPreparo {
+export enum MedidaTempoPreparo {
   Minuto = 0,
   Hora = 1,
 }

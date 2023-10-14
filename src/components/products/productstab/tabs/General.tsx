@@ -2,23 +2,28 @@ import SearchField from "@components/base/SearchField";
 import { ProductFormType } from "@components/products/ProductsWindow";
 import { EnumType, getArray } from "@utils/enums";
 import React from "react";
-import { UseFormRegister } from "react-hook-form";
 import { EnumMedidaTempoPreparo, EnumTipoProdutoServico } from "types/Produto";
 
 export type GeneralProductPanelType = {
-  register: UseFormRegister<ProductFormType>;
   tipoProduto: EnumType;
   setTipoProduto: React.Dispatch<EnumType>;
   medidaTempoPreparo: EnumType;
   setMedidaTempoPreparo: React.Dispatch<EnumType>;
+  isTipoProdutoProduto: boolean;
+  produto: ProductFormType;
+  handleChangeProduto: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeDescricao: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
 const General = ({
-  register,
   tipoProduto,
   setTipoProduto,
   medidaTempoPreparo,
   setMedidaTempoPreparo,
+  isTipoProdutoProduto,
+  handleChangeProduto,
+  handleChangeDescricao,
+  produto: produto,
 }: GeneralProductPanelType) => {
   return (
     <div className="w-full flex flex-col">
@@ -29,9 +34,9 @@ const General = ({
             type="text"
             placeholder="Nome do item"
             className="input input-bordered w-full mb-4"
-            {...register("nome", {
-              shouldUnregister: true,
-            })}
+            name="nome"
+            value={produto.nome}
+            onChange={handleChangeProduto}
           />
         </div>
         <div className="w-full flex flex-col">
@@ -51,11 +56,11 @@ const General = ({
           <input
             type="number"
             placeholder="Valor do item"
+            name="valor"
             className="input input-bordered w-full mb-4"
             min={0}
-            {...register("valor", {
-              shouldUnregister: true,
-            })}
+            value={produto.valor}
+            onChange={handleChangeProduto}
           />
         </div>
         <div className="w-full flex flex-col">
@@ -65,9 +70,10 @@ const General = ({
             placeholder="Quantidade de pessoas"
             className="input input-bordered w-full mb-4"
             min={0}
-            {...register("serveQuantasPessoas", {
-              shouldUnregister: true,
-            })}
+            disabled={!isTipoProdutoProduto}
+            name="serveQuantasPessoas"
+            value={produto.serveQuantasPessoas}
+            onChange={handleChangeProduto}
           />
         </div>
       </div>
@@ -79,9 +85,10 @@ const General = ({
             placeholder="Tempo de preparo"
             className="input input-bordered w-full mb-4"
             min={0}
-            {...register("tempoPreparo", {
-              shouldUnregister: true,
-            })}
+            disabled={!isTipoProdutoProduto}
+            name="tempoPreparo"
+            value={produto.tempoPreparo}
+            onChange={handleChangeProduto}
           />
         </div>
         <div className="w-full flex flex-col">
@@ -92,6 +99,7 @@ const General = ({
             data={getArray(EnumMedidaTempoPreparo)}
             valueField="identificador"
             displayValue="value"
+            disabled={!isTipoProdutoProduto}
           />
         </div>
       </div>
@@ -99,10 +107,11 @@ const General = ({
       <div className="w-full flex flex-col">
         <span className="label-text">Descrição</span>
         <textarea
+          disabled={!isTipoProdutoProduto}
           className="input h-24"
-          {...register("descricao", {
-            shouldUnregister: true,
-          })}
+          name="descricao"
+          value={produto.descricao}
+          onChange={handleChangeDescricao}
         ></textarea>
       </div>
     </div>
