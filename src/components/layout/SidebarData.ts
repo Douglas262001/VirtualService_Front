@@ -8,6 +8,8 @@ import {
   Ticket,
   ListChecks,
   Cube,
+  SquaresFour,
+  Vignette,
 } from "phosphor-react";
 
 type SidebarDataType = {
@@ -18,12 +20,6 @@ type SidebarDataType = {
 };
 
 const SidebarData: SidebarDataType[] = [
-  // {
-  //   id: 1,
-  //   description: "Início",
-  //   icon: House,
-  //   path: "/home",
-  // },
   {
     id: 1,
     description: "Analytics",
@@ -77,6 +73,18 @@ const SidebarData: SidebarDataType[] = [
     description: "Produtos",
     icon: Cube,
     path: "/products",
+  },
+  {
+    id: 10,
+    description: "Mesas",
+    icon: Vignette,
+    path: "/tables",
+  },
+  {
+    id: 11,
+    description: "Categorias",
+    icon: SquaresFour,
+    path: "/categories",
   },
 ];
 

@@ -30,7 +30,7 @@ const StepsTable = ({ searchText }: Props) => {
   const [codigoEtapa, setCodigoEtapa] = useState<number | undefined>();
 
   const mutationDelete = useMutation(
-    (s?: number) => api.put(`Etapa/RemoverEtapa/${s}`),
+    (s?: number) => api.put(`Etapa/Deletar/${s}`),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getSteps"]);

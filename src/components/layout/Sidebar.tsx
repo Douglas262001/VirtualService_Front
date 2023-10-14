@@ -22,7 +22,7 @@ const Sidebar = () => {
   return (
     <aside
       className={classNames(
-        "min-h-[calc(100vh-5.7rem)] text-[#303030] min-w-min text-center transition-[width] duration-300 ease-in bg-gradient-to-b from-[#fec80a] to-[#d4a90b] w-[20%] m-2 rounded-md p-5 ",
+        "min-h-[calc(100vh-5.7rem)] overflow-y-scroll text-[#303030] min-w-min pb-6 text-center transition-[width] duration-300 ease-in bg-gradient-to-b from-[#fec80a] to-[#d4a90b] w-[20%] m-2 rounded-md p-5",
         {
           "w-[5%]": isCollapsed,
         }
@@ -87,7 +87,7 @@ const Sidebar = () => {
             );
           })}
         </ul>
-        <button onClick={handleLogOut} className="btn">
+        <button onClick={handleLogOut} className="btn mb-6">
           <span
             className={classNames("mr-2", {
               hidden: isCollapsed,

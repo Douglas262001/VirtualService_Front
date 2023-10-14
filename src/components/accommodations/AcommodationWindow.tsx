@@ -48,7 +48,7 @@ const AccommodationWindow = ({
   }
 
   const mutationCreate = useMutation(
-    (s: AccommodationFormType) => api.post(`Acomodacao/NovaArea`, s),
+    (s: AccommodationFormType) => api.post(`Area/Inserir`, s),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getAccommodations"]);
@@ -63,7 +63,7 @@ const AccommodationWindow = ({
 
   const mutationUpdate = useMutation(
     (s: AccommodationFormType) => {
-      return api.post(`Acomodacao/AlterarArea`, s);
+      return api.post(`Area/Salvar`, s);
     },
     {
       onSuccess: async () => {

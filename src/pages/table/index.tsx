@@ -1,8 +1,8 @@
-import ProductsTable from "@components/products/ProductsTable";
-import ProductsWindow from "@components/products/ProductsWindow";
-import { useState } from "react";
+import React, { useState } from "react";
+import TableTable from "@components/table/TableTable";
+import TableWindow from "@components/table/TableWindow";
 
-const Products = () => {
+function Tables() {
   const [searchText, setSearchText] = useState("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -15,23 +15,23 @@ const Products = () => {
       <div className="w-full flex justify-between mb-2">
         <input
           type="text"
-          placeholder="Pesquisar Produto"
+          placeholder="Pesquisar Mesa"
           onInput={searchInputHandler}
           className="input input-bordered w-full max-w-xs"
         />
         <label
-          htmlFor="my-modal-subject"
+          htmlFor="my-modal-table"
           onClick={() => setIsAddModalOpen(true)}
           className="btn modal-button btn-secondary"
         >
           Adicionar
         </label>
-        <input type="checkbox" id="my-modal-subject" className="modal-toggle" />
-        <ProductsWindow setIsOpen={setIsAddModalOpen} isOpen={isAddModalOpen} />
+        <input type="checkbox" id="my-modal-table" className="modal-toggle" />
+        <TableWindow setIsOpen={setIsAddModalOpen} isOpen={isAddModalOpen} />
       </div>
-      <ProductsTable searchText={searchText} />
+      <TableTable searchText={searchText} />
     </div>
   );
-};
+}
 
-export default Products;
+export default Tables;
