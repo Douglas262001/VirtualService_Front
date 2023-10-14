@@ -9,6 +9,7 @@ interface SearchFieldProps<T> {
   value: T;
   setValue: React.Dispatch<T>;
   optionsHeight?: string;
+  disabled?: boolean;
 }
 
 function SearchField<T>({
@@ -18,6 +19,7 @@ function SearchField<T>({
   value,
   setValue,
   optionsHeight,
+  disabled,
 }: SearchFieldProps<T>) {
   const [query, setQuery] = useState("");
 
@@ -33,7 +35,7 @@ function SearchField<T>({
 
   return (
     <div className="w-80">
-      <Combobox value={value} onChange={setValue}>
+      <Combobox value={value} onChange={setValue} disabled={disabled ?? false}>
         <div className="relative mt-1">
           <div className="relative w-full cursor-default rounded-lg text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm">
             <Combobox.Input
@@ -55,9 +57,8 @@ function SearchField<T>({
             afterLeave={() => setQuery("")}
           >
             <Combobox.Options
-              className={`absolute overflow-auto z-20 ${
-                optionsHeight ? `h-${optionsHeight}` : ""
-              } mt-1 w-full rounded-md bg-[color:var(--w-base-100)] py-1 text-base shadow-lg ring-1 ring-white ring-opacity-5 focus:outline-none sm:text-sm`}
+              style={{ height: `${optionsHeight}px` }}
+              className={`absolute overflow-auto z-20  mt-1 w-full rounded-md bg-[color:var(--w-base-100)] py-1 text-base shadow-lg ring-1 ring-white ring-opacity-5 focus:outline-none sm:text-sm`}
             >
               {filteredData.length === 0 && query !== "" ? (
                 <div className="relative cursor-default select-none py-2 px-4 text-white">

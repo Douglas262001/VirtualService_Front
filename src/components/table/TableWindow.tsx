@@ -214,7 +214,7 @@ const TableWindow = ({
               data={areas}
               displayValue="descricao"
               valueField="id"
-              optionsHeight="20"
+              optionsHeight="80"
             />
           </div>
         </div>

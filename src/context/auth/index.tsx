@@ -58,7 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       throw new Error(reasonPhrase);
     }
 
-    const token = JSON.stringify(body);
+    const token = JSON.stringify(body.bearer);
 
     localStorage.setItem("token", JSON.stringify(token));
     setToken(token);

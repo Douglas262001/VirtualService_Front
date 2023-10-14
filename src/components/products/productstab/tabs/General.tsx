@@ -1,25 +1,26 @@
 import SearchField from "@components/base/SearchField";
-import { ProductFormType } from "@components/products/ProductsWindow";
 import { EnumType, getArray } from "@utils/enums";
 import React from "react";
-import { UseFormRegister } from "react-hook-form";
 import { EnumMedidaTempoPreparo, EnumTipoProdutoServico } from "types/Produto";
+import { useFormContext } from "react-hook-form";
 
 export type GeneralProductPanelType = {
-  register: UseFormRegister<ProductFormType>;
   tipoProduto: EnumType;
   setTipoProduto: React.Dispatch<EnumType>;
   medidaTempoPreparo: EnumType;
   setMedidaTempoPreparo: React.Dispatch<EnumType>;
+  isTipoProdutoProduto: boolean;
 };
 
 const General = ({
-  register,
   tipoProduto,
   setTipoProduto,
   medidaTempoPreparo,
   setMedidaTempoPreparo,
+  isTipoProdutoProduto,
 }: GeneralProductPanelType) => {
+  const { register } = useFormContext();
+
   return (
     <div className="w-full flex flex-col">
       <div className="w-full flex gap-2">
@@ -65,6 +66,7 @@ const General = ({
             placeholder="Quantidade de pessoas"
             className="input input-bordered w-full mb-4"
             min={0}
+            disabled={!isTipoProdutoProduto}
             {...register("serveQuantasPessoas", {
               shouldUnregister: true,
             })}
@@ -79,6 +81,7 @@ const General = ({
             placeholder="Tempo de preparo"
             className="input input-bordered w-full mb-4"
             min={0}
+            disabled={!isTipoProdutoProduto}
             {...register("tempoPreparo", {
               shouldUnregister: true,
             })}
@@ -92,6 +95,7 @@ const General = ({
             data={getArray(EnumMedidaTempoPreparo)}
             valueField="identificador"
             displayValue="value"
+            disabled={!isTipoProdutoProduto}
           />
         </div>
       </div>
@@ -99,6 +103,7 @@ const General = ({
       <div className="w-full flex flex-col">
         <span className="label-text">Descrição</span>
         <textarea
+          disabled={!isTipoProdutoProduto}
           className="input h-24"
           {...register("descricao", {
             shouldUnregister: true,
