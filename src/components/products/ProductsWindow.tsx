@@ -138,7 +138,7 @@ const ProductsWindow = ({
       setProdutoForm({
         nome: produto.nome,
         descricao: produto.descricao,
-        valor: produto.valor,
+        valor: produto.valor.toString().replace(",", "."),
         serveQuantasPessoas: produto.serveQuantasPessoas,
         tempoPreparo: produto.tempoPreparo,
       });

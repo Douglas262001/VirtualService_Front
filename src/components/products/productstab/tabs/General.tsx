@@ -54,7 +54,7 @@ const General = ({
         <div className="w-full flex flex-col">
           <span className="label-text">Valor</span>
           <input
-            type="number"
+            type="text"
             placeholder="Valor do item"
             name="valor"
             className="input input-bordered w-full mb-4"

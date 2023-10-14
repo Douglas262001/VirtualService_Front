@@ -45,6 +45,7 @@ const AccommodationWindow = ({
 
   if (accommodation) {
     setValue("id", accommodation.id);
+    setValue("descricao", accommodation.descricao);
   }
 
   const mutationCreate = useMutation(
@@ -63,7 +64,7 @@ const AccommodationWindow = ({
 
   const mutationUpdate = useMutation(
     (s: AccommodationFormType) => {
-      return api.post(`Area/Salvar`, s);
+      return api.put(`Area/Salvar`, s);
     },
     {
       onSuccess: async () => {
