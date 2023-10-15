@@ -30,7 +30,7 @@ const SidebarData: SidebarDataType[] = [
     id: 2,
     description: "Pedidos",
     icon: Bell,
-    path: "/teachers",
+    path: "/orders",
   },
   {
     id: 3,
