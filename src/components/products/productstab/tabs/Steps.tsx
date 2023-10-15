@@ -4,13 +4,14 @@ import { Plus, TrashSimple } from "phosphor-react";
 import React from "react";
 import { toast } from "sonner";
 import { EtapaSearch } from "types/Etapa";
+import { ProdutoEtapaSearchType } from "types/Produto";
 
 type StepProductPanelType = {
   etapa: EtapaSearch;
   setEtapa: React.Dispatch<EtapaSearch>;
   etapas: EtapaSearch[];
-  etapasSelecionadas: EtapaSearch[];
-  setEtapasSelecionadas: React.Dispatch<EtapaSearch[]>;
+  etapasSelecionadas: ProdutoEtapaSearchType[];
+  setEtapasSelecionadas: React.Dispatch<ProdutoEtapaSearchType[]>;
   isTipoProdutoProduto: boolean;
 };
 
@@ -26,10 +27,13 @@ const Steps = ({
     e.preventDefault();
     if (etapa.id === 0) return toast.error("Selecione uma etapa!");
 
-    if (etapasSelecionadas.some((c) => c.id === etapa.id))
+    if (etapasSelecionadas.some((c) => c.codigoEtapa === etapa.id))
       return toast.error("Etapa já adicionada!");
 
-    setEtapasSelecionadas([...etapasSelecionadas, etapa]);
+    setEtapasSelecionadas([
+      ...etapasSelecionadas,
+      { codigoEtapa: etapa.id, nome: etapa.nome },
+    ]);
   };
   return (
     <div className="w-full flex flex-col">
@@ -70,7 +74,7 @@ const Steps = ({
             />
           ),
         }))}
-        columns={["id", "nome", "excluir"]}
+        columns={["codigoEtapa", "nome", "excluir"]}
       />
     </div>
   );

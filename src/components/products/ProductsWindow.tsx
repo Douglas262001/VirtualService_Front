@@ -8,6 +8,7 @@ import {
   EnumMedidaTempoPreparo,
   EnumTipoProdutoServico,
   EtapaProdutoType,
+  ProdutoEtapaSearchType,
   ProdutoType,
   TipoProduto,
 } from "types/Produto";
@@ -57,7 +58,7 @@ const ProductsWindow = ({
   const [etapas, setEtapas] = React.useState<EtapaSearch[]>([]);
 
   const [etapasSelecionadas, setEtapasSelecionadas] = React.useState<
-    EtapaSearch[]
+    ProdutoEtapaSearchType[]
   >([]);
 
   const [produtoForm, setProdutoForm] = React.useState<ProductFormType>({
@@ -161,6 +162,7 @@ const ProductsWindow = ({
         setEtapasSelecionadas(
           produto.etapas.map((e: EtapaProdutoType) => ({
             id: e.etapa.id,
+            codigoEtapa: e.codigoEtapa,
             nome: e.etapa.nome,
           }))
         );
@@ -216,7 +218,10 @@ const ProductsWindow = ({
       nome: produtoForm.nome,
       descricao: produtoForm.descricao,
       base64Image: isImgUploaded ? base64Image : "",
-      codigosEtapas: etapasSelecionadas.map((e) => e.id),
+      etapas: etapasSelecionadas.map((e: ProdutoEtapaSearchType) => ({
+        id: e.id,
+        codigoEtapa: e.codigoEtapa,
+      })),
     };
 
     if (codigoProduto) {
@@ -282,6 +287,7 @@ const ProductsWindow = ({
                   base64Image={base64Image}
                   isTipoProdutoProduto={isTipoProdutoProduto}
                   setIsImgUploaded={setIsImgUploaded}
+                  codigoProduto={codigoProduto}
                 />
               </Tab.Panel>
             </ProductsTab.Root>
