@@ -1,5 +1,5 @@
 import { CircleNotch, FloppyDisk } from "phosphor-react";
-import React from "react";
+import * as React from "react";
 
 type ButtonSaveProps = React.ComponentProps<"button"> & {
   isLoading?: boolean;

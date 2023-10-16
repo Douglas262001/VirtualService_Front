@@ -1,7 +1,7 @@
 import GenericTable from "@components/base/GenericTable";
 import SearchField from "@components/base/SearchField";
 import { Plus, TrashSimple } from "phosphor-react";
-import React from "react";
+import * as React from "react";
 import { toast } from "sonner";
 import { EtapaSearch } from "types/Etapa";
 import { ProdutoEtapaSearchType } from "types/Produto";

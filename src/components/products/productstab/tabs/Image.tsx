@@ -1,6 +1,6 @@
 import { convertBase64 } from "@utils/convert";
 import { UploadSimple } from "phosphor-react";
-import React from "react";
+import * as React from "react";
 
 export type ImageProductPanelType = {
   setBase64Image: React.Dispatch<string>;

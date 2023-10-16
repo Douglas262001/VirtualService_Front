@@ -1,5 +1,5 @@
 import { CircleNotch, X } from "phosphor-react";
-import React from "react";
+import * as React from "react";
 
 type ButtonCancelProps = React.ComponentProps<"button"> & {
   isLoading?: boolean;
