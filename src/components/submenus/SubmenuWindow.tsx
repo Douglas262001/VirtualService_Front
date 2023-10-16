@@ -31,6 +31,7 @@ const SubmenuWindow = ({ isOpen, setIsOpen, subMenu, setSubMenu }: Props) => {
   } = useForm<SubMenuType>({
     resolver: yupResolver(formSchema),
   });
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   useEffect(() => {
     if (!subMenu) return;
@@ -46,10 +47,13 @@ const SubmenuWindow = ({ isOpen, setIsOpen, subMenu, setSubMenu }: Props) => {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getSubMenus"]);
         toast.success("Submenu cadastrado com sucesso!");
+        setIsLoading(false);
         setIsOpen(false);
         limparCampos();
       },
       onError: (error: any) => {
+        setIsLoading(false);
+
         toast.error(error.response.data.reasonPhrase);
       },
     }
@@ -62,14 +66,20 @@ const SubmenuWindow = ({ isOpen, setIsOpen, subMenu, setSubMenu }: Props) => {
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getSubMenus"]);
+        setIsLoading(false);
         toast.success("Submenu alterado com sucesso!");
         setIsOpen(false);
         limparCampos();
+      },
+      onError: (error: any) => {
+        setIsLoading(false);
+        toast.error(error.response.data.reasonPhrase);
       },
     }
   );
 
   const onSubmit: SubmitHandler<SubMenuType> = (data) => {
+    setIsLoading(true);
     if (data.id) {
       mutationUpdate.mutate(data);
       return;
@@ -121,7 +131,7 @@ const SubmenuWindow = ({ isOpen, setIsOpen, subMenu, setSubMenu }: Props) => {
           </div>
           <div className="modal-action">
             <ButtonCancel type="button" onClick={handleCancel} />
-            <ButtonSave type="submit" />
+            <ButtonSave isLoading={isLoading} type="submit" />
           </div>
         </div>
       </form>
