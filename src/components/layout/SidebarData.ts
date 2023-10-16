@@ -33,22 +33,10 @@ const SidebarData: SidebarDataType[] = [
     path: "/teachers",
   },
   {
-    id: 3,
-    description: "Reservas",
-    icon: ClipboardText,
-    path: "/teachers",
-  },
-  {
     id: 4,
     description: "Caixa",
     icon: ShoppingCart,
     path: "/caixa",
-  },
-  {
-    id: 5,
-    description: "Central",
-    icon: Kanban,
-    path: "/teachers",
   },
   {
     id: 6,
