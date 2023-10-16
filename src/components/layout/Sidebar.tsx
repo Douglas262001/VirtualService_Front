@@ -3,11 +3,11 @@ import SidebarData from "./SidebarData";
 import { ArrowLeft, ArrowRight, SignOut } from "phosphor-react";
 import { useState } from "react";
 import classNames from "classnames";
-import Logo from "../base/Logo";
+
 import useAuth from "@hooks/auth";
 
 const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const { signOut } = useAuth();
   const collapseSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -36,7 +36,7 @@ const Sidebar = () => {
             size={40}
           />
           <span className="h-[20px]">
-            <Logo />
+
           </span>
         </section>
       ) : (
@@ -73,10 +73,10 @@ const Sidebar = () => {
                   to={item.path}
                 >
                   <span className="sm:justify-around">
-                    {<item.icon size={20} />}
+                    {<item.icon size={25} />}
                   </span>
                   <section
-                    className={classNames("ml-5", {
+                    className={classNames("ml-6", {
                       hidden: isCollapsed,
                     })}
                   >
@@ -87,9 +87,9 @@ const Sidebar = () => {
             );
           })}
         </ul>
-        <button onClick={handleLogOut} className="btn mb-6">
+        <button onClick={handleLogOut} className="btn mb-10">
           <span
-            className={classNames("mr-2", {
+            className={classNames("mr-10", {
               hidden: isCollapsed,
             })}
           >

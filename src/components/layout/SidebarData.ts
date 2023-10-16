@@ -9,6 +9,7 @@ import {
     SquaresFour,
     Vignette,
     List,
+    QrCode,
   } from "phosphor-react";
   
   type SidebarDataType = {
@@ -27,27 +28,39 @@ import {
     },
     {
       id: 2,
+      description: "Caixa",
+      icon: ShoppingCart,
+      path: "/caixa",
+    },
+    {
+      id: 3,
       description: "Pedidos",
       icon: Bell,
       path: "/orders",
     },
     {
       id: 4,
-      description: "Caixa",
-      icon: ShoppingCart,
-      path: "/caixa",
-    },
-    {
-      id: 6,
       description: "Menus",
       icon: AppWindow,
       path: "/menus",
     },
     {
+      id: 5,
+      description: "Submenus",
+      icon: List,
+      path: "/submenus",
+    },
+    {
+      id: 6,
+      description: "Categorias",
+      icon: SquaresFour,
+      path: "/categories",
+    },
+    {
       id: 7,
-      description: "Acomodações",
-      icon: Ticket,
-      path: "/accommodations",
+      description: "Produtos",
+      icon: Cube,
+      path: "/products",
     },
     {
       id: 8,
@@ -57,9 +70,9 @@ import {
     },
     {
       id: 9,
-      description: "Produtos",
-      icon: Cube,
-      path: "/products",
+      description: "Acomodações",
+      icon: Ticket,
+      path: "/accommodations",
     },
     {
       id: 10,
@@ -69,16 +82,10 @@ import {
     },
     {
       id: 11,
-      description: "Categorias",
-      icon: SquaresFour,
-      path: "/categories",
-    },
-    {
-      id: 12,
-      description: "Submenus",
-      icon: List,
-      path: "/submenus",
-    },
+      description: "Comandas",
+      icon: QrCode,
+      path: "/tables",
+    }
   ];
   
   export default SidebarData;
