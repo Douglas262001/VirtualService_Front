@@ -39,7 +39,7 @@ function SearchField<T>({
         <div className="relative mt-1">
           <div className="relative w-full cursor-default rounded-lg text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm">
             <Combobox.Input
-              className="w-full border-none py-3 pl-3 pr-10 text-sm bg-[color:var(--w-base-100)] leading-5 text-white focus:ring-0"
+              className="w-full border-none py-3 pl-3 pr-10 text-sm bg-[#303030] leading-5 text-white focus:ring-0"
               displayValue={(item: T) =>
                 item ? (item[displayValue] as string) : ""
               }
@@ -58,7 +58,7 @@ function SearchField<T>({
           >
             <Combobox.Options
               style={{ height: `${optionsHeight}px` }}
-              className={`absolute overflow-auto z-20  mt-1 w-full rounded-md bg-[color:var(--w-base-100)] py-1 text-base shadow-lg ring-1 ring-white ring-opacity-5 focus:outline-none sm:text-sm`}
+              className={`absolute overflow-auto z-20  mt-1 w-full rounded-md bg-[#303030] py-1 text-base shadow-lg ring-1 ring-white ring-opacity-5 focus:outline-none sm:text-sm`}
             >
               {filteredData.length === 0 && query !== "" ? (
                 <div className="relative cursor-default select-none py-2 px-4 text-white">

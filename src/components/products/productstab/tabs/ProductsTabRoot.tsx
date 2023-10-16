@@ -32,9 +32,9 @@ const ProductsTabRoot = ({ children }: React.PropsWithChildren) => {
               className={({ selected }) =>
                 classNames(
                   "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
-                  "ring-white ring-opacity-60 ring-offset-2 ring-offset-[color:var(--w-base-color)] focus:outline-none focus:ring-2",
+                  "ring-white ring-opacity-60 ring-offset-2 ring-offset-[#292929]  focus:outline-none focus:ring-2",
                   selected
-                    ? "bg-white text-[color:var(--w-bg-color)] shadow"
+                    ? "bg-white text-[#292929]  shadow"
                     : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
                 )
               }

@@ -316,6 +316,7 @@ const StepWindow = ({
                   data={produtosServicos}
                   displayValue="nome"
                   valueField="id"
+                  optionsHeight="120"
                 />
               </>
             ) : (

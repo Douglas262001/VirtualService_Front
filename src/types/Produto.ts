@@ -10,7 +10,18 @@ export type ProdutoType = {
   valor: number;
   descricao?: string;
   base64Image?: string;
-  codigosEtapas: number[];
+  etapas: ProdutoEtapaType[];
+};
+
+export type ProdutoEtapaType = {
+  id?: number;
+  codigoEtapa: number;
+};
+
+export type ProdutoEtapaSearchType = {
+  id?: number;
+  codigoEtapa: number;
+  nome: string;
 };
 
 export type EtapaProdutoType = {

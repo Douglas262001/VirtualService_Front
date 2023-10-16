@@ -7,13 +7,15 @@ export type ImageProductPanelType = {
   base64Image: string;
   isTipoProdutoProduto: boolean;
   setIsImgUploaded: React.Dispatch<boolean>;
+  codigoProduto?: number;
 };
 
 const ImageTab = ({
   setBase64Image,
   base64Image,
   isTipoProdutoProduto,
-  setIsImgUploaded
+  setIsImgUploaded,
+  codigoProduto,
 }: ImageProductPanelType) => {
   const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -55,7 +57,7 @@ const ImageTab = ({
             type="button"
             className="btn btn-info"
             onClick={handleClickAddImage}
-            disabled={!isTipoProdutoProduto}
+            disabled={!isTipoProdutoProduto || !!codigoProduto}
           >
             Upload
             <UploadSimple size={24} />
