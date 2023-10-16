@@ -1,7 +1,7 @@
 import SearchField from "@components/base/SearchField";
 import { ProductFormType } from "@components/products/ProductsWindow";
 import { EnumType, getArray } from "@utils/enums";
-import React from "react";
+import * as React from "react";
 import { EnumMedidaTempoPreparo, EnumTipoProdutoServico } from "types/Produto";
 
 export type GeneralProductPanelType = {

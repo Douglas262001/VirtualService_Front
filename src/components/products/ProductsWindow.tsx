@@ -1,7 +1,7 @@
 import ButtonCancel from "@components/base/ButtonCancel";
 import ButtonSave from "@components/base/ButtonSave";
 import GenericWindow from "@components/base/GenericWindow";
-import React from "react";
+import * as React from "react";
 import { ProductsTab } from "./productstab";
 import { Tab } from "@headlessui/react";
 import {

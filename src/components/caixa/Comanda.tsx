@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from "react";
 
 interface CardProps {
   title: string;
@@ -6,7 +6,7 @@ interface CardProps {
   onClick: (id: number) => void;
 }
 
-const Comanda: React.FC<CardProps> = ({ title, id, onClick }) => {
+const Comanda: React.FC<CardProps> = ({ title, id, onClick }: CardProps) => {
   return (
     <div className="cardcomanda" onClick={() => onClick(id)}>
       <h3>{title}</h3>

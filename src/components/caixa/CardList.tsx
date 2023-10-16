@@ -1,5 +1,5 @@
-import React from 'react';
-import Card from './Card';
+import * as React from "react";
+import Card from "./Card";
 
 interface CardData {
   id: number;
@@ -15,7 +15,12 @@ const CardList: React.FC<CardListProps> = ({ data, onCardClick }) => {
   return (
     <div className="cardcomanda-list">
       {data.map((item) => (
-        <Card key={item.id} title={item.title} id={item.id} onClick={onCardClick} />
+        <Card
+          key={item.id}
+          title={item.title}
+          id={item.id}
+          onClick={onCardClick}
+        />
       ))}
     </div>
   );

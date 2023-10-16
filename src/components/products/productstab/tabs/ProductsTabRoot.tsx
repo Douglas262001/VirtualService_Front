@@ -1,6 +1,6 @@
-import React from "react";
+import * as React from "react";
 import { Tab } from "@headlessui/react";
-import classNames from "classnames";
+import * as classNames from "classnames";
 
 type TabsType = {
   id: number;
