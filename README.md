@@ -24,5 +24,5 @@ src
 │         └── index.tsx
 ├── routes
 ├── utils
-
+|
 ```

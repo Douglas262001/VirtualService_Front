@@ -1,0 +1,17 @@
+.caixa-central {
+    width: 100%;
+    display: inline-block;
+}
+
+.caixa-comandas {
+    background-color: #525252;
+    width: 50%;
+    height: 97.5vh;
+    border-radius: 10px;
+    padding: 20px 0px;
+}
+
+.caixa-pedido {
+    background-color: yellow;
+    width: 50%;
+}

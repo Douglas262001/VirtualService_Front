@@ -14,13 +14,11 @@ const themesStructure: { [key: string]: any } = {
 };
 
 const TopBar = () => {
-  const [theme, setTheme] = useState(localStorage.getItem("theme") ?? "dark");
+  const [theme, setTheme] = useState(localStorage.setItem("theme", "dark"));
 
   useEffect(() => {
     themeChange(false);
   }, []);
-
-  const nextTheme = theme === "light" ? "dark" : "dark";
 
   return (
     <div className="m-2 flex justify-end">

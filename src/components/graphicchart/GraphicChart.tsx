@@ -1,6 +1,4 @@
-import { Clock } from "phosphor-react";
-import "./GraphicChart.modules.css";
-import { PureComponent } from "react";
+import React, { PureComponent } from "react";
 import {
   BarChart,
   Bar,
@@ -9,6 +7,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { Clock } from "phosphor-react";
+import "./GraphicChart.modules.css";
 
 const data = [
   {
@@ -55,7 +55,7 @@ type CustomTooltipProps = {
   label?: string;
 };
 
-const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
+const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip graphicchart">
@@ -76,7 +76,13 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   return null;
 };
 
-const CustomYAxisTick = (props) => {
+type CustomYAxisTickProps = {
+  x?: number;
+  y?: number;
+  payload?: any;
+};
+
+const CustomYAxisTick: React.FC<CustomYAxisTickProps> = (props) => {
   const { x, y, payload } = props;
   const formattedValue = `R$ ${payload.value.toFixed(2)}`;
 

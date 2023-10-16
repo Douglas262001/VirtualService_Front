@@ -1,0 +1,29 @@
+.cardcomanda-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px; 
+    justify-content: center; 
+    padding: 0 30px;
+  }
+  
+  .cardcomanda {
+    background-color: #fec80a;
+    border: 1px solid #303030;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    max-width: 90%;
+    height: 70px; 
+    max-width: 100%; 
+    cursor: pointer;
+  }
+  
+  .cardcomanda h3 {
+    font-size: 22px;
+    margin: 0;
+    color: #303030;
+    font-weight: bold;
+    padding: 20px 0px;
+    text-align: center; 
+  }
