@@ -7,6 +7,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "sonner";
+import ButtonCancel from "@components/base/ButtonCancel";
+import ButtonSave from "@components/base/ButtonSave";
 
 type AccommodationFormType = {
   id?: number;
@@ -104,21 +106,17 @@ const AccommodationWindow = ({
           </div>
           <p className="text-red-500">{errors.descricao?.message}</p>
           <div className="modal-action">
-            <button
+            <ButtonCancel
               type="button"
-              className="btn btn-error"
               onClick={() => {
                 reset({
                   descricao: "",
                 });
                 setIsOpen(false);
               }}
-            >
-              Cancelar
-            </button>
-            <button type="submit" className="btn btn-success">
-              Salvar
-            </button>
+            />
+
+            <ButtonSave type="submit" />
           </div>
         </div>
       </form>
