@@ -1,8 +1,6 @@
 import {
   ChartLineUp,
   Bell,
-  ClipboardText,
-  Kanban,
   ShoppingCart,
   AppWindow,
   Ticket,
@@ -10,6 +8,7 @@ import {
   Cube,
   SquaresFour,
   Vignette,
+  List,
 } from "phosphor-react";
 
 type SidebarDataType = {
@@ -33,22 +32,10 @@ const SidebarData: SidebarDataType[] = [
     path: "/orders",
   },
   {
-    id: 3,
-    description: "Reservas",
-    icon: ClipboardText,
-    path: "/teachers",
-  },
-  {
     id: 4,
     description: "Vendas",
     icon: ShoppingCart,
     path: "/subjects",
-  },
-  {
-    id: 5,
-    description: "Central",
-    icon: Kanban,
-    path: "/teachers",
   },
   {
     id: 6,
@@ -85,6 +72,12 @@ const SidebarData: SidebarDataType[] = [
     description: "Categorias",
     icon: SquaresFour,
     path: "/categories",
+  },
+  {
+    id: 12,
+    description: "Submenus",
+    icon: List,
+    path: "/submenus",
   },
 ];
 

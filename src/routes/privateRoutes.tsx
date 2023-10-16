@@ -7,6 +7,7 @@ import Orders from "@pages/orders";
 import Products from "@pages/products";
 import Steps from "@pages/steps";
 import Subject from "@pages/subject";
+import Submenus from "@pages/submenus";
 import Tables from "@pages/table";
 import Teacher from "@pages/teacher";
 
@@ -24,6 +25,7 @@ export const PrivateRoutes = () => {
       { path: "/products", element: <Products /> },
       { path: "/tables", element: <Tables /> },
       { path: "/orders", element: <Orders /> },
+      { path: "/submenus", element: <Submenus /> },
     ],
   };
 };
