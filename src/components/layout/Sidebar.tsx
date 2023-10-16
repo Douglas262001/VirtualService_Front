@@ -7,7 +7,7 @@ import Logo from "../base/Logo";
 import useAuth from "@hooks/auth";
 
 const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const { signOut } = useAuth();
   const collapseSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -22,7 +22,7 @@ const Sidebar = () => {
   return (
     <aside
       className={classNames(
-        "min-h-[calc(100vh-5.7rem)] overflow-y-scroll text-[#303030] min-w-min pb-6 text-center transition-[width] duration-300 ease-in bg-gradient-to-b from-[#fec80a] to-[#d4a90b] w-[20%] m-2 rounded-md p-5",
+        "min-h-[calc(100vh-5.7rem)] text-[#303030] min-w-min pb-6 text-center transition-[width] duration-300 ease-in bg-gradient-to-b from-[#fec80a] to-[#d4a90b] w-[20%] m-2 rounded-md p-5",
         {
           "w-[5%]": isCollapsed,
         }
@@ -73,7 +73,7 @@ const Sidebar = () => {
                   to={item.path}
                 >
                   <span className="sm:justify-around">
-                    {<item.icon size={32} />}
+                    {<item.icon size={20} />}
                   </span>
                   <section
                     className={classNames("ml-5", {

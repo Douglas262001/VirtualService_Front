@@ -17,11 +17,12 @@
 }
 
 #logo-img {
-  height: 100%;
-  width: 40%;
-  aspect-ratio: 3/2;
-  object-fit: contain;
-  mix-blend-mode: color-burn;
+  max-width: 60%;
+  height: auto;
+  border: 2px solid black;
+  border-radius: 50%;
+  margin: 10px;
+  /* mix-blend-mode: color-burn; */
 }
 
 /* width */
