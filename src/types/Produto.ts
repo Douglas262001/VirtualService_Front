@@ -14,6 +14,11 @@ export type ProdutoType = {
   etapas: ProdutoEtapaType[];
 };
 
+export type ProdutoSearchType = {
+  id: number;
+  nome: string;
+};
+
 export type ProdutoEtapaType = {
   id?: number;
   codigoEtapa: number;
@@ -26,6 +31,7 @@ export type ProdutoEtapaSearchType = {
 };
 
 export type EtapaProdutoType = {
+  id: number;
   codigoEtapa: number;
   codigoProdutoServico: number;
   etapa: Etapa;

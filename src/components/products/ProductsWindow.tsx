@@ -86,6 +86,9 @@ const ProductsWindow = ({
     if (!isOpen) return;
 
     buscarEtapas();
+
+    if (codigoProduto) return;
+
     buscarImpressoras();
   }, [isOpen]);
 
@@ -151,6 +154,24 @@ const ProductsWindow = ({
     }
   };
 
+  const setImpressoraPeloCodigo = async (codigoImpressora?: number) => {
+    try {
+      const response = await api.get(`Config/ListarImpressoras`);
+
+      setImpressoras(response.data.body);
+
+      if (codigoImpressora) {
+        setImpressora(
+          response.data.body.find(
+            (i: ProductFormType) => i.id === codigoImpressora
+          )
+        );
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.reasonPhrase);
+    }
+  };
+
   const buscarProdutoPorId = async (codigoProduto: number) => {
     try {
       const response = await api.get(`ProdutoServico/Buscar/${codigoProduto}`);
@@ -175,9 +196,7 @@ const ProductsWindow = ({
         )!
       );
 
-      setImpressora(
-        impressoras.find((i) => i.id === produto.codigoImpressora)!
-      );
+      await setImpressoraPeloCodigo(produto.codigoImpressora);
 
       if (produto.urlImagem) {
         setBase64Image(produto.urlImagem);
@@ -186,7 +205,7 @@ const ProductsWindow = ({
       if (produto.etapas.length > 0) {
         setEtapasSelecionadas(
           produto.etapas.map((e: EtapaProdutoType) => ({
-            id: e.etapa.id,
+            id: e.id,
             codigoEtapa: e.codigoEtapa,
             nome: e.etapa.nome,
           }))

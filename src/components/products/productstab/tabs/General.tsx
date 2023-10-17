@@ -112,13 +112,13 @@ const General = ({
         </div>
       </div>
       <span className="label-text">Impressora</span>
-      <SearchField
+      {<SearchField
         value={impressora}
         setValue={setImpressora}
         data={impressoras}
         valueField="id"
         displayValue="descricao"
-      />
+      />}
       <div className="w-full flex flex-col">
         <span className="label-text">Descrição</span>
         <textarea

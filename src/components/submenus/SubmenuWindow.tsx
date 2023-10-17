@@ -5,10 +5,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import api from "@utils/api";
 import { queryClient } from "@utils/queryClient";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { SubMenuType } from "types/SubMenuType";
+import { SubMenuType } from "types/SubMenu";
 import * as yup from "yup";
 
 type Props = {
@@ -31,7 +31,7 @@ const SubmenuWindow = ({ isOpen, setIsOpen, subMenu, setSubMenu }: Props) => {
   } = useForm<SubMenuType>({
     resolver: yupResolver(formSchema),
   });
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!subMenu) return;

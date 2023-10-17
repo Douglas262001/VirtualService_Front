@@ -34,6 +34,7 @@ const Steps = ({
       ...etapasSelecionadas,
       { codigoEtapa: etapa.id, nome: etapa.nome },
     ]);
+    setEtapa({ id: 0, nome: "" });
   };
   return (
     <div className="w-full flex flex-col">
