@@ -1,13 +1,12 @@
-import { useState, ChangeEvent } from "react";
+import * as React from "react";
+import TagTable from "@components/tags/TagTable";
+import TagWindow from "@components/tags/TagWindow";
 
-import SubmenuTable from "@components/submenus/SubmenuTable";
-import SubmenuWindow from "@components/submenus/SubmenuWindow";
+function Tags() {
+  const [searchText, setSearchText] = React.useState("");
+  const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
 
-function Submenus() {
-  const [searchText, setSearchText] = useState("");
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-
-  const searchInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const searchInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
@@ -15,8 +14,8 @@ function Submenus() {
     <div className="h-[calc(100vh-4.5rem)] w-full p-2 flex flex-col">
       <div className="w-full flex justify-between mb-2">
         <input
-          type="text"
-          placeholder="Pesquisar Submenu"
+          type="number"
+          placeholder="Pesquisar Comanda"
           onInput={searchInputHandler}
           className="input input-bordered w-full max-w-xs"
         />
@@ -28,11 +27,11 @@ function Submenus() {
           Adicionar
         </label>
         <input type="checkbox" id="my-modal-table" className="modal-toggle" />
-        <SubmenuWindow setIsOpen={setIsAddModalOpen} isOpen={isAddModalOpen} />
+        <TagWindow setIsOpen={setIsAddModalOpen} isOpen={isAddModalOpen} />
       </div>
-      <SubmenuTable searchText={searchText} />
+      <TagTable searchText={searchText} />
     </div>
   );
 }
 
-export default Submenus;
+export default Tags;

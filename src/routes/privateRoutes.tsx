@@ -12,6 +12,7 @@ import Tables from "@pages/table";
 import Teacher from "@pages/teacher";
 import Caixa from "@components/caixa/Caixa"
 import Categories from "@pages/categories";
+import Tags from "@pages/tags/Tags"
 
 export const PrivateRoutes = () => {
   return {
@@ -30,6 +31,7 @@ export const PrivateRoutes = () => {
       { path: "/orders", element: <Orders /> },
       { path: "/submenus", element: <Submenus /> },
       { path: "/categories", element: <Categories /> },
+      { path: "/tags", element: <Tags /> },
     ],
   };
 };
