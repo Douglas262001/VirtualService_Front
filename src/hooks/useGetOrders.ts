@@ -14,6 +14,7 @@ const getOrders = () => {
       data.body.map((pedido: PedidoType) => ({
         id: pedido.id,
         numero: pedido.numeroPedido,
+        codigoStatus: pedido.status,
         valor: pedido.valorTotal,
         "data/hora": format(
           new Date(pedido.dataHoraPedido),

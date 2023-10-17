@@ -7,7 +7,12 @@ import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@utils/queryClient";
 import { toast } from "sonner";
 import api from "@utils/api";
-import { PedidoItemsSearchType, PedidoSearchType } from "types/Pedido";
+import {
+  EnumStatusPedido,
+  PedidoItemsSearchType,
+  PedidoSearchType,
+  StatusPedido,
+} from "types/Pedido";
 import { useState } from "react";
 import OrderItemsWindow from "./OrderItemsWindow";
 
@@ -17,6 +22,23 @@ type Props = {
 
 type ImprimirDto = {
   codigoPedido: number;
+};
+
+const TagStatus = ({ status }: { status: StatusPedido }) => {
+  const colors = {
+    [StatusPedido.FilaDePreparo]: "bg-slate-400",
+    [StatusPedido.EmPreparo]: "bg-blue-400",
+    [StatusPedido.FilaDeEntrega]: "bg-yellow-200",
+    [StatusPedido.Finalizado]: "bg-green-500",
+  };
+
+  return (
+    <span
+      className={`px-2 py-1 rounded-md text-black text-sm font-semibold ${colors[status]}`}
+    >
+      {EnumStatusPedido.get(status)}
+    </span>
+  );
 };
 
 const OrderTable = ({ searchText }: Props) => {
@@ -53,6 +75,7 @@ const OrderTable = ({ searchText }: Props) => {
           size={24}
         />
       ),
+      Status: <TagStatus status={order.codigoStatus} />,
       ...order,
     })
   );
@@ -61,7 +84,7 @@ const OrderTable = ({ searchText }: Props) => {
     <>
       <GenericTable
         values={tableValuesWithIcons}
-        columns={["Imprimir", "id", "numero", "valor", "data/hora"]}
+        columns={["Imprimir", "Status", "id", "numero", "valor", "data/hora"]}
         onClickRow={(p: PedidoSearchType) => {
           setSelectedOrder(p);
           setIsOpen(true);

@@ -1,5 +1,6 @@
 export type PedidoType = {
   id?: number;
+  status: StatusPedido;
   valorTotal: number;
   numeroPedido: number;
   dataHoraPedido: Date;
@@ -9,6 +10,7 @@ export type PedidoType = {
 export type PedidoSearchType = {
   id: number;
   numero: number;
+  codigoStatus: StatusPedido;
   valor: number;
   "data/Hora": string;
   items: PedidoItemsSearchType[];
@@ -31,8 +33,15 @@ export type PedidoItemsSearchType = {
 };
 
 export enum StatusPedido {
-  Aberto = 0,
-  Fechado = 1,
-  EmAndamento = 2,
-  Cancelado = 3,
+  FilaDePreparo = 0,
+  EmPreparo = 1,
+  FilaDeEntrega = 2,
+  Finalizado = 3,
 }
+
+export const EnumStatusPedido = new Map<number, string>([
+  [StatusPedido.FilaDePreparo, "Fila de Preparo"],
+  [StatusPedido.EmPreparo, "Em Preparo"],
+  [StatusPedido.FilaDeEntrega, "Fila de Entrega"],
+  [StatusPedido.Finalizado, "Finalizado"],
+]);
