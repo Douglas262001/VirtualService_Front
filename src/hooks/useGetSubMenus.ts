@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "@utils/api";
-import { SubMenuType } from "types/SubMenuType";
+import { SubMenuType } from "types/SubMenu";
 
 const useGetSubMenus = () => {
   return useQuery(["getSubMenus"], getSubMenus());

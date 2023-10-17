@@ -6,39 +6,41 @@ import { useMutation } from "@tanstack/react-query";
 import api from "@utils/api";
 import { queryClient } from "@utils/queryClient";
 import { toast } from "sonner";
-import useGetSubMenus from "@hooks/useGetSubMenus";
-import { SubMenuType } from "types/SubMenu";
+import useGetCategories from "@hooks/useGetCategories";
 import { useState } from "react";
-import SubmenuWindow from "./SubmenuWindow";
+import { CategoriaSearchType } from "types/Categoria";
+import CategoryWindow from "./CategoryWindow";
+// import { useState } from "react";
+// import SubmenuWindow from "./SubmenuWindow";
 
 type Props = {
   searchText?: string;
 };
 
-const SubmenuTable = ({ searchText }: Props) => {
-  const { data: submenus, error, isLoading } = useGetSubMenus();
+const CategoryTable = ({ searchText }: Props) => {
+  const { data: categories, error, isLoading } = useGetCategories();
 
-  const filteredSubmenus = useFilterData(submenus, searchText);
+  const filteredCategories = useFilterData(categories, searchText);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [submenu, setSubmenu] = useState<SubMenuType | null>(null);
+  const [codigoCategoria, setCodigoCategoria] = useState<number>();
 
   const mutationDelete = useMutation(
-    (s?: number) => api.delete(`SubMenu/Deletar/${s}`),
+    (s?: number) => api.delete(`SubMenu_Categoria/Deletar/${s}`),
     {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(["getSubMenus"]);
-        toast.success("Submenu exluído com sucesso!");
+        await queryClient.invalidateQueries(["getCategories"]);
+        toast.success("Categoria exluída com sucesso!");
       },
       onError: () => {
-        toast.error("Erro ao excluir submenu");
+        toast.error("Erro ao excluir categoria");
       },
     }
   );
 
-  const handleDeleteSubmenu = (id?: number) => async () => {
+  const handleDeleteCategory = (id?: number) => async () => {
     if (!id) return;
 
-    const confirmDelete = confirm("Deseja realmente excluir este submenu?");
+    const confirmDelete = confirm("Deseja realmente excluir esta categoria?");
 
     if (!confirmDelete) return;
 
@@ -47,24 +49,24 @@ const SubmenuTable = ({ searchText }: Props) => {
 
   if (isLoading) return <GenericLoading size={60} />;
   if (error) return <div>ERRO</div>;
-  if (!submenus?.length) return <div>Não existem submenus cadastrados</div>;
+  if (!categories?.length) return <div>Não existem categorias cadastradas</div>;
 
-  const tableValuesWithIcons = (filteredSubmenus ?? submenus).map(
-    (submenu: SubMenuType) => ({
+  const tableValuesWithIcons = (filteredCategories ?? categories).map(
+    (category: CategoriaSearchType) => ({
       Editar: (
         <PencilSimple
           onClick={() => {
-            setSubmenu(submenu);
+            setCodigoCategoria(category.id);
             setIsOpen(true);
           }}
           className="cursor-pointer"
           size={24}
         />
       ),
-      ...submenu,
+      ...category,
       Excluir: (
         <TrashSimple
-          onClick={handleDeleteSubmenu(submenu.id)}
+          onClick={handleDeleteCategory(category.id)}
           size={24}
           className="cursor-pointer text-red-500"
         />
@@ -78,9 +80,9 @@ const SubmenuTable = ({ searchText }: Props) => {
         values={tableValuesWithIcons}
         columns={Object.keys(tableValuesWithIcons[0] || {})}
       />
-      <SubmenuWindow
-        subMenu={submenu}
-        setSubMenu={setSubmenu}
+      <CategoryWindow
+        codigoCategoria={codigoCategoria}
+        setCodigoCategoria={setCodigoCategoria}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
@@ -88,4 +90,4 @@ const SubmenuTable = ({ searchText }: Props) => {
   );
 };
 
-export default SubmenuTable;
+export default CategoryTable;

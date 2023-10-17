@@ -41,23 +41,10 @@ const TableWindow = ({
   setCodigoMesa,
 }: ITableProps) => {
   useEffect(() => {
+    if (!isOpen || codigoMesa) return;
+
     listarAreas();
-  }, []);
-
-  const [isLoadingAreas, setIsLoadingAreas] = useState<boolean>(true);
-
-  const listarAreas = async () => {
-    setIsLoadingAreas(true);
-    try {
-      const response = await api.get("Area/Listar");
-
-      setAreas(response.data.body);
-    } catch (error: any) {
-      console.log(error.response.data.reasonPhrase);
-    } finally {
-      setIsLoadingAreas(false);
-    }
-  };
+  }, [isOpen]);
 
   useEffect(() => {
     if (!codigoMesa) return;
@@ -72,22 +59,40 @@ const TableWindow = ({
 
       setValue("numero", mesa.numero);
       setValue("capacidade", mesa.capacidade);
-      setAreaPeloCodigo(mesa.codigoArea);
+      await setAreaPeloCodigo(mesa.codigoArea);
     } catch (error: any) {
       console.log(error.response.data.reasonPhrase);
     }
   };
 
-  const setAreaPeloCodigo = (codigoArea: number) => {
-    if (isLoadingAreas) {
-      setAreaPeloCodigo(codigoArea);
-      return;
+  const listarAreas = async () => {
+    try {
+      const response = await api.get("Area/Listar");
+
+      setAreas(response.data.body);
+    } catch (error: any) {
+      console.log(error.response.data.reasonPhrase);
     }
-    const area = areas.find((area) => area.id === codigoArea);
+  };
 
-    if (!area) return;
+  const setAreaPeloCodigo = async (codigoArea?: number) => {
+    try {
+      const response = await api.get("Area/Listar");
 
-    setArea(area);
+      setAreas(response.data.body);
+
+      if (codigoArea) {
+        const area = response.data.body.find(
+          (a: MesaFormType) => a.id === codigoArea
+        );
+
+        if (!area) return;
+
+        setArea(area);
+      }
+    } catch (error: any) {
+      console.log(error.response.data.reasonPhrase);
+    }
   };
 
   const {
@@ -145,7 +150,7 @@ const TableWindow = ({
 
   const onSubmit: SubmitHandler<MesaFormType> = async (data) => {
     if (!area.id) return toast.error("Você precisa selecionar uma área");
-    
+
     const mesa: MesaType = {
       id: codigoMesa,
       numero: data.numero,

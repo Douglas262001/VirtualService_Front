@@ -1,9 +1,8 @@
 import { useState, ChangeEvent } from "react";
+import CategoryTable from "@components/categories/CategoryTable";
+import CategoryWindow from "@components/categories/CategoryWindow";
 
-import SubmenuTable from "@components/submenus/SubmenuTable";
-import SubmenuWindow from "@components/submenus/SubmenuWindow";
-
-function Submenus() {
+function Categories() {
   const [searchText, setSearchText] = useState("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -16,7 +15,7 @@ function Submenus() {
       <div className="w-full flex justify-between mb-2">
         <input
           type="text"
-          placeholder="Pesquisar Submenu"
+          placeholder="Pesquisar Categoria"
           onInput={searchInputHandler}
           className="input input-bordered w-full max-w-xs"
         />
@@ -28,11 +27,11 @@ function Submenus() {
           Adicionar
         </label>
         <input type="checkbox" id="my-modal-table" className="modal-toggle" />
-        <SubmenuWindow setIsOpen={setIsAddModalOpen} isOpen={isAddModalOpen} />
+        <CategoryWindow setIsOpen={setIsAddModalOpen} isOpen={isAddModalOpen} />
       </div>
-      <SubmenuTable searchText={searchText} />
+      <CategoryTable searchText={searchText} />
     </div>
   );
 }
 
-export default Submenus;
+export default Categories;

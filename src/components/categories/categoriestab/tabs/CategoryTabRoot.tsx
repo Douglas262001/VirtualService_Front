@@ -6,7 +6,7 @@ type TabsType = {
   title: string;
 };
 
-const ProductsTabRoot = ({ children }: React.PropsWithChildren) => {
+const CategoryTabRoot = ({ children }: React.PropsWithChildren) => {
   const tabs: TabsType[] = [
     {
       id: 1,
@@ -14,7 +14,7 @@ const ProductsTabRoot = ({ children }: React.PropsWithChildren) => {
     },
     {
       id: 2,
-      title: "Etapas",
+      title: "Itens",
     },
     {
       id: 3,
@@ -25,4 +25,4 @@ const ProductsTabRoot = ({ children }: React.PropsWithChildren) => {
   return <TabRoot tabs={tabs}>{children}</TabRoot>;
 };
 
-export default ProductsTabRoot;
+export default CategoryTabRoot;
