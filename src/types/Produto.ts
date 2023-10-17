@@ -10,6 +10,7 @@ export type ProdutoType = {
   valor: number;
   descricao?: string;
   base64Image?: string;
+  codigoImpressora: number;
   etapas: ProdutoEtapaType[];
 };
 

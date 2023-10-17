@@ -14,8 +14,8 @@ const IndexCards: React.FC = () => {
     { id: 10, title: 'comanda 10' },
     { id: 11, title: 'comanda 11' },
     { id: 12, title: 'comanda 12' },
-    { id: 11, title: 'comanda 11' },
-    { id: 12, title: 'comanda 12' },
+    { id: 13, title: 'comanda 13' },
+    { id: 14, title: 'comanda 14' },
   ];
 
   const handleCardClick = (id: number) => {

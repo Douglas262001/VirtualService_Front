@@ -2,6 +2,7 @@ import SearchField from "@components/base/SearchField";
 import { ProductFormType } from "@components/products/ProductsWindow";
 import { EnumType, getArray } from "@utils/enums";
 import * as React from "react";
+import { ImpressoraType } from "types/Impressora";
 import { EnumMedidaTempoPreparo, EnumTipoProdutoServico } from "types/Produto";
 
 export type GeneralProductPanelType = {
@@ -13,6 +14,9 @@ export type GeneralProductPanelType = {
   produto: ProductFormType;
   handleChangeProduto: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeDescricao: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  impressora: ImpressoraType;
+  setImpressora: React.Dispatch<ImpressoraType>;
+  impressoras: ImpressoraType[];
 };
 
 const General = ({
@@ -24,6 +28,9 @@ const General = ({
   handleChangeProduto,
   handleChangeDescricao,
   produto: produto,
+  impressora,
+  setImpressora,
+  impressoras,
 }: GeneralProductPanelType) => {
   return (
     <div className="w-full flex flex-col">
@@ -54,9 +61,10 @@ const General = ({
         <div className="w-full flex flex-col">
           <span className="label-text">Valor</span>
           <input
-            type="text"
+            type="number"
             placeholder="Valor do item"
             name="valor"
+            step={.01}
             className="input input-bordered w-full mb-4"
             min={0}
             value={produto.valor}
@@ -103,7 +111,14 @@ const General = ({
           />
         </div>
       </div>
-
+      <span className="label-text">Impressora</span>
+      <SearchField
+        value={impressora}
+        setValue={setImpressora}
+        data={impressoras}
+        valueField="id"
+        displayValue="descricao"
+      />
       <div className="w-full flex flex-col">
         <span className="label-text">Descrição</span>
         <textarea

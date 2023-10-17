@@ -41,8 +41,10 @@ const TableWindow = ({
   setCodigoMesa,
 }: ITableProps) => {
   useEffect(() => {
+    if (!isOpen) return;
+
     listarAreas();
-  }, []);
+  }, [isOpen]);
 
   const [isLoadingAreas, setIsLoadingAreas] = useState<boolean>(true);
 
@@ -145,7 +147,7 @@ const TableWindow = ({
 
   const onSubmit: SubmitHandler<MesaFormType> = async (data) => {
     if (!area.id) return toast.error("Você precisa selecionar uma área");
-    
+
     const mesa: MesaType = {
       id: codigoMesa,
       numero: data.numero,

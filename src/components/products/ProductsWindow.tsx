@@ -18,7 +18,7 @@ import { queryClient } from "@utils/queryClient";
 import { toast } from "sonner";
 import { EnumType, getArray } from "@utils/enums";
 import { Etapa, EtapaSearch } from "types/Etapa";
-// import { toDataUrl } from "@utils/convert";
+import { ImpressoraType } from "types/Impressora";
 
 interface IProductsProps {
   isOpen: boolean;
@@ -69,14 +69,25 @@ const ProductsWindow = ({
     tempoPreparo: 0,
   });
 
+  const [impressoras, setImpressoras] = React.useState<ImpressoraType[]>([]);
+
+  const [impressora, setImpressora] = React.useState<ImpressoraType>({
+    id: 0,
+    identificacao: "",
+    descricao: "",
+  });
+
   const [isTipoProdutoProduto, setIsTipoProdutoProduto] =
     React.useState<boolean>(false);
 
   const [isImgUploaded, setIsImgUploaded] = React.useState<boolean>(false);
 
   React.useEffect(() => {
+    if (!isOpen) return;
+
     buscarEtapas();
-  }, []);
+    buscarImpressoras();
+  }, [isOpen]);
 
   React.useEffect(() => {
     if (!codigoProduto) return;
@@ -130,6 +141,16 @@ const ProductsWindow = ({
     }
   };
 
+  const buscarImpressoras = async () => {
+    try {
+      const response = await api.get(`Config/ListarImpressoras`);
+
+      setImpressoras(response.data.body);
+    } catch (error: any) {
+      toast.error(error.response.data.reasonPhrase);
+    }
+  };
+
   const buscarProdutoPorId = async (codigoProduto: number) => {
     try {
       const response = await api.get(`ProdutoServico/Buscar/${codigoProduto}`);
@@ -152,6 +173,10 @@ const ProductsWindow = ({
         getArray(EnumMedidaTempoPreparo).find(
           (t) => t.identificador === produto.medidaTempoPreparo
         )!
+      );
+
+      setImpressora(
+        impressoras.find((i) => i.id === produto.codigoImpressora)!
       );
 
       if (produto.urlImagem) {
@@ -198,6 +223,9 @@ const ProductsWindow = ({
         toast.success("Produto alterado com sucesso!");
         limparCampos();
       },
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
+      },
     }
   );
 
@@ -218,6 +246,7 @@ const ProductsWindow = ({
       nome: produtoForm.nome,
       descricao: produtoForm.descricao,
       base64Image: isImgUploaded ? base64Image : "",
+      codigoImpressora: impressora.id,
       etapas: etapasSelecionadas.map((e: ProdutoEtapaSearchType) => ({
         id: e.id,
         codigoEtapa: e.codigoEtapa,
@@ -269,6 +298,9 @@ const ProductsWindow = ({
                   handleChangeProduto={handleChangeProduto}
                   handleChangeDescricao={handleChangeDescricao}
                   produto={produtoForm}
+                  impressora={impressora}
+                  setImpressora={setImpressora}
+                  impressoras={impressoras}
                 />
               </Tab.Panel>
               <Tab.Panel>
