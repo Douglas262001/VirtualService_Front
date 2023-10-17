@@ -34,7 +34,7 @@ const TagTable = ({ searchText }: Props) => {
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getTags"]);
-        toast.success("Comanda exluída com sucesso!");
+        toast.success("Comanda excluída com sucesso!");
       },
       onError: () => {
         toast.error("Erro ao excluir comanda");

@@ -26,7 +26,7 @@ const TableTable = ({ searchText }: Props) => {
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getTables"]);
-        toast.success("Mesa exluída com sucesso!");
+        toast.success("Mesa excluída com sucesso!");
       },
       onError: async (error: any) => {
         toast.error(error.response.data.reasonPhrase);

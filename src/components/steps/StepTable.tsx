@@ -34,7 +34,7 @@ const StepsTable = ({ searchText }: Props) => {
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getSteps"]);
-        toast.success("Etapa exluída com sucesso!");
+        toast.success("Etapa excluída com sucesso!");
       },
       onError: () => {
         toast.error("Erro ao excluir etapa");

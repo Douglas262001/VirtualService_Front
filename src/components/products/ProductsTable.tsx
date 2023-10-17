@@ -36,7 +36,7 @@ const ProductsTable = ({ searchText }: Props) => {
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getProducts"]);
-        toast.success("Produto exluído com sucesso!");
+        toast.success("Produto excluído com sucesso!");
       },
       onError: () => {
         toast.error("Erro ao excluir produto");
