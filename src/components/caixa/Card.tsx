@@ -7,7 +7,7 @@ interface CardProps {
   onClick: (id: number) => void;
 }
 
-const Card: React.FC<CardProps> = ({ title, id, onClick }) => {
+const Card: React.FC<CardProps> = ({ id, onClick }) => {
   return (
     <div className="cardcomanda" onClick={() => onClick(id)}>
       <h3>{id}</h3>

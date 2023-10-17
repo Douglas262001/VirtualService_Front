@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import SidebarData from "./SidebarData";
 import { ArrowLeft, ArrowRight, SignOut } from "phosphor-react";
 import { useState } from "react";
-import classNames from "classnames";
+import * as classNames from "classnames";
 
 import useAuth from "@hooks/auth";
 
@@ -35,9 +35,7 @@ const Sidebar = () => {
             onClick={collapseSidebar}
             size={40}
           />
-          <span className="h-[20px]">
-
-          </span>
+          <span className="h-[20px]"></span>
         </section>
       ) : (
         <ArrowRight

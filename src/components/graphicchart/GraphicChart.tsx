@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import { FC, PureComponent } from "react";
 import {
   BarChart,
   Bar,
@@ -55,7 +55,11 @@ type CustomTooltipProps = {
   label?: string;
 };
 
-const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }) => {
+const CustomTooltip: FC<CustomTooltipProps> = ({
+  active,
+  payload,
+  label,
+}: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip graphicchart">
@@ -82,7 +86,7 @@ type CustomYAxisTickProps = {
   payload?: any;
 };
 
-const CustomYAxisTick: React.FC<CustomYAxisTickProps> = (props) => {
+const CustomYAxisTick: FC<CustomYAxisTickProps> = (props) => {
   const { x, y, payload } = props;
   const formattedValue = `R$ ${payload.value.toFixed(2)}`;
 
