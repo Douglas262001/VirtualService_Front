@@ -84,7 +84,7 @@ import {
       id: 11,
       description: "Comandas",
       icon: QrCode,
-      path: "/tables",
+      path: "/tags",
     }
   ];
   

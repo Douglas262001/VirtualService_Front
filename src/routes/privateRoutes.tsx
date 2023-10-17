@@ -11,6 +11,7 @@ import Submenus from "@pages/submenus";
 import Tables from "@pages/table";
 import Teacher from "@pages/teacher";
 import Caixa from "@components/caixa/Caixa"
+import Tags from "@pages/tags/Tags"
 
 export const PrivateRoutes = () => {
   return {
@@ -28,6 +29,7 @@ export const PrivateRoutes = () => {
       { path: "/tables", element: <Tables /> },
       { path: "/orders", element: <Orders /> },
       { path: "/submenus", element: <Submenus /> },
+      { path: "/tags", element: <Tags /> },
     ],
   };
 };
