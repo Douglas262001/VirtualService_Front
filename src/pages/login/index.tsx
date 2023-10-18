@@ -1,4 +1,4 @@
-import { Eye, EyeSlash, SignIn } from "phosphor-react";
+import { Eye, EyeSlash } from "phosphor-react";
 import { useState } from "react";
 import Logo from "@components/base/Logo";
 import { useForm, SubmitHandler } from "react-hook-form";

@@ -58,7 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       email,
       senha: password,
     });
-    const { body, success, reasonPhrase } = response.data;
+    const { body, success } = response.data;
 
     if (!success) {
       toast.error("Email e/ou senha icorretos.");
