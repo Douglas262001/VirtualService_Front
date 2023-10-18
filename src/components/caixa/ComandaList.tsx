@@ -1,33 +1,19 @@
-import CardList from './CardList';
+import CardList from "./CardList";
+import * as React from "react";
+import { ComandasAbertas } from "types/Caixa";
 
-const IndexCards: React.FC = () => {
-  const data = [
-    { id: 1, title: 'comanda 1' },
-    { id: 2, title: 'comanda 2' },
-    { id: 3, title: 'comanda 3' },
-    { id: 4, title: 'comanda 4' },
-    { id: 5, title: 'comanda 5' },
-    { id: 6, title: 'comanda 6' },
-    { id: 7, title: 'comanda 7' },
-    { id: 8, title: 'comanda 8' },
-    { id: 9, title: 'comanda 9' },
-    { id: 10, title: 'comanda 10' },
-    { id: 11, title: 'comanda 11' },
-    { id: 12, title: 'comanda 12' },
-    { id: 13, title: 'comanda 13' },
-    { id: 14, title: 'comanda 14' },
-  ];
+const ComandaList: React.FC = () => {
+  // const { codigoComanda } = useRegister();
 
-  const handleCardClick = (id: number) => {
-    console.log(`${id}`);
-    // Implemente o comportamento desejado ao clicar no card.
-  };
+  const [data, setData] = React.useState<ComandasAbertas[] | undefined>();
+
+  setData([]);
 
   return (
-    <div className="IndexCards">
-      <CardList data={data} onCardClick={handleCardClick} />
+    <div>
+      <CardList data={data} />
     </div>
   );
 };
 
-export default IndexCards;
+export default ComandaList;

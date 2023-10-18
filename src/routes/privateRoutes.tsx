@@ -10,9 +10,9 @@ import Subject from "@pages/subject";
 import Submenus from "@pages/submenus";
 import Tables from "@pages/table";
 import Teacher from "@pages/teacher";
-import Caixa from "@components/caixa/Caixa"
 import Categories from "@pages/categories";
 import Tags from "@pages/tags/Tags"
+import Register from "@pages/register";
 
 export const PrivateRoutes = () => {
   return {
@@ -23,7 +23,7 @@ export const PrivateRoutes = () => {
       { path: "/teachers", element: <Teacher /> },
       { path: "/menus", element: <Menus /> },
       { path: "/analytics", element: <Analytics /> },
-      { path: "/caixa", element: <Caixa /> },
+      { path: "/register", element: <Register /> },
       { path: "/accommodations", element: <Acommodations /> },
       { path: "/steps", element: <Steps /> },
       { path: "/products", element: <Products /> },

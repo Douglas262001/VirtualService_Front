@@ -19,14 +19,16 @@ type Props = {
 };
 
 type TagFormType = {
-    id?: number;
-    numero?: number;
-    codigoQrCode: string;
-    status?: number;
+  id?: number;
+  numero?: number;
+  codigoQrCode: string;
+  status?: number;
 };
 
 const formSchema = yup.object({
-  codigoQrCode: yup.string().required("Você precisa informar o campo Codigo QrCode"),
+  codigoQrCode: yup
+    .string()
+    .required("Você precisa informar o campo Codigo QrCode"),
 });
 
 const TagWindow = ({ isOpen, setIsOpen, tag, setTag }: Props) => {
@@ -85,13 +87,20 @@ const TagWindow = ({ isOpen, setIsOpen, tag, setTag }: Props) => {
     }
   );
 
-  const onSubmit: SubmitHandler<TagType> = (data) => {
+  const onSubmit: SubmitHandler<TagFormType> = (data) => {
     setIsLoading(true);
+    const tag: TagType = {
+      id: data.id,
+      numero: data.numero || 0,
+      codigoQrCode: data.codigoQrCode,
+      status: data.status || 0,
+    };
+
     if (data.id) {
-      mutationUpdate.mutate(data);
+      mutationUpdate.mutate(tag);
       return;
     }
-    mutationCreate.mutate(data);
+    mutationCreate.mutate(tag);
   };
 
   const handleCancel = () => {
