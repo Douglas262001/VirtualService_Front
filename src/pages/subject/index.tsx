@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import SubjectWindow from "@components/subject/SubjectWindow";
 import SubjectTable from "@components/subject/SubjectTable";
 
@@ -12,7 +12,7 @@ function Subject() {
     setReloadTable(true);
   }, [isAddModalOpen]);
 
-  const searchInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const searchInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 

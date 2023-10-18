@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import TableTable from "@components/table/TableTable";
 import TableWindow from "@components/table/TableWindow";
 
@@ -6,7 +6,7 @@ function Tables() {
   const [searchText, setSearchText] = useState("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  const searchInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const searchInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
