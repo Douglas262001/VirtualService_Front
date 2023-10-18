@@ -20,9 +20,9 @@ type Props = {
 
 type TagFormType = {
     id?: number;
-    numero: number;
+    numero?: number;
     codigoQrCode: string;
-    status: number;
+    status?: number;
 };
 
 const formSchema = yup.object({

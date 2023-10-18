@@ -27,7 +27,7 @@ const SubmenuTable = ({ searchText }: Props) => {
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getSubMenus"]);
-        toast.success("Submenu exluído com sucesso!");
+        toast.success("Submenu excluído com sucesso!");
       },
       onError: () => {
         toast.error("Erro ao excluir submenu");

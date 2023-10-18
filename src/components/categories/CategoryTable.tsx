@@ -29,7 +29,7 @@ const CategoryTable = ({ searchText }: Props) => {
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getCategories"]);
-        toast.success("Categoria exluída com sucesso!");
+        toast.success("Categoria excluída com sucesso!");
       },
       onError: () => {
         toast.error("Erro ao excluir categoria");

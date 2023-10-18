@@ -248,6 +248,7 @@ const CategoryWindow = ({
               isTipoProdutoProduto={true}
             />
             <CategoryTab.Image
+              codigoCategoria={codigoCategoria}
               base64Image={base64Image}
               setBase64Image={setBase64Image}
               setIsImgUploaded={setIsImgUploaded}

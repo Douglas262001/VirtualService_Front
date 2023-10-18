@@ -33,7 +33,7 @@ const AccommodationTable = ({ searchText }: Props) => {
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getAccommodations"]);
-        toast.success("Acomodação exluída com sucesso!");
+        toast.success("Acomodação excluída com sucesso!");
       },
     }
   );

@@ -2,14 +2,20 @@ import useGetOrders from "@hooks/useGetOrders";
 import useFilterData from "../../hooks/useFilterData";
 import GenericLoading from "../base/GenericLoading";
 import GenericTable from "../base/GenericTable";
-import { Printer } from "phosphor-react";
+import { ListNumbers, Printer, Swap } from "phosphor-react";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@utils/queryClient";
 import { toast } from "sonner";
 import api from "@utils/api";
-import { PedidoItemsSearchType, PedidoSearchType } from "types/Pedido";
+import {
+  EnumStatusPedido,
+  PedidoItemsSearchType,
+  PedidoSearchType,
+  StatusPedido,
+} from "types/Pedido";
 import { useState } from "react";
 import OrderItemsWindow from "./OrderItemsWindow";
+import OrderStatusWindow from "./OrderStatusWindow";
 
 type Props = {
   searchText?: string;
@@ -17,13 +23,35 @@ type Props = {
 
 type ImprimirDto = {
   codigoPedido: number;
+  texto: string;
+};
+
+const TagStatus = ({ status }: { status: StatusPedido }) => {
+  const colors = {
+    [StatusPedido.FilaDePreparo]: "bg-slate-400",
+    [StatusPedido.EmPreparo]: "bg-blue-400",
+    [StatusPedido.FilaDeEntrega]: "bg-yellow-200",
+    [StatusPedido.Finalizado]: "bg-green-500",
+  };
+
+  return (
+    <span
+      className={`px-2 py-1 rounded-md text-black text-sm font-semibold ${colors[status]}`}
+    >
+      {EnumStatusPedido.get(status)}
+    </span>
+  );
 };
 
 const OrderTable = ({ searchText }: Props) => {
   const { data: orders, error, isLoading } = useGetOrders();
   const filteredOrders = useFilterData(orders, searchText);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpenStatus, setIsOpenStatus] = useState<boolean>(false);
+
   const [selectedOrder, setSelectedOrder] = useState<PedidoSearchType>();
+  const [codigoStatus, setCodigoStatus] = useState<number>();
+  const [codigoPedido, setCodigoPedido] = useState<number>(0);
 
   const mutationImprimir = useMutation(
     (s?: ImprimirDto) => api.post(`Tenant/Imprimir`, s),
@@ -47,13 +75,35 @@ const OrderTable = ({ searchText }: Props) => {
       Imprimir: (
         <Printer
           onClick={() => {
-            mutationImprimir.mutate({ codigoPedido: order.id });
+            mutationImprimir.mutate({ codigoPedido: order.id, texto: "" });
           }}
           className="cursor-pointer text-yellow-400"
           size={24}
         />
       ),
+      Alterar: (
+        <Swap
+          size={24}
+          className="cursor-pointer"
+          onClick={() => {
+            setCodigoPedido(order.id);
+            setCodigoStatus(order.codigoStatus);
+            setIsOpenStatus(true);
+          }}
+        />
+      ),
+      Status: <TagStatus status={order.codigoStatus} />,
       ...order,
+      Itens: (
+        <ListNumbers
+          onClick={() => {
+            setSelectedOrder(order);
+            setIsOpen(true);
+          }}
+          size={24}
+          className="cursor-pointer"
+        />
+      ),
     })
   );
 
@@ -61,17 +111,30 @@ const OrderTable = ({ searchText }: Props) => {
     <>
       <GenericTable
         values={tableValuesWithIcons}
-        columns={["Imprimir", "id", "numero", "valor", "data/hora"]}
-        onClickRow={(p: PedidoSearchType) => {
-          setSelectedOrder(p);
-          setIsOpen(true);
-        }}
+        columns={[
+          "Imprimir",
+          "Alterar",
+          "Status",
+          "id",
+          "numero",
+          "valor",
+          "data/hora",
+          "Itens",
+        ]}
       />
       <OrderItemsWindow
         numeroPedido={selectedOrder?.numero as number}
         items={selectedOrder?.items as PedidoItemsSearchType[]}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+      />
+      <OrderStatusWindow
+        codigoPedido={codigoPedido}
+        setCodigoPedido={setCodigoPedido}
+        codigoStatus={codigoStatus}
+        setCodigoStatus={setCodigoStatus}
+        isOpen={isOpenStatus}
+        setIsOpen={setIsOpenStatus}
       />
     </>
   );
