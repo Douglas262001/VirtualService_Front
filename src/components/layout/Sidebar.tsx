@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import SidebarData from "./SidebarData";
 import { ArrowLeft, ArrowRight, SignOut } from "phosphor-react";
 import { useState } from "react";
-import * as classNames from "classnames";
+import classNames from "classnames";
 
 import useAuth from "@hooks/auth";
 
