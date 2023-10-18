@@ -1,7 +1,14 @@
 import { Layout } from "@components/base/layout";
 import Analytics from "@pages/analytics";
 import Home from "@pages/home";
+<<<<<<< Updated upstream
 import Menus from "@pages/Menus";
+=======
+import Menus from "@components/Menus/MenuTable";
+import Orders from "@pages/orders";
+import Products from "@pages/products";
+import Steps from "@pages/steps";
+>>>>>>> Stashed changes
 import Subject from "@pages/subject";
 import Teacher from "@pages/teacher";
 
