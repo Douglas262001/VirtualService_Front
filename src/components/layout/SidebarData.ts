@@ -30,7 +30,7 @@ import {
       id: 2,
       description: "Caixa",
       icon: ShoppingCart,
-      path: "/caixa",
+      path: "/register",
     },
     {
       id: 3,
