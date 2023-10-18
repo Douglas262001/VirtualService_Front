@@ -135,14 +135,14 @@ const TagWindow = ({ isOpen, setIsOpen, tag, setTag }: Props) => {
             <p className="text-red-500">{errors.numero?.message}</p>
             <div className="w-full flex flex-col">
               <span className="label-text">Codigo Qr Code</span>
-              <textarea
+              <input
                 placeholder="Codigo QR Code"
                 className="input input-bordered w-full mb-3"
                 {...register("codigoQrCode", {
                   shouldUnregister: true,
                   value: tag?.codigoQrCode ?? "",
                 })}
-              ></textarea>
+              ></input>
             </div>
           </div>
           <div className="modal-action">

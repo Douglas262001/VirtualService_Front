@@ -3,6 +3,7 @@ import { createContext } from "react";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
 import api from "@utils/api";
 import { redirect } from "react-router-dom";
+import { toast } from "sonner";
 
 type SignInCredentials = {
   email: string;
@@ -60,7 +61,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const { body, success, reasonPhrase } = response.data;
 
     if (!success) {
-      throw new Error(reasonPhrase);
+      toast.error("Email e/ou senha icorretos.");
     }
 
     const token = JSON.stringify(body.bearer);
