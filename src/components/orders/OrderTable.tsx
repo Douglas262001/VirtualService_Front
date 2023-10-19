@@ -81,11 +81,11 @@ const OrderTable = ({ searchText }: Props) => {
   const ColumnUpdateData = ({ status, id }: { status: StatusPedido, id?: number }) => {
 
     return (<div className="update-order-column">
-      <Timer onClick={handlePreparationQueue(status, id)} className={`${status === 0 ? "text-yellow-400" : "text-stone-300 hover:text-yellow-400"} cursor-pointer`} />
-      <Hourglass onClick={handleInPreparation(status, id)} className={`${status === 1 ? "text-emerald-400" : "text-stone-3000 hover:text-emerald-400"} cursor-pointer`} />
-      <Package onClick={handleDeliverQueue(status, id)} className={`${status === 2 ? "text-sky-400" : "text-stone-300 hover:text-sky-400"} cursor-pointer`} />
-      <Check onClick={handleOrderFinished(status, id)} className={`${status === 3 ? "text-lime-400" : "text-stone-300 hover:text-lime-400"} cursor-pointer`} />
-      <XCircle onClick={handleOrderCancelar(status, id)} className={`${status === 4 ? "text-red-600" : "text-stone-300 hover:text-red-600"} cursor-pointer`} />
+      <Timer weight={`${status === 0 ? "fill" : "thin"}`} onClick={handlePreparationQueue(status, id)} className={`${status === 0 ? "text-yellow-400" : "text-stone-300 hover:text-yellow-400"} cursor-pointer`} />
+      <Hourglass weight={`${status === 1 ? "fill" : "thin"}`} onClick={handleInPreparation(status, id)} className={`${status === 1 ? "text-emerald-400" : "text-stone-3000 hover:text-emerald-400"} cursor-pointer`} />
+      <Package weight={`${status === 2 ? "fill" : "thin"}`} onClick={handleDeliverQueue(status, id)} className={`${status === 2 ? "text-sky-400" : "text-stone-300 hover:text-sky-400"} cursor-pointer`} />
+      <Check weight={`${status === 3 ? "fill" : "thin"}`} onClick={handleOrderFinished(status, id)} className={`${status === 3 ? "text-lime-400" : "text-stone-300 hover:text-lime-400"} cursor-pointer`} />
+      <XCircle weight={`${status === 4 ? "fill" : "thin"}`} onClick={handleOrderCancelar(status, id)} className={`${status === 4 ? "text-red-600" : "text-stone-300 hover:text-red-600"} cursor-pointer`} />
     </div>)
   }
 
@@ -227,8 +227,8 @@ const OrderTable = ({ searchText }: Props) => {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       iconColor: '#ef4444',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Sim, cancelar!',
+      cancelButtonText: 'Não',
+      confirmButtonText: 'Sim',
       background: '#333',
       color: '#fff'
     }).then((result) => {
@@ -291,13 +291,13 @@ const OrderTable = ({ searchText }: Props) => {
         values={tableValuesWithIcons}
         columns={[
           "Itens",
-          "Imprimir",
-          "Status",
+          "Alterar",
           "id",
           "numero",
           "valor",
           "data/hora",
-          "Alterar",
+          "Status",
+          "Imprimir",
         ]}
       />
       <OrderItemsWindow

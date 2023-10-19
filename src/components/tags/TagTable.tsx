@@ -128,6 +128,7 @@ const TagTable = ({ searchText }: Props) => {
       case 0:
         return (
           <LockSimpleOpen
+            weight="fill"
             onClick={handleActiveTag(numero)}
             size={24}
             className="cursor-pointer text-lime-400 mx-10"
@@ -136,6 +137,7 @@ const TagTable = ({ searchText }: Props) => {
       case 1:
         return (
           <LockSimple
+            weight="fill"
             onClick={handleDisableTag(numero)}
             size={24}
             className="cursor-pointer text-red-400 mx-10"
@@ -144,6 +146,7 @@ const TagTable = ({ searchText }: Props) => {
       case 2:
         return (
           <Clock
+            weight="fill"
             onClick={handleInUse()}
             size={24}
             className="cursor-pointer text-yellow-400 mx-10"
@@ -200,7 +203,7 @@ const TagTable = ({ searchText }: Props) => {
     <>
       <GenericTable
         values={tableValuesWithIcons}
-        columns={["Editar", "numero", "codigoQrCode","Status", "Bloquear / Liberar", "Excluir"]}
+        columns={["Editar", "numero", "codigoQrCode",  "Bloquear / Liberar", "Status", "Excluir"]}
       />
       <TagWindow
         tag={tag}
