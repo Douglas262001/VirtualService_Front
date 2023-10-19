@@ -3,7 +3,6 @@ import ListaItens from "./lista";
 import AcoesItens from "./acoes";
 import { Placeholder } from "phosphor-react";
 import ReceberItens from "./receber";
-import "./index.modules.css"
 
 const ItensContainer = () => {
   const { numeroComanda } = useRegister();
