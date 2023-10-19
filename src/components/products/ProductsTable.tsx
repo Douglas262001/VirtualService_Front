@@ -11,6 +11,7 @@ import { queryClient } from "@utils/queryClient";
 import { toast } from "sonner";
 import useGetProducts from "@hooks/useGetProducts";
 import ProductsWindow from "./ProductsWindow";
+import Swal from "sweetalert2";
 
 type Props = {
   searchText?: string;
@@ -47,11 +48,23 @@ const ProductsTable = ({ searchText }: Props) => {
   const handleDeleteProduct = (id?: number) => async () => {
     if (!id) return;
 
-    const confirmDelete = confirm("Deseja realmente excluir este produto?");
-
-    if (!confirmDelete) return;
-
-    mutationDelete.mutate(id);
+    Swal.fire({
+      title: 'Confirmação',
+      text: "Deseja realmente excluir este produto?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      iconColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sim, excluir!',
+      background: '#333',
+      color: '#fff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        mutationDelete.mutate(id);
+      }
+    })
   };
 
   if (isLoading) return <GenericLoading size={60} />;

@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import api from "@utils/api";
 import { queryClient } from "@utils/queryClient";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 
 type Props = {
   searchText?: string;
@@ -43,13 +44,23 @@ const StepsTable = ({ searchText }: Props) => {
   );
 
   const handleDeleteStep = (id?: number) => async () => {
-    if (!id) return;
-
-    const confirmDelete = confirm("Deseja realmente excluir esta etapa?");
-
-    if (!confirmDelete) return;
-
-    mutationDelete.mutate(id);
+    Swal.fire({
+      title: 'Confirmação',
+      text: "Deseja realmente excluir esta etapa?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      iconColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sim, excluir!',
+      background: '#333',
+      color: '#fff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        mutationDelete.mutate(id);
+      }
+    })
   };
 
   if (isLoading) return <GenericLoading size={60} />;

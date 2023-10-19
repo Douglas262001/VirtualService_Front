@@ -10,6 +10,7 @@ import useGetCategories from "@hooks/useGetCategories";
 import { useState } from "react";
 import { CategoriaSearchType } from "types/Categoria";
 import CategoryWindow from "./CategoryWindow";
+import Swal from "sweetalert2";
 // import { useState } from "react";
 // import SubmenuWindow from "./SubmenuWindow";
 
@@ -40,11 +41,23 @@ const CategoryTable = ({ searchText }: Props) => {
   const handleDeleteCategory = (id?: number) => async () => {
     if (!id) return;
 
-    const confirmDelete = confirm("Deseja realmente excluir esta categoria?");
-
-    if (!confirmDelete) return;
-
-    mutationDelete.mutate(id);
+    Swal.fire({
+      title: 'Confirmação',
+      text: "Deseja realmente excluir esta categoria?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      iconColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sim, excluir!',
+      background: '#333',
+      color: '#fff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        mutationDelete.mutate(id);
+      }
+    })
   };
 
   if (isLoading) return <GenericLoading size={60} />;

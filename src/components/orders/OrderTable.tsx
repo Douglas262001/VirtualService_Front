@@ -17,6 +17,7 @@ import { useState } from "react";
 import OrderItemsWindow from "./OrderItemsWindow";
 import OrderStatusWindow from "./OrderStatusWindow";
 import "./OrderTable.modules.css"
+import Swal from "sweetalert2";
 
 type Props = {
   searchText?: string;
@@ -77,112 +78,171 @@ const OrderTable = ({ searchText }: Props) => {
     statusPedido: number;
   };
 
-  const ColumnUpdateData = ({status, id}: { status: StatusPedido, id?: number}) => {
+  const ColumnUpdateData = ({ status, id }: { status: StatusPedido, id?: number }) => {
 
     return (<div className="update-order-column">
-      <Timer onClick = {handlePreparationQueue(status, id)} className={`${status === 0 ? "text-yellow-400" : "text-stone-300 hover:text-yellow-400"} cursor-pointer`}/>
-      <Hourglass onClick = {handleInPreparation(status, id)} className={`${status === 1 ? "text-emerald-400" : "text-stone-3000 hover:text-emerald-400"} cursor-pointer`}/>
-      <Package onClick = {handleDeliverQueue(status, id)} className={`${status === 2 ? "text-sky-400" : "text-stone-300 hover:text-sky-400"} cursor-pointer`}/>
-      <Check onClick = {handleOrderFinished(status, id)} className={`${status === 3 ? "text-lime-400" : "text-stone-300 hover:text-lime-400"} cursor-pointer`}/>
-      <XCircle onClick = {handleOrderCancelar(status, id)} className={`${status === 4 ? "text-red-600" : "text-stone-300 hover:text-red-600"} cursor-pointer`}/>
-      </div>)
+      <Timer onClick={handlePreparationQueue(status, id)} className={`${status === 0 ? "text-yellow-400" : "text-stone-300 hover:text-yellow-400"} cursor-pointer`} />
+      <Hourglass onClick={handleInPreparation(status, id)} className={`${status === 1 ? "text-emerald-400" : "text-stone-3000 hover:text-emerald-400"} cursor-pointer`} />
+      <Package onClick={handleDeliverQueue(status, id)} className={`${status === 2 ? "text-sky-400" : "text-stone-300 hover:text-sky-400"} cursor-pointer`} />
+      <Check onClick={handleOrderFinished(status, id)} className={`${status === 3 ? "text-lime-400" : "text-stone-300 hover:text-lime-400"} cursor-pointer`} />
+      <XCircle onClick={handleOrderCancelar(status, id)} className={`${status === 4 ? "text-red-600" : "text-stone-300 hover:text-red-600"} cursor-pointer`} />
+    </div>)
   }
 
   const handlePreparationQueue = (status: StatusPedido, id?: number) => async () => {
-    if(!id) return;
+    if (!id) return;
 
-    if(status === 0) {
+    if (status === 0) {
       return toast.error("Pedido já está em fila de preparo.");
     }
 
-    const confirmPreparationQueue = confirm(`Deseja realmente alterar o status para "Em fila de preparo"?`);
-
-    if(!confirmPreparationQueue) return;
-
-    const dto: AlterarPedidoDto = {
-      codigoPedido: id,
-      statusPedido: 0,
-    };
-
-    mutateStatusOrder.mutate(dto);
+    Swal.fire({
+      title: 'Confirmação',
+      text: `Deseja realmente alterar o status para "Em fila de preparo"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      iconColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sim, alterar!',
+      background: '#333',
+      color: '#fff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const dto: AlterarPedidoDto = {
+          codigoPedido: id,
+          statusPedido: 0
+        };
+  
+        mutateStatusOrder.mutate(dto);
+      }
+    })
   };
 
   const handleInPreparation = (status: StatusPedido, id?: number) => async () => {
-    if(!id) return;
+    if (!id) return;
 
-    if(status === 1) {
+    if (status === 1) {
       return toast.error("Pedido já está em preparo.");
     }
 
-    const confirmPreparationQueue = confirm(`Deseja realmente alterar o status para "Em preparo"?`);
+    Swal.fire({
+      title: 'Confirmação',
+      text: `Deseja realmente alterar o status para "Em preparo"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      iconColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sim, alterar!',
+      background: '#333',
+      color: '#fff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const dto: AlterarPedidoDto = {
+          codigoPedido: id,
+          statusPedido: 1
+        };
 
-    if(!confirmPreparationQueue) return;
-
-    const dto: AlterarPedidoDto = {
-      codigoPedido: id,
-      statusPedido: 1,
-    };
-
-    mutateStatusOrder.mutate(dto);
+        mutateStatusOrder.mutate(dto);
+      }
+    })
   };
 
   const handleDeliverQueue = (status: StatusPedido, id?: number) => async () => {
-    if(!id) return;
+    if (!id) return;
 
-    if(status === 2) {
+    if (status === 2) {
       return toast.error("Pedido já está em fila de entrega.");
     }
 
-    const confirmPreparationQueue = confirm(`Deseja realmente alterar o status para "Fila de entrega"?`);
+    Swal.fire({
+      title: 'Confirmação',
+      text: `Deseja realmente alterar o status para "Fila de entrega"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      iconColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sim, alterar!',
+      background: '#333',
+      color: '#fff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const dto: AlterarPedidoDto = {
+          codigoPedido: id,
+          statusPedido: 2
+        };
 
-    if(!confirmPreparationQueue) return;
-
-    const dto: AlterarPedidoDto = {
-      codigoPedido: id,
-      statusPedido: 2,
-    };
-
-    mutateStatusOrder.mutate(dto);
+        mutateStatusOrder.mutate(dto);
+      }
+    })
   };
 
   const handleOrderFinished = (status: StatusPedido, id?: number) => async () => {
-    if(!id) return;
+    if (!id) return;
 
-    if(status === 3) {
+    if (status === 3) {
       return toast.error("Pedido já está finalizado.");
     }
 
-    const confirmPreparationQueue = confirm(`Deseja realmente alterar o status para "Finalizado"?`);
+    Swal.fire({
+      title: 'Confirmação',
+      text: `Deseja realmente alterar o status para "Finalizado"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      iconColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sim, alterar!',
+      background: '#333',
+      color: '#fff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const dto: AlterarPedidoDto = {
+          codigoPedido: id,
+          statusPedido: 3
+        };
 
-    if(!confirmPreparationQueue) return;
-
-    const dto: AlterarPedidoDto = {
-      codigoPedido: id,
-      statusPedido: 3,
-    };
-
-    mutateStatusOrder.mutate(dto);
+        mutateStatusOrder.mutate(dto);
+      }
+    })
   };
- 
-  const handleOrderCancelar = (status: StatusPedido, id?: number) => async () => {
-    if(!id) return;
 
-    if(status === 4) {
+  const handleOrderCancelar = (status: StatusPedido, id?: number) => async () => {
+    if (!id) return;
+
+    if (status === 4) {
       return toast.error("Pedido já está cancelado.");
     }
+    Swal.fire({
+      title: 'Confirmação',
+      text: `Deseja realmente cancelar o pedido?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      iconColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sim, cancelar!',
+      background: '#333',
+      color: '#fff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const dto: AlterarPedidoDto = {
+          codigoPedido: id,
+          statusPedido: 4
+        };
 
-    const confirmPreparationQueue = confirm(`Deseja realmente cancelar o pedido?`);
-
-    if(!confirmPreparationQueue) return;
-
-    const dto: AlterarPedidoDto = {
-      codigoPedido: id,
-      statusPedido: 4,
-    };
-
-    mutateStatusOrder.mutate(dto);
+        mutateStatusOrder.mutate(dto);
+      }
+    })
   };
- 
+
   const mutateStatusOrder = useMutation(
     (s: AlterarPedidoDto) => api.put(`Pedido/Alterar/`, s),
     {
@@ -209,9 +269,9 @@ const OrderTable = ({ searchText }: Props) => {
         />
       ),
 
-      Status: <TagStatus status={order.codigoStatus}/>,
+      Status: <TagStatus status={order.codigoStatus} />,
       ...order,
-      Alterar: <ColumnUpdateData status={order.codigoStatus} id={order.id}/>,
+      Alterar: <ColumnUpdateData status={order.codigoStatus} id={order.id} />,
       Itens: (
         <ListNumbers
           onClick={() => {

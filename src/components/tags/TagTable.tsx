@@ -46,11 +46,23 @@ const TagTable = ({ searchText }: Props) => {
   const handleDeleteTag = (id?: number) => async () => {
     if (!id) return;
 
-    const confirmDelete = confirm("Deseja realmente excluir esta comanda?");
-
-    if (!confirmDelete) return;
-
-    mutationDelete.mutate(id);
+    Swal.fire({
+      title: 'Confirmação',
+      text: "Deseja realmente excluir esta comanda?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      iconColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sim, excluir!',
+      background: '#333',
+      color: '#fff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        mutationDelete.mutate(id);
+      }
+    })
   };
 
   const mutationDisableTag = useMutation(

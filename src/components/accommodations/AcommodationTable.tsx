@@ -9,6 +9,7 @@ import api from "@utils/api";
 import { toast } from "sonner";
 import { queryClient } from "@utils/queryClient";
 import { useMutation } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 type Props = {
   searchText?: string;
@@ -29,7 +30,7 @@ const AccommodationTable = ({ searchText }: Props) => {
     useState<AccommodationType>();
 
   const mutationDelete = useMutation(
-    (s?: number) => api.delete(`Acomodacao/DeletarArea/${s}`),
+    (s?: number) => api.delete(`Area/Deletar/${s}`),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getAccommodations"]);
@@ -69,13 +70,23 @@ const AccommodationTable = ({ searchText }: Props) => {
   const deleteAccommodation = (id?: number) => {
     if (!id) return;
 
-    const confirmDelete = confirm(
-      "Tem certeza que deseja excluir esta acomodação?"
-    );
-
-    if (!confirmDelete) return;
-
-    mutationDelete.mutate(id);
+    Swal.fire({
+      title: 'Confirmação',
+      text: "Tem certeza que deseja excluir esta acomodação?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      iconColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sim, excluir!',
+      background: '#333',
+      color: '#fff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        mutationDelete.mutate(id);
+      }
+    })
   };
 
   return (

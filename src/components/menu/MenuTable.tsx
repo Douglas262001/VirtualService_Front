@@ -16,6 +16,7 @@ import useGetMenu from "@hooks/useGetMenu";
 import { MenuType } from "types/MenuType";
 import { useState } from "react";
 import MenuWindow from "./MenuWindow";
+import Swal from "sweetalert2";
 
 type Props = {
   searchText?: string;
@@ -43,12 +44,24 @@ const MenuTable = ({ searchText }: Props) => {
 
   const handleDeleteMenu = (id?: number) => async () => {
     if (!id) return;
-
-    const confirmDelete = confirm("Deseja realmente excluir este menu?");
-
-    if (!confirmDelete) return;
-
-    mutationDelete.mutate(id);
+    
+    Swal.fire({
+      title: 'Confirmação',
+      text: "Deseja realmente excluir este menu?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      iconColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sim, excluir!',
+      background: '#333',
+      color: '#fff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        mutationDelete.mutate(id);
+      }
+    })
   };
 
 //   const mutationDisableTag = useMutation(

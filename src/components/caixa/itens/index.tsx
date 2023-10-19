@@ -3,6 +3,7 @@ import ListaItens from "./lista";
 import AcoesItens from "./acoes";
 import { Placeholder } from "phosphor-react";
 import ReceberItens from "./receber";
+import "./index.modules.css"
 
 const ItensContainer = () => {
   const { numeroComanda } = useRegister();
@@ -22,7 +23,7 @@ const ItensContainer = () => {
     <div className="bg-[#fec80a] w-[50%] h-[97.5vh] rounded-md p-5 mr-2 flex flex-col text-[#303030]">
       <h2 className="text-2xl font-bold mb-2">Comanda nº {numeroComanda}</h2>
       <div className="text-[#cccccc] max-h-96 itens-caixa">
-        <ListaItens />
+        <ListaItens/>
         <AcoesItens />
         <ReceberItens />
       </div>
