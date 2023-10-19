@@ -12,11 +12,11 @@ const getMenus = () => {
       data.body.map((menu: MenuType) => ({
         id: menu.id,
         descricao: menu.descricao,
-        subMenus: menu.subMenus?.map((item) => ({
-          id: item.id,
-          codigoSubMenu: item.codigoSubMenu,
-          seq: item.seq,
-        })),
+        // subMenus: menu.subMenus?.map((item) => ({
+        //   id: item.id,
+        //   codigoSubMenu: item.codigoSubMenu,
+        //   seq: item.seq,
+        // })),
       }))
     );
 };

@@ -1,11 +1,11 @@
 export type MenuType = {
     id?: number;
     descricao: string;
-    subMenus: SubMenusType[];
+    // subMenus: SubMenusType[];
 }
 
-export type SubMenusType = {
-    id?: number,
-    codigoSubMenu?: number,
-    seq?: number
-}
+// export type SubMenusType = {
+//     id?: number,
+//     codigoSubMenu?: number,
+//     seq?: number
+// }

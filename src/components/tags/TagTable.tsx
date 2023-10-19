@@ -105,7 +105,7 @@ const TagTable = ({ searchText }: Props) => {
           <LockSimpleOpen
             onClick={handleActiveTag(numero)}
             size={24}
-            className="cursor-pointer text-green-500"
+            className="cursor-pointer text-lime-400 mx-10"
           />
         );
       case 1:
@@ -113,7 +113,7 @@ const TagTable = ({ searchText }: Props) => {
           <LockSimple
             onClick={handleDisableTag(numero)}
             size={24}
-            className="cursor-pointer text-red-500"
+            className="cursor-pointer text-red-400 mx-10"
           />
         );
       case 2:
@@ -121,7 +121,7 @@ const TagTable = ({ searchText }: Props) => {
           <Clock
             onClick={handleInUse()}
             size={24}
-            className="cursor-pointer text-yellow-500"
+            className="cursor-pointer text-yellow-400 mx-10"
           />
         );
     }
@@ -131,15 +131,15 @@ const TagTable = ({ searchText }: Props) => {
     switch (status) {
       case 0:
         return (
-          <div className="tag-bloqueada" >Bloqueada</div>
+          <div className="tag-bloqueada px-5 py-2 rounded text-black text-sm font-semibold" >Bloqueada</div>
         );
       case 1:
         return (
-          <div className="tag-liberada">Liberada</div>
+          <div className="tag-liberada px-5 py-2 rounded text-black text-sm font-semibold">Liberada</div>
         );
       case 2:
         return (
-          <div className="tag-ocupada">Em uso</div>
+          <div className="tag-ocupada px-5 py-2 rounded text-black text-sm font-semibold">Em uso</div>
         );
     }
   }
@@ -165,7 +165,7 @@ const TagTable = ({ searchText }: Props) => {
     Excluir: (
       <TrashSimple
         onClick={handleDeleteTag(tag.id)}
-        size={24}
+        size={26}
         className="cursor-pointer text-red-500"
       />
     ),

@@ -2,7 +2,7 @@ import { Layout } from "@components/base/layout";
 import Acommodations from "@pages/accommodations";
 import Analytics from "@pages/analytics";
 import Home from "@pages/home";
-import Menus from "@components/Menus";
+import Menus from "@pages/menus/Menus";
 import Orders from "@pages/orders";
 import Products from "@pages/products";
 import Steps from "@pages/steps";

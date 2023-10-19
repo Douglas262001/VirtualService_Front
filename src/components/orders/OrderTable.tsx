@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import OrderItemsWindow from "./OrderItemsWindow";
 import OrderStatusWindow from "./OrderStatusWindow";
+import "./OrderTable.modules.css"
 
 type Props = {
   searchText?: string;
@@ -28,18 +29,18 @@ type ImprimirDto = {
 
 const TagStatus = ({ status }: { status: StatusPedido }) => {
   const colors = {
-    [StatusPedido.FilaDePreparo]: "bg-slate-400",
-    [StatusPedido.EmPreparo]: "bg-blue-400",
-    [StatusPedido.FilaDeEntrega]: "bg-yellow-200",
-    [StatusPedido.Finalizado]: "bg-green-500",
+    [StatusPedido.FilaDePreparo]: "tag-status-fila-preparo",
+    [StatusPedido.EmPreparo]: "tag-status-em-preparo",
+    [StatusPedido.FilaDeEntrega]: "tag-status-fila-entrega",
+    [StatusPedido.Finalizado]: "tag-status-fila-finalizado",
   };
 
   return (
-    <span
-      className={`px-2 py-1 rounded-md text-black text-sm font-semibold ${colors[status]}`}
+    <div
+      className={`px-5 py-2 rounded text-black text-sm font-semibold ${colors[status]}`}
     >
       {EnumStatusPedido.get(status)}
-    </span>
+    </div>
   );
 };
 
@@ -100,7 +101,7 @@ const OrderTable = ({ searchText }: Props) => {
             setSelectedOrder(order);
             setIsOpen(true);
           }}
-          size={24}
+          size={26}
           className="cursor-pointer"
         />
       ),
