@@ -17,6 +17,7 @@ import { TagType } from "types/TagType";
 import { useState } from "react";
 import TagWindow from "./TagWindow";
 import "./TagTable.Modules.css"
+import Swal from "sweetalert2"
 
 type Props = {
   searchText?: string;
@@ -68,11 +69,23 @@ const TagTable = ({ searchText }: Props) => {
   const handleDisableTag = (numero?: number) => async () => {
     if (!numero) return;
 
-    const confirmDelete = confirm("Deseja realmente bloquear esta comanda?");
-
-    if (!confirmDelete) return;
-
-    mutationDisableTag.mutate(numero);
+    Swal.fire({
+      title: 'Confirmação',
+      text: "Deseja realmente bloquear esta comanda?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      iconColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sim, bloquear!',
+      background: '#333',
+      color: '#fff'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        mutationDisableTag.mutate(numero);
+      }
+    })
   };
 
   const mutationActiveTag = useMutation(
