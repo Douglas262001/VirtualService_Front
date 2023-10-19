@@ -1,11 +1,11 @@
 .tag-status-fila-preparo {
-    background-color: #d6d3d1!important;
+    background-color: #FFD700!important;
     text-align: center;
     border-radius: 3px;
 }
 
 .tag-status-em-preparo {
-    background-color: #facc15!important;
+    background-color: #86efac!important;
     text-align: center;
     border-radius: 3px;
 }
@@ -16,8 +16,8 @@
     border-radius: 3px;
 }
 
-.tag-status-fila-finalizado {
-    background-color: #bef264!important;
+.tag-status-finalizado {
+    background-color: #a3e635!important;
     text-align: center;
     border-radius: 3px;
 }
@@ -26,4 +26,16 @@
     background-color: #ef4444!important;
     text-align: center;
     border-radius: 3px;
+}
+
+.update-order-column {
+    font-size: 29px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.update-order-column svg{
+    margin: 1px 10px;
 }

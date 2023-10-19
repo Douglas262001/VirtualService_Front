@@ -2,7 +2,7 @@ import useGetOrders from "@hooks/useGetOrders";
 import useFilterData from "../../hooks/useFilterData";
 import GenericLoading from "../base/GenericLoading";
 import GenericTable from "../base/GenericTable";
-import { ListNumbers, Printer, Swap } from "phosphor-react";
+import { ListNumbers, Printer, Package, Check, Hourglass, Timer, XCircle } from "phosphor-react";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@utils/queryClient";
 import { toast } from "sonner";
@@ -32,7 +32,8 @@ const TagStatus = ({ status }: { status: StatusPedido }) => {
     [StatusPedido.FilaDePreparo]: "tag-status-fila-preparo",
     [StatusPedido.EmPreparo]: "tag-status-em-preparo",
     [StatusPedido.FilaDeEntrega]: "tag-status-fila-entrega",
-    [StatusPedido.Finalizado]: "tag-status-fila-finalizado",
+    [StatusPedido.Finalizado]: "tag-status-finalizado",
+    [StatusPedido.Cancelado]: "tag-status-cancelado",
   };
 
   return (
@@ -71,6 +72,55 @@ const OrderTable = ({ searchText }: Props) => {
   if (error) return <div>ERRO</div>;
   if (!orders?.length) return <div>SEM DADOS</div>;
 
+  type AlterarPedidoDto = {
+    codigoPedido: number;
+    statusPedido: number;
+  };
+
+  const ColumnUpdateData = ({status, id}: { status: StatusPedido, id?: number}) => {
+
+    return (<div className="update-order-column">
+      <Timer onClick = {handlePreparationQueue(status, id)} className={`${status === 0 ? "text-yellow-400" : "text-stone-300 hover:text-yellow-400"} cursor-pointer`}/>
+      <Hourglass className={`${status === 1 ? "text-emerald-400" : "text-stone-3000 hover:text-yellow-400"} cursor-pointer`}/>
+      <Package className={`${status === 2 ? "text-sky-400" : "text-stone-300 hover:text-yellow-400"} cursor-pointer`}/>
+      <Check className={`${status === 3 ? "text-lime-400" : "text-stone-300 hover:text-yellow-400"} cursor-pointer`}/>
+      <XCircle className={`${status === 4 ? "text-red-600" : "text-stone-300 hover:text-yellow-400"} cursor-pointer`}/>
+      </div>)
+  }
+
+  const handlePreparationQueue = (status: StatusPedido, id?: number) => async () => {
+    if(!id) return;
+
+    if(status === 0) {
+      return toast.error("Pedido já está em fila de preparo.");
+    }
+
+    const confirmPreparationQueue = confirm(`Deseja realmente alterar o status para "Em fila de preparo"?`);
+
+    if(!confirmPreparationQueue) return;
+
+    const dto: AlterarPedidoDto = {
+      codigoPedido: id,
+      statusPedido: 0,
+    };
+
+    mutatePreparationQueue.mutate(dto);
+  };
+
+  const mutatePreparationQueue = useMutation(
+    (s: AlterarPedidoDto) => api.put(`Pedido/Alterar/`, s),
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(["getOrders"]);
+        toast.success("Pedido alterado com sucesso!");
+      },
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
+      },
+    }
+  );
+
+
   const tableValuesWithIcons = (filteredOrders ?? orders).map(
     (order: PedidoSearchType) => ({
       Imprimir: (
@@ -82,19 +132,10 @@ const OrderTable = ({ searchText }: Props) => {
           size={24}
         />
       ),
-      Alterar: (
-        <Swap
-          size={24}
-          className="cursor-pointer"
-          onClick={() => {
-            setCodigoPedido(order.id);
-            setCodigoStatus(order.codigoStatus);
-            setIsOpenStatus(true);
-          }}
-        />
-      ),
-      Status: <TagStatus status={order.codigoStatus} />,
+
+      Status: <TagStatus status={order.codigoStatus}/>,
       ...order,
+      Alterar: <ColumnUpdateData status={order.codigoStatus} id={order.id}/>,
       Itens: (
         <ListNumbers
           onClick={() => {
@@ -113,14 +154,14 @@ const OrderTable = ({ searchText }: Props) => {
       <GenericTable
         values={tableValuesWithIcons}
         columns={[
+          "Itens",
           "Imprimir",
-          "Alterar",
           "Status",
           "id",
           "numero",
           "valor",
           "data/hora",
-          "Itens",
+          "Alterar",
         ]}
       />
       <OrderItemsWindow

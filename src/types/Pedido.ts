@@ -37,6 +37,7 @@ export enum StatusPedido {
   EmPreparo = 1,
   FilaDeEntrega = 2,
   Finalizado = 3,
+  Cancelado = 4
 }
 
 export const EnumStatusPedido = new Map<number, string>([
@@ -44,4 +45,5 @@ export const EnumStatusPedido = new Map<number, string>([
   [StatusPedido.EmPreparo, "Em Preparo"],
   [StatusPedido.FilaDeEntrega, "Fila de Entrega"],
   [StatusPedido.Finalizado, "Finalizado"],
+  [StatusPedido.Cancelado, "Cancelado"],
 ]);

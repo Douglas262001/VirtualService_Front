@@ -97,8 +97,9 @@ const OrderStatusWindow = ({
             setValue={setStatus}
             valueField="identificador"
             displayValue="value"
-            optionsHeight="80"
+            optionsHeight="152"
           />
+          <br></br><br></br><br></br><br></br><br></br>
         </div>
         <div className="modal-action">
           <ButtonCancel type="button" onClick={handleClickCancelar} />
