@@ -1,8 +1,23 @@
+import api from "@utils/api";
 import * as React from "react";
 
 type IRegisterContext = {
   codigoComanda: number;
   setCodigoComanda: React.Dispatch<React.SetStateAction<number>>;
+  numeroComanda: number;
+  setNumeroComanda: React.Dispatch<React.SetStateAction<number>>;
+  calcular: (dto: CalculadorDto) => Promise<number>;
+};
+
+type CalculadorDto = {
+  valorTotalItem: number;
+  calculaDescontoPorPercentual: boolean;
+  percDesconto: number;
+  valorDesconto: number;
+  calculaTaxaServicoPorPercentual: boolean;
+  percTaxaServico: number;
+  valorTaxaServico: number;
+  dividirEmQuantasPessoas: number;
 };
 
 const RegisterContext = React.createContext<IRegisterContext | null>(null);
@@ -20,12 +35,22 @@ export const ResgisterContextProvider = ({
   children,
 }: React.PropsWithChildren) => {
   const [codigoComanda, setCodigoComanda] = React.useState<number>(0);
+  const [numeroComanda, setNumeroComanda] = React.useState<number>(0);
+
+  const calcular = async (dto: CalculadorDto) => {
+    const response = await api.post("Caixa/CalculadoraCaixa", dto);
+
+    return response.data.body;
+  };
 
   return (
     <RegisterContext.Provider
       value={{
         codigoComanda,
         setCodigoComanda,
+        numeroComanda,
+        setNumeroComanda,
+        calcular,
       }}
     >
       {children}
