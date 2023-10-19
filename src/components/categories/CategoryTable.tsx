@@ -26,7 +26,7 @@ const CategoryTable = ({ searchText }: Props) => {
   const [codigoCategoria, setCodigoCategoria] = useState<number>();
 
   const mutationDelete = useMutation(
-    (s?: number) => api.delete(`SubMenu_Categoria/Deletar/${s}`),
+    (s?: number) => api.get(`SubMenu_Categoria/Deletar/${s}`),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getCategories"]);

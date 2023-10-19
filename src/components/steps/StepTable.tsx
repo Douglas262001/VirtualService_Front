@@ -3,7 +3,6 @@ import GenericTable from "@components/base/GenericTable";
 import useFilterData from "@hooks/useFilterData";
 import useGetSteps from "@hooks/useGetSteps";
 import { useState } from "react";
-// import StepsWindow from "./AcommodationWindow";
 import { PencilSimple, TrashSimple } from "phosphor-react";
 import StepWindow from "./StepWindow";
 import { useMutation } from "@tanstack/react-query";
@@ -31,7 +30,7 @@ const StepsTable = ({ searchText }: Props) => {
   const [codigoEtapa, setCodigoEtapa] = useState<number | undefined>();
 
   const mutationDelete = useMutation(
-    (s?: number) => api.put(`Etapa/Deletar/${s}`),
+    (s?: number) => api.delete(`Etapa/Deletar/${s}`),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getSteps"]);

@@ -5,7 +5,7 @@ import { useRegister } from "context/register/RegisterContext";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ItensComanda, ItensComandaSearch } from "types/Caixa";
-import "./index.modules.css"
+import "./index.css";
 
 const ListaItens = () => {
   const { codigoComanda } = useRegister();
@@ -59,7 +59,7 @@ const ListaItens = () => {
     });
   };
 
-  return ( 
+  return (
     <GenericTable
       values={itensComanda?.map((item) => ({
         "": (

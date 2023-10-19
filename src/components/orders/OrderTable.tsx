@@ -2,7 +2,15 @@ import useGetOrders from "@hooks/useGetOrders";
 import useFilterData from "../../hooks/useFilterData";
 import GenericLoading from "../base/GenericLoading";
 import GenericTable from "../base/GenericTable";
-import { ListNumbers, Printer, Package, Check, Hourglass, Timer, XCircle } from "phosphor-react";
+import {
+  ListNumbers,
+  Printer,
+  Package,
+  Check,
+  Hourglass,
+  Timer,
+  XCircle,
+} from "phosphor-react";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@utils/queryClient";
 import { toast } from "sonner";
@@ -16,7 +24,7 @@ import {
 import { useState } from "react";
 import OrderItemsWindow from "./OrderItemsWindow";
 import OrderStatusWindow from "./OrderStatusWindow";
-import "./OrderTable.modules.css"
+import "./OrderTable.modules.css";
 import Swal from "sweetalert2";
 
 type Props = {
@@ -69,180 +77,6 @@ const OrderTable = ({ searchText }: Props) => {
     }
   );
 
-  if (isLoading) return <GenericLoading size={60} />;
-  if (error) return <div>ERRO</div>;
-  if (!orders?.length) return <div>SEM DADOS</div>;
-
-  type AlterarPedidoDto = {
-    codigoPedido: number;
-    statusPedido: number;
-  };
-
-  const ColumnUpdateData = ({ status, id }: { status: StatusPedido, id?: number }) => {
-
-    return (<div className="update-order-column">
-      <Timer weight={`${status === 0 ? "fill" : "thin"}`} onClick={handlePreparationQueue(status, id)} className={`${status === 0 ? "text-yellow-400" : "text-stone-300 hover:text-yellow-400"} cursor-pointer`} />
-      <Hourglass weight={`${status === 1 ? "fill" : "thin"}`} onClick={handleInPreparation(status, id)} className={`${status === 1 ? "text-emerald-400" : "text-stone-3000 hover:text-emerald-400"} cursor-pointer`} />
-      <Package weight={`${status === 2 ? "fill" : "thin"}`} onClick={handleDeliverQueue(status, id)} className={`${status === 2 ? "text-sky-400" : "text-stone-300 hover:text-sky-400"} cursor-pointer`} />
-      <Check weight={`${status === 3 ? "fill" : "thin"}`} onClick={handleOrderFinished(status, id)} className={`${status === 3 ? "text-lime-400" : "text-stone-300 hover:text-lime-400"} cursor-pointer`} />
-      <XCircle weight={`${status === 4 ? "fill" : "thin"}`} onClick={handleOrderCancelar(status, id)} className={`${status === 4 ? "text-red-600" : "text-stone-300 hover:text-red-600"} cursor-pointer`} />
-    </div>)
-  }
-
-  const handlePreparationQueue = (status: StatusPedido, id?: number) => async () => {
-    if (!id) return;
-
-    if (status === 0) {
-      return toast.error("Pedido já está em fila de preparo.");
-    }
-
-    Swal.fire({
-      title: 'Confirmação',
-      text: `Deseja realmente alterar o status para "Em fila de preparo"?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      iconColor: '#ef4444',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Sim, alterar!',
-      background: '#333',
-      color: '#fff'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const dto: AlterarPedidoDto = {
-          codigoPedido: id,
-          statusPedido: 0
-        };
-  
-        mutateStatusOrder.mutate(dto);
-      }
-    })
-  };
-
-  const handleInPreparation = (status: StatusPedido, id?: number) => async () => {
-    if (!id) return;
-
-    if (status === 1) {
-      return toast.error("Pedido já está em preparo.");
-    }
-
-    Swal.fire({
-      title: 'Confirmação',
-      text: `Deseja realmente alterar o status para "Em preparo"?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      iconColor: '#ef4444',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Sim, alterar!',
-      background: '#333',
-      color: '#fff'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const dto: AlterarPedidoDto = {
-          codigoPedido: id,
-          statusPedido: 1
-        };
-
-        mutateStatusOrder.mutate(dto);
-      }
-    })
-  };
-
-  const handleDeliverQueue = (status: StatusPedido, id?: number) => async () => {
-    if (!id) return;
-
-    if (status === 2) {
-      return toast.error("Pedido já está em fila de entrega.");
-    }
-
-    Swal.fire({
-      title: 'Confirmação',
-      text: `Deseja realmente alterar o status para "Fila de entrega"?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      iconColor: '#ef4444',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Sim, alterar!',
-      background: '#333',
-      color: '#fff'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const dto: AlterarPedidoDto = {
-          codigoPedido: id,
-          statusPedido: 2
-        };
-
-        mutateStatusOrder.mutate(dto);
-      }
-    })
-  };
-
-  const handleOrderFinished = (status: StatusPedido, id?: number) => async () => {
-    if (!id) return;
-
-    if (status === 3) {
-      return toast.error("Pedido já está finalizado.");
-    }
-
-    Swal.fire({
-      title: 'Confirmação',
-      text: `Deseja realmente alterar o status para "Finalizado"?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      iconColor: '#ef4444',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Sim, alterar!',
-      background: '#333',
-      color: '#fff'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const dto: AlterarPedidoDto = {
-          codigoPedido: id,
-          statusPedido: 3
-        };
-
-        mutateStatusOrder.mutate(dto);
-      }
-    })
-  };
-
-  const handleOrderCancelar = (status: StatusPedido, id?: number) => async () => {
-    if (!id) return;
-
-    if (status === 4) {
-      return toast.error("Pedido já está cancelado.");
-    }
-    Swal.fire({
-      title: 'Confirmação',
-      text: `Deseja realmente cancelar o pedido?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      iconColor: '#ef4444',
-      cancelButtonText: 'Não',
-      confirmButtonText: 'Sim',
-      background: '#333',
-      color: '#fff'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const dto: AlterarPedidoDto = {
-          codigoPedido: id,
-          statusPedido: 4
-        };
-
-        mutateStatusOrder.mutate(dto);
-      }
-    })
-  };
-
   const mutateStatusOrder = useMutation(
     (s: AlterarPedidoDto) => api.put(`Pedido/Alterar/`, s),
     {
@@ -256,6 +90,121 @@ const OrderTable = ({ searchText }: Props) => {
     }
   );
 
+  if (isLoading) return <GenericLoading size={60} />;
+  if (error) return <div>ERRO</div>;
+  if (!orders?.length) return <div>SEM DADOS</div>;
+
+  type AlterarPedidoDto = {
+    codigoPedido: number;
+    statusPedido: number;
+  };
+
+  const ColumnUpdateData = ({
+    status,
+    id,
+  }: {
+    status: StatusPedido;
+    id?: number;
+  }) => {
+    return (
+      <div className="update-order-column">
+        <Timer
+          weight={`${status === StatusPedido.FilaDePreparo ? "fill" : "thin"}`}
+          onClick={() =>
+            handleAlterarStatusPedido(status, StatusPedido.FilaDePreparo, id)
+          }
+          className={`${
+            status === StatusPedido.FilaDePreparo
+              ? "text-yellow-400"
+              : "text-stone-300 hover:text-yellow-400"
+          } cursor-pointer`}
+        />
+
+        <Hourglass
+          weight={`${status === StatusPedido.EmPreparo ? "fill" : "thin"}`}
+          onClick={() =>
+            handleAlterarStatusPedido(status, StatusPedido.EmPreparo, id)
+          }
+          className={`${
+            status === StatusPedido.EmPreparo
+              ? "text-emerald-400"
+              : "text-stone-3000 hover:text-emerald-400"
+          } cursor-pointer`}
+        />
+        <Package
+          weight={`${status === StatusPedido.FilaDeEntrega ? "fill" : "thin"}`}
+          onClick={() =>
+            handleAlterarStatusPedido(status, StatusPedido.FilaDeEntrega, id)
+          }
+          className={`${
+            status === StatusPedido.FilaDeEntrega
+              ? "text-sky-400"
+              : "text-stone-300 hover:text-sky-400"
+          } cursor-pointer`}
+        />
+        <Check
+          weight={`${status === StatusPedido.Finalizado ? "fill" : "thin"}`}
+          onClick={() =>
+            handleAlterarStatusPedido(status, StatusPedido.Finalizado, id)
+          }
+          className={`${
+            status === StatusPedido.Finalizado
+              ? "text-lime-400"
+              : "text-stone-300 hover:text-lime-400"
+          } cursor-pointer`}
+        />
+        <XCircle
+          weight={`${status === StatusPedido.Cancelado ? "fill" : "thin"}`}
+          onClick={() =>
+            handleAlterarStatusPedido(status, StatusPedido.Cancelado, id)
+          }
+          className={`${
+            status === StatusPedido.Cancelado
+              ? "text-red-600"
+              : "text-stone-300 hover:text-red-600"
+          } cursor-pointer`}
+        />
+      </div>
+    );
+  };
+
+  const handleAlterarStatusPedido = (
+    status: StatusPedido,
+    statusColuna: StatusPedido,
+    id?: number
+  ) => {
+    if (!id) return;
+
+    if (status === statusColuna)
+      return toast.error(
+        `Pedido já está ${EnumStatusPedido.get(statusColuna)}`
+      );
+
+    Swal.fire({
+      title: "Confirmação",
+      text: `Deseja realmente alterar o status para ${EnumStatusPedido.get(
+        statusColuna
+      )}?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      iconColor: "#fec80a",
+      cancelButtonText: "Não",
+      confirmButtonText: "Sim",
+      background: "#333",
+      color: "#fff",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const dto: AlterarPedidoDto = {
+          codigoPedido: id,
+          statusPedido: statusColuna,
+        };
+
+        mutateStatusOrder.mutate(dto);
+      }
+    });
+  };
 
   const tableValuesWithIcons = (filteredOrders ?? orders).map(
     (order: PedidoSearchType) => ({
