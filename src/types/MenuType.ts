@@ -4,6 +4,7 @@ export type MenuType = {
   id?: number;
   descricao: string;
   subMenus: MenuSubMenusType[];
+  usar?: boolean;
 };
 
 export type MenuSubMenusType = {
