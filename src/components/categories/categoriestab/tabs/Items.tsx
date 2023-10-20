@@ -63,24 +63,26 @@ const CategoryItemsTab = ({
             <Plus size={24} />
           </button>
         </div>
-        <GenericTable
-          values={itensSelecionados.map((p) => ({
-            ...p,
-            excluir: (
-              <TrashSimple
-                className="cursor-pointer text-red-500"
-                onClick={() =>
-                  setItensSelecionados(
-                    itensSelecionados.filter(
-                      (item) => item.codigoProduto !== p.codigoProduto
+        <div className="h-80">
+          <GenericTable
+            values={itensSelecionados.map((p) => ({
+              ...p,
+              excluir: (
+                <TrashSimple
+                  className="cursor-pointer text-red-500"
+                  onClick={() =>
+                    setItensSelecionados(
+                      itensSelecionados.filter(
+                        (item) => item.codigoProduto !== p.codigoProduto
+                      )
                     )
-                  )
-                }
-              />
-            ),
-          }))}
-          columns={["codigoProduto", "nome", "excluir"]}
-        />
+                  }
+                />
+              ),
+            }))}
+            columns={["codigoProduto", "nome", "excluir"]}
+          />
+        </div>
       </div>
     </Tab.Panel>
   );
