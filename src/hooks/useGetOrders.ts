@@ -10,26 +10,40 @@ const useGetOrders = () => {
 
 const getOrders = () => {
   return (): Promise<PedidoType[]> =>
-    api.get(`Pedido/Listar`).then(({ data }) =>
-      data.body.map((pedido: PedidoType) => ({
-        id: pedido.id,
-        numero: pedido.numeroPedido,
-        codigoStatus: pedido.status,
-        valor: pedido.valorTotal,
-        "data/hora": format(
-          new Date(pedido.dataHoraPedido),
-          "dd/MM/yyyy hh:mm:ss",
-          { locale: ptBR }
-        ),
-        items: pedido.pedidoItems?.map((item) => ({
-          nome: item.nomeItem,
-          quantidade: item.qtd,
-          valor: item.valorUn,
-          total: item.valorTotal,
-          pago: item.pago ? "Sim" : "Não",
-        })),
-      }))
-    );
+    api
+      .get(`Pedido/Listar`, /* {
+        headers: {
+          filters: JSON.stringify([
+            {
+              property: "DataHoraPedido",
+              operator: "greaterOrEqual",
+              value: new Date().toISOString(),
+              and: true,
+              not: false
+            },
+          ]),
+        },
+      } */)
+      .then(({ data }) =>
+        data.body.map((pedido: PedidoType) => ({
+          id: pedido.id,
+          numero: pedido.numeroPedido,
+          codigoStatus: pedido.status,
+          valor: pedido.valorTotal,
+          "data/hora": format(
+            new Date(pedido.dataHoraPedido),
+            "dd/MM/yyyy hh:mm:ss",
+            { locale: ptBR }
+          ),
+          items: pedido.pedidoItems?.map((item) => ({
+            nome: item.nomeItem,
+            quantidade: item.qtd,
+            valor: item.valorUn,
+            total: item.valorTotal,
+            pago: item.pago ? "Sim" : "Não",
+          })),
+        }))
+      );
 };
 
 export default useGetOrders;
