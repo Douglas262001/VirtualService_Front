@@ -109,14 +109,14 @@ const MenuTable = ({ searchText }: Props) => {
           weight="fill"
           size={40}
           onClick={() => mutationPararUsar.mutate(menu.id)}
-          className="text-green-600 cursor-pointer"
+          className="text-lime-400 cursor-pointer"
         />
       ) : (
         <ToggleLeft
           weight="fill"
           size={40}
           onClick={() => mutationUsar.mutate(menu.id)}
-          className="text-red-600 cursor-pointer"
+          className="text-red-400 cursor-pointer"
         />
       ),
       ...menu,

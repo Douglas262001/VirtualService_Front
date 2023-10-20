@@ -5,7 +5,6 @@ import { useRegister } from "context/register/RegisterContext";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ItensComanda, ItensComandaSearch } from "types/Caixa";
-import "./index.modules.css";
 
 const ListaItens = () => {
   const { codigoComanda } = useRegister();
@@ -47,7 +46,7 @@ const ListaItens = () => {
   if (isLoading) return <GenericLoading />;
 
   if (!itensComanda.length)
-    return <p className="text-center text-[#303030]">Nenhum item encontrado</p>;
+    return <p className="text-center text-[#ffff]">Nenhum item encontrado</p>;
 
   const handleChangeCheckbox = (id: number) => {
     setItensSelecionados((prev) => {
@@ -60,7 +59,7 @@ const ListaItens = () => {
   };
 
   return (
-    <div className="h-[530px] bg-zinc-700 rounded-lg border-4 border-zinc-700">
+    <div className="h-[400px] bg-zinc-700 rounded-lg border-4 border-zinc-700">
       <GenericTable
         values={itensComanda?.map((item) => ({
           "": (

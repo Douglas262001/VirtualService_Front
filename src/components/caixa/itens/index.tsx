@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@utils/queryClient";
 import api from "@utils/api";
+import Swal from "sweetalert2";
 
 const ItensContainer = () => {
   const { caixaGeral, numeroComanda } = useRegister();
@@ -15,19 +16,28 @@ const ItensContainer = () => {
     mutationPagar.mutate(caixaGeral);
   };
 
-  const mutationPagar= useMutation(
+  const mutationPagar = useMutation(
     (s: typeof caixaGeral) => {
       return api.post(`Caixa/Pagar`, s);
     },
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["getMenus"]);
-        toast.success("Pedido pago com sucesso!");
+        Swal.fire({
+          icon: "success",
+          background: "#333",
+          color: "#cccccc",
+          iconColor: "#bef264",
+          title: "Pedido pago com sucesso!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       },
       onError: (error: any) => {
         toast.error(error.response.data.reasonPhrase);
       },
-    });
+    }
+  );
 
   if (!numeroComanda)
     return (
@@ -41,14 +51,23 @@ const ItensContainer = () => {
 
   return (
     <div className="bg-zinc-800 w-[50%] h-[97.5vh] rounded-md p-5 mr-2 flex flex-col text-[#cccccc]">
-      <h2 className="text-2xl font-bold mb-2">Comanda {numeroComanda}</h2>
+      <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-between items-center py-2 my-2">
+        <h2 className="text-2xl font-bold mb-2 w-[50%]">
+          Comanda {numeroComanda}
+        </h2>
+        <h2 className="text-2xl font-bold mb-2 w-[50%]">
+          Mesa {caixaGeral?.numeroQuartoMesa}
+        </h2>
+      </div>
       <div className="text-[#cccccc] max-h-96 itens-caixa">
         <ListaItens />
         <ReceberCaixaGeral />
         <AcoesItens />
         <div className="w-[100%] h-20 content-end	">
-          <button onClick={handlePagar()} 
-            className="w-1/2 h-12 px-6 text-zinc-900 transition-colors duration-150 bg-lime-400 rounded-lg focus:shadow-outline hover:bg-lime-600 text-2xl font-semibold my-5 ml-[50%]">
+          <button
+            onClick={handlePagar()}
+            className="w-1/2 h-12 px-6 text-zinc-900 transition-colors duration-150 bg-lime-400 rounded-lg focus:shadow-outline hover:bg-lime-600 text-2xl font-semibold my-5 ml-[50%]"
+          >
             Receber e finalizar
           </button>
         </div>
