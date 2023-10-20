@@ -1,6 +1,6 @@
 import * as React from "react";
 import CardComanda from "./CardComanda";
-import { ComandasAbertas } from "types/Caixa";
+import { ComandasAbertas } from "types/CaixaGeralType";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import api from "@utils/api";
