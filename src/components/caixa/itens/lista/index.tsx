@@ -5,7 +5,7 @@ import { useRegister } from "context/register/RegisterContext";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ItensComanda, ItensComandaSearch } from "types/Caixa";
-import "./index.css";
+import "./index.modules.css";
 
 const ListaItens = () => {
   const { codigoComanda } = useRegister();
@@ -60,20 +60,22 @@ const ListaItens = () => {
   };
 
   return (
-    <GenericTable
-      values={itensComanda?.map((item) => ({
-        "": (
-          <input
-            type="checkbox"
-            className="checkbox"
-            onChange={() => handleChangeCheckbox(item.id)}
-            checked={itensSelecionados.some((p) => p === item.id)}
-          />
-        ),
-        ...item,
-      }))}
-      columns={["", "nome", "qntd", "valor", "total", "pago"]}
-    />
+    <div className="h-[530px] bg-zinc-700 rounded-lg border-4 border-zinc-700">
+      <GenericTable
+        values={itensComanda?.map((item) => ({
+          "": (
+            <input
+              type="checkbox"
+              className="checkbox"
+              onChange={() => handleChangeCheckbox(item.id)}
+              checked={itensSelecionados.some((p) => p === item.id)}
+            />
+          ),
+          ...item,
+        }))}
+        columns={["", "nome", "qntd", "valor", "total", "pago"]}
+      />
+    </div>
   );
 };
 

@@ -1,11 +1,14 @@
 import api from "@utils/api";
 import * as React from "react";
+import { CaixaGeral,  } from "types/Caixa";
 
 type IRegisterContext = {
   codigoComanda: number;
   setCodigoComanda: React.Dispatch<React.SetStateAction<number>>;
   numeroComanda: number;
   setNumeroComanda: React.Dispatch<React.SetStateAction<number>>;
+  setCaixaGeral: React.Dispatch<React.SetStateAction<CaixaGeral | undefined>>;
+  caixaGeral?: CaixaGeral;
   calcular: (dto: CalculadorDto) => Promise<number>;
 };
 
@@ -36,7 +39,8 @@ export const ResgisterContextProvider = ({
 }: React.PropsWithChildren) => {
   const [codigoComanda, setCodigoComanda] = React.useState<number>(0);
   const [numeroComanda, setNumeroComanda] = React.useState<number>(0);
-
+  const [caixaGeral, setCaixaGeral] = React.useState<CaixaGeral>();
+  
   const calcular = async (dto: CalculadorDto) => {
     const response = await api.post("Caixa/CalculadoraCaixa", dto);
 
@@ -51,6 +55,8 @@ export const ResgisterContextProvider = ({
         numeroComanda,
         setNumeroComanda,
         calcular,
+        setCaixaGeral,
+        caixaGeral
       }}
     >
       {children}
