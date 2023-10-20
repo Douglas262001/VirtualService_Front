@@ -3,10 +3,9 @@ import GenericTable from "@components/base/GenericTable";
 import useFilterData from "@hooks/useFilterData";
 import {
   PencilSimple,
+  ToggleLeft,
+  ToggleRight,
   TrashSimple,
-// //   LockSimpleOpen,
-// //   LockSimple,
-// //   Clock,
 } from "phosphor-react";
 import { useMutation } from "@tanstack/react-query";
 import api from "@utils/api";
@@ -33,161 +32,109 @@ const MenuTable = ({ searchText }: Props) => {
     (s?: number) => api.delete(`Menu/Excluir/${s}`),
     {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(["getTags"]);
+        await queryClient.invalidateQueries(["getMenus"]);
         toast.success("Menu excluído com sucesso!");
       },
-      onError: () => {
-        toast.error("Erro ao excluir menu");
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
+      },
+    }
+  );
+
+  const mutationUsar = useMutation((s?: number) => api.put(`Menu/Usar/${s}`), {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(["getMenus"]);
+
+      toast.success("Menu alterado com sucesso!");
+    },
+    onError: (error: any) => {
+      toast.error(error.response.data.reasonPhrase);
+    },
+  });
+
+  const mutationPararUsar = useMutation(
+    (s?: number) => api.put(`Menu/PararDeUsar/${s}`),
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(["getMenus"]);
+
+        toast.success("Menu alterado com sucesso!");
+      },
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
       },
     }
   );
 
   const handleDeleteMenu = (id?: number) => async () => {
     if (!id) return;
-    
+
     Swal.fire({
-      title: 'Confirmação',
+      title: "Confirmação",
       text: "Deseja realmente excluir este menu?",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      iconColor: '#ef4444',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Sim, excluir!',
-      background: '#333',
-      color: '#fff'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      iconColor: "#ef4444",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Sim, excluir!",
+      background: "#333",
+      color: "#fff",
     }).then((result) => {
       if (result.isConfirmed) {
         mutationDelete.mutate(id);
       }
-    })
+    });
   };
-
-//   const mutationDisableTag = useMutation(
-//     (numero?: number) => api.put(`Tags/BloquearTag/${numero}`),
-//     {
-//       onSuccess: async () => {
-//         await queryClient.invalidateQueries(["getTags"]);
-//         toast.success("Comanda bloqueada com sucesso!");
-//       },
-//       onError: () => {
-//         toast.error("Erro ao bloquear comanda");
-//       },
-//     }
-//   );
-
-//   const handleDisableTag = (numero?: number) => async () => {
-//     if (!numero) return;
-
-//     const confirmDelete = confirm("Deseja realmente bloquear esta comanda?");
-
-//     if (!confirmDelete) return;
-
-//     mutationDisableTag.mutate(numero);
-//   };
-
-//   const mutationActiveTag = useMutation(
-//     (numero?: number) => api.put(`Tags/LiberarTag/${numero}`),
-//     {
-//       onSuccess: async () => {
-//         await queryClient.invalidateQueries(["getTags"]);
-//         toast.success("Comanda liberada com sucesso!");
-//       },
-//       onError: () => {
-//         toast.error("Erro ao liberar comanda");
-//       },
-//     }
-//   );
-
-//   const handleActiveTag = (numero?: number) => async () => {
-//     if (!numero) return;
-
-//     mutationActiveTag.mutate(numero);
-//   };
-
-//   const handleInUse = () => async () => {
-//     return toast.error("Comanda em uso");
-//   };
-
-//   const iconActiveInactive = (status: number, numero?: number) => {
-//     switch (status) {
-//       case 0:
-//         return (
-//           <LockSimpleOpen
-//             onClick={handleActiveTag(numero)}
-//             size={24}
-//             className="cursor-pointer text-green-500"
-//           />
-//         );
-//       case 1:
-//         return (
-//           <LockSimple
-//             onClick={handleDisableTag(numero)}
-//             size={24}
-//             className="cursor-pointer text-red-500"
-//           />
-//         );
-//       case 2:
-//         return (
-//           <Clock
-//             onClick={handleInUse()}
-//             size={24}
-//             className="cursor-pointer text-yellow-500"
-//           />
-//         );
-//     }
-//   };
-
-//   const Status = (status: number) =>{
-//     switch (status) {
-//       case 0:
-//         return (
-//           <div className="tag-bloqueada" >Bloqueada</div>
-//         );
-//       case 1:
-//         return (
-//           <div className="tag-liberada">Liberada</div>
-//         );
-//       case 2:
-//         return (
-//           <div className="tag-ocupada">Em uso</div>
-//         );
-//     }
-//   }
 
   if (isLoading) return <GenericLoading size={60} />;
   if (error) return <div>ERRO</div>;
   if (!menus?.length) return <div>Não existem menus cadastrados</div>;
 
-  const tableValuesWithIcons = (filteredMenus ?? menus).map((menu: MenuType) => ({
-    // "Bloquear / Liberar": iconActiveInactive(tag.status, tag.numero),
-    Editar: (
-      <PencilSimple
-      onClick={() => {
-        setMenu(menu);
-        setIsOpen(true);
-      }}
-      className="cursor-pointer"
-      size={24}
-      />
+  const tableValuesWithIcons = (filteredMenus ?? menus).map(
+    (menu: MenuType) => ({
+      Editar: (
+        <PencilSimple
+          onClick={() => {
+            setMenu(menu);
+            setIsOpen(true);
+          }}
+          className="cursor-pointer"
+          size={24}
+        />
+      ),
+      "usar/parar": menu.usar ? (
+        <ToggleRight
+          weight="fill"
+          size={40}
+          onClick={() => mutationPararUsar.mutate(menu.id)}
+          className="text-green-600 cursor-pointer"
+        />
+      ) : (
+        <ToggleLeft
+          weight="fill"
+          size={40}
+          onClick={() => mutationUsar.mutate(menu.id)}
+          className="text-red-600 cursor-pointer"
+        />
       ),
       ...menu,
-    //   Status: Status(tag.status),
-    Excluir: (
-      <TrashSimple
-        onClick={handleDeleteMenu(menu.id)}
-        size={24}
-        className="cursor-pointer text-red-500"
-      />
-    ),
-  }));
+      excluir: (
+        <TrashSimple
+          onClick={handleDeleteMenu(menu.id)}
+          size={32}
+          className="cursor-pointer text-red-500"
+        />
+      ),
+    })
+  );
 
   return (
     <>
       <GenericTable
         values={tableValuesWithIcons}
-        columns={Object.keys(tableValuesWithIcons[0] || {})}
+        columns={["Editar", "usar/parar", "id", "descricao", "excluir"]}
       />
       <MenuWindow
         menu={menu}

@@ -12,6 +12,7 @@ const getMenus = () => {
       data.body.map((menu: MenuType) => ({
         id: menu.id,
         descricao: menu.descricao,
+        usar: menu.usar,
         // subMenus: menu.subMenus?.map((item) => ({
         //   id: item.id,
         //   codigoSubMenu: item.codigoSubMenu,

@@ -362,34 +362,36 @@ const StepWindow = ({
               </button>
             )}
           </div>
-          <GenericTable
-            values={etapasItens.map((item, index) => ({
-              editar: item.itemCadastrado ? (
-                <SelectionSlash size={20} />
-              ) : (
-                <PencilSimple
-                  className="cursor-pointer"
-                  size={20}
-                  onClick={() => handleClickEditarRow(item, index)}
-                />
-              ),
-              nome: item.nome,
-              valor: item.valor?.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              }),
-              excluir: (
-                <TrashSimple
-                  onClick={() => {
-                    setEtapasItens(etapasItens.filter((_, i) => i !== index));
-                  }}
-                  className="cursor-pointer text-red-500"
-                  size={20}
-                />
-              ),
-            }))}
-            columns={["editar", "nome", "valor", "excluir"]}
-          />
+          <div className="h-72">
+            <GenericTable
+              values={etapasItens.map((item, index) => ({
+                editar: item.itemCadastrado ? (
+                  <SelectionSlash size={20} />
+                ) : (
+                  <PencilSimple
+                    className="cursor-pointer"
+                    size={20}
+                    onClick={() => handleClickEditarRow(item, index)}
+                  />
+                ),
+                nome: item.nome,
+                valor: item.valor?.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL",
+                }),
+                excluir: (
+                  <TrashSimple
+                    onClick={() => {
+                      setEtapasItens(etapasItens.filter((_, i) => i !== index));
+                    }}
+                    className="cursor-pointer text-red-500"
+                    size={20}
+                  />
+                ),
+              }))}
+              columns={["editar", "nome", "valor", "excluir"]}
+            />
+          </div>
         </div>
         <div className="modal-action">
           <ButtonCancel type="button" onClick={handleClickCancelar} />

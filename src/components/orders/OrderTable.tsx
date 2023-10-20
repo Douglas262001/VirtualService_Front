@@ -71,8 +71,8 @@ const OrderTable = ({ searchText }: Props) => {
         await queryClient.invalidateQueries(["getSteps"]);
         toast.success("Pedido impresso com sucesso!");
       },
-      onError: () => {
-        toast.error("Erro ao imprimir pedido");
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
       },
     }
   );
@@ -109,59 +109,63 @@ const OrderTable = ({ searchText }: Props) => {
     return (
       <div className="update-order-column">
         <Timer
-          weight={`${status === StatusPedido.FilaDePreparo ? "fill" : "thin"}`}
+          weight="regular"
           onClick={() =>
             handleAlterarStatusPedido(status, StatusPedido.FilaDePreparo, id)
           }
+          size={35}
           className={`${
             status === StatusPedido.FilaDePreparo
-              ? "text-yellow-400"
-              : "text-stone-300 hover:text-yellow-400"
+              ? "text-[#303030] rounded-md bg-yellow-400 pt-[2px]"
+              : "text-stone-300 border border-stone-300 rounded-md hover:text-yellow-400 hover:border-yellow-400 pt-[2px]"
           } cursor-pointer`}
         />
-
         <Hourglass
-          weight={`${status === StatusPedido.EmPreparo ? "fill" : "thin"}`}
+          weight="regular"
           onClick={() =>
             handleAlterarStatusPedido(status, StatusPedido.EmPreparo, id)
           }
+          size={35}
           className={`${
             status === StatusPedido.EmPreparo
-              ? "text-emerald-400"
+              ? "text-[#303030] rounded-md bg-emerald-400"
               : "text-stone-3000 hover:text-emerald-400"
           } cursor-pointer`}
         />
         <Package
-          weight={`${status === StatusPedido.FilaDeEntrega ? "fill" : "thin"}`}
+          weight="regular"
+          size={35}
           onClick={() =>
             handleAlterarStatusPedido(status, StatusPedido.FilaDeEntrega, id)
           }
           className={`${
             status === StatusPedido.FilaDeEntrega
-              ? "text-sky-400"
-              : "text-stone-300 hover:text-sky-400"
+              ? "text-[#303030] rounded-md bg-sky-400"
+              : "text-stone-300 rounded-md border border-stone-300 hover:text-sky-400 hover:border-sky-400"
           } cursor-pointer`}
         />
         <Check
           weight={`${status === StatusPedido.Finalizado ? "fill" : "thin"}`}
+          size={35}
           onClick={() =>
             handleAlterarStatusPedido(status, StatusPedido.Finalizado, id)
           }
           className={`${
             status === StatusPedido.Finalizado
-              ? "text-lime-400"
-              : "text-stone-300 hover:text-lime-400"
+              ? "text-[#303030] bg-lime-400 rounded-md "
+              : "text-stone-300 hover:text-lime-400 rounded-md border border-stone-300 hover:border-lime-400"
           } cursor-pointer`}
         />
         <XCircle
           weight={`${status === StatusPedido.Cancelado ? "fill" : "thin"}`}
+          size={35}
           onClick={() =>
             handleAlterarStatusPedido(status, StatusPedido.Cancelado, id)
           }
           className={`${
             status === StatusPedido.Cancelado
-              ? "text-red-600"
-              : "text-stone-300 hover:text-red-600"
+              ? "text-[#303030] bg-red-600 rounded-md"
+              : "text-stone-300 hover:text-red-600 rounded-md border border-stone-300 hover:border-red-600"
           } cursor-pointer`}
         />
       </div>

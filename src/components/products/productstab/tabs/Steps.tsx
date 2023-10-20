@@ -61,22 +61,24 @@ const Steps = ({
           <Plus size={24} />
         </button>
       </div>
-      <GenericTable
-        values={etapasSelecionadas.map((p) => ({
-          ...p,
-          excluir: (
-            <TrashSimple
-              className="cursor-pointer text-red-500"
-              onClick={() =>
-                setEtapasSelecionadas(
-                  etapasSelecionadas.filter((item) => item.id !== p.id)
-                )
-              }
-            />
-          ),
-        }))}
-        columns={["codigoEtapa", "nome", "excluir"]}
-      />
+      <div className="h-80">
+        <GenericTable
+          values={etapasSelecionadas.map((p) => ({
+            ...p,
+            excluir: (
+              <TrashSimple
+                className="cursor-pointer text-red-500"
+                onClick={() =>
+                  setEtapasSelecionadas(
+                    etapasSelecionadas.filter((item) => item.id !== p.id)
+                  )
+                }
+              />
+            ),
+          }))}
+          columns={["codigoEtapa", "nome", "excluir"]}
+        />
+      </div>
     </div>
   );
 };
