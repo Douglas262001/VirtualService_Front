@@ -113,7 +113,7 @@ const OrderTable = ({ searchText }: Props) => {
           onClick={() =>
             handleAlterarStatusPedido(status, StatusPedido.FilaDePreparo, id)
           }
-          size={35}
+          size={32}
           className={`${
             status === StatusPedido.FilaDePreparo
               ? "text-[#303030] rounded-md bg-yellow-400 pt-[2px]"
@@ -125,7 +125,7 @@ const OrderTable = ({ searchText }: Props) => {
           onClick={() =>
             handleAlterarStatusPedido(status, StatusPedido.EmPreparo, id)
           }
-          size={35}
+          size={32}
           className={`${
             status === StatusPedido.EmPreparo
               ? "text-[#303030] rounded-md bg-emerald-400"
@@ -134,7 +134,7 @@ const OrderTable = ({ searchText }: Props) => {
         />
         <Package
           weight="regular"
-          size={35}
+          size={32}
           onClick={() =>
             handleAlterarStatusPedido(status, StatusPedido.FilaDeEntrega, id)
           }
@@ -146,7 +146,7 @@ const OrderTable = ({ searchText }: Props) => {
         />
         <Check
           weight={`${status === StatusPedido.Finalizado ? "fill" : "thin"}`}
-          size={35}
+          size={32}
           onClick={() =>
             handleAlterarStatusPedido(status, StatusPedido.Finalizado, id)
           }
@@ -158,14 +158,14 @@ const OrderTable = ({ searchText }: Props) => {
         />
         <XCircle
           weight={`${status === StatusPedido.Cancelado ? "fill" : "thin"}`}
-          size={35}
+          size={32}
           onClick={() =>
             handleAlterarStatusPedido(status, StatusPedido.Cancelado, id)
           }
           className={`${
             status === StatusPedido.Cancelado
-              ? "text-[#303030] bg-red-600 rounded-md"
-              : "text-stone-300 hover:text-red-600 rounded-md border border-stone-300 hover:border-red-600"
+              ? "text-[#303030] bg-red-500 rounded-md"
+              : "text-stone-300 hover:text-red-500 rounded-md border border-stone-300 hover:border-red-500"
           } cursor-pointer`}
         />
       </div>
