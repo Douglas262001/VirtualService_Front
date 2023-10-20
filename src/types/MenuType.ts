@@ -1,11 +1,21 @@
-export type MenuType = {
-    id?: number;
-    descricao: string;
-    // subMenus: SubMenusType[];
-}
+import { SubMenuType } from "./SubMenu";
 
-// export type SubMenusType = {
-//     id?: number,
-//     codigoSubMenu?: number,
-//     seq?: number
-// }
+export type MenuType = {
+  id?: number;
+  descricao: string;
+  subMenus: MenuSubMenusType[];
+};
+
+export type MenuSubMenusType = {
+  id?: number;
+  codigoSubMenu: number;
+  seq: number;
+  subMenu?: SubMenuType;
+};
+
+export type SubMenuTableType = {
+  id?: number;
+  codigoSubMenu: number;
+  seq: number;
+  nome: string;
+};

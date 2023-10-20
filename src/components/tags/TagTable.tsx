@@ -16,8 +16,8 @@ import useGetTag from "@hooks/useGetTag";
 import { TagType } from "types/TagType";
 import { useState } from "react";
 import TagWindow from "./TagWindow";
-import "./TagTable.Modules.css"
-import Swal from "sweetalert2"
+import "./TagTable.Modules.css";
+import Swal from "sweetalert2";
 
 type Props = {
   searchText?: string;
@@ -37,8 +37,8 @@ const TagTable = ({ searchText }: Props) => {
         await queryClient.invalidateQueries(["getTags"]);
         toast.success("Comanda excluída com sucesso!");
       },
-      onError: () => {
-        toast.error("Erro ao excluir comanda");
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
       },
     }
   );
@@ -47,22 +47,22 @@ const TagTable = ({ searchText }: Props) => {
     if (!id) return;
 
     Swal.fire({
-      title: 'Confirmação',
+      title: "Confirmação",
       text: "Deseja realmente excluir esta comanda?",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      iconColor: '#ef4444',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Sim, excluir!',
-      background: '#333',
-      color: '#fff'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      iconColor: "#ef4444",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Sim, excluir!",
+      background: "#333",
+      color: "#fff",
     }).then((result) => {
       if (result.isConfirmed) {
         mutationDelete.mutate(id);
       }
-    })
+    });
   };
 
   const mutationDisableTag = useMutation(
@@ -72,8 +72,8 @@ const TagTable = ({ searchText }: Props) => {
         await queryClient.invalidateQueries(["getTags"]);
         toast.success("Comanda bloqueada com sucesso!");
       },
-      onError: () => {
-        toast.error("Erro ao bloquear comanda");
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
       },
     }
   );
@@ -82,22 +82,22 @@ const TagTable = ({ searchText }: Props) => {
     if (!numero) return;
 
     Swal.fire({
-      title: 'Confirmação',
+      title: "Confirmação",
       text: "Deseja realmente bloquear esta comanda?",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      iconColor: '#ef4444',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Sim, bloquear!',
-      background: '#333',
-      color: '#fff'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      iconColor: "#ef4444",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Sim, bloquear!",
+      background: "#333",
+      color: "#fff",
     }).then((result) => {
       if (result.isConfirmed) {
         mutationDisableTag.mutate(numero);
       }
-    })
+    });
   };
 
   const mutationActiveTag = useMutation(
@@ -107,8 +107,8 @@ const TagTable = ({ searchText }: Props) => {
         await queryClient.invalidateQueries(["getTags"]);
         toast.success("Comanda liberada com sucesso!");
       },
-      onError: () => {
-        toast.error("Erro ao liberar comanda");
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
       },
     }
   );
@@ -155,22 +155,28 @@ const TagTable = ({ searchText }: Props) => {
     }
   };
 
-  const Status = (status: number) =>{
+  const Status = (status: number) => {
     switch (status) {
       case 0:
         return (
-          <div className="tag-bloqueada px-5 py-2 rounded text-black text-sm font-semibold" >Bloqueada</div>
+          <div className="tag-bloqueada px-5 py-2 rounded text-black text-sm font-semibold">
+            Bloqueada
+          </div>
         );
       case 1:
         return (
-          <div className="tag-liberada px-5 py-2 rounded text-black text-sm font-semibold">Liberada</div>
+          <div className="tag-liberada px-5 py-2 rounded text-black text-sm font-semibold">
+            Liberada
+          </div>
         );
       case 2:
         return (
-          <div className="tag-ocupada px-5 py-2 rounded text-black text-sm font-semibold">Em uso</div>
+          <div className="tag-ocupada px-5 py-2 rounded text-black text-sm font-semibold">
+            Em uso
+          </div>
         );
     }
-  }
+  };
 
   if (isLoading) return <GenericLoading size={60} />;
   if (error) return <div>ERRO</div>;
@@ -180,16 +186,16 @@ const TagTable = ({ searchText }: Props) => {
     "Bloquear / Liberar": iconActiveInactive(tag.status, tag.numero),
     Editar: (
       <PencilSimple
-      onClick={() => {
-        setTag(tag);
-        setIsOpen(true);
-      }}
-      className="cursor-pointer"
-      size={24}
+        onClick={() => {
+          setTag(tag);
+          setIsOpen(true);
+        }}
+        className="cursor-pointer"
+        size={24}
       />
-      ),
-      ...tag,
-      Status: Status(tag.status),
+    ),
+    ...tag,
+    Status: Status(tag.status),
     Excluir: (
       <TrashSimple
         onClick={handleDeleteTag(tag.id)}
@@ -203,7 +209,14 @@ const TagTable = ({ searchText }: Props) => {
     <>
       <GenericTable
         values={tableValuesWithIcons}
-        columns={["Editar", "numero", "codigoQrCode",  "Bloquear / Liberar", "Status", "Excluir"]}
+        columns={[
+          "Editar",
+          "numero",
+          "codigoQrCode",
+          "Bloquear / Liberar",
+          "Status",
+          "Excluir",
+        ]}
       />
       <TagWindow
         tag={tag}

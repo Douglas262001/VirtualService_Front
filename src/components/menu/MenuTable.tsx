@@ -36,8 +36,8 @@ const MenuTable = ({ searchText }: Props) => {
         await queryClient.invalidateQueries(["getTags"]);
         toast.success("Menu excluído com sucesso!");
       },
-      onError: () => {
-        toast.error("Erro ao excluir menu");
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
       },
     }
   );
@@ -63,98 +63,6 @@ const MenuTable = ({ searchText }: Props) => {
       }
     })
   };
-
-//   const mutationDisableTag = useMutation(
-//     (numero?: number) => api.put(`Tags/BloquearTag/${numero}`),
-//     {
-//       onSuccess: async () => {
-//         await queryClient.invalidateQueries(["getTags"]);
-//         toast.success("Comanda bloqueada com sucesso!");
-//       },
-//       onError: () => {
-//         toast.error("Erro ao bloquear comanda");
-//       },
-//     }
-//   );
-
-//   const handleDisableTag = (numero?: number) => async () => {
-//     if (!numero) return;
-
-//     const confirmDelete = confirm("Deseja realmente bloquear esta comanda?");
-
-//     if (!confirmDelete) return;
-
-//     mutationDisableTag.mutate(numero);
-//   };
-
-//   const mutationActiveTag = useMutation(
-//     (numero?: number) => api.put(`Tags/LiberarTag/${numero}`),
-//     {
-//       onSuccess: async () => {
-//         await queryClient.invalidateQueries(["getTags"]);
-//         toast.success("Comanda liberada com sucesso!");
-//       },
-//       onError: () => {
-//         toast.error("Erro ao liberar comanda");
-//       },
-//     }
-//   );
-
-//   const handleActiveTag = (numero?: number) => async () => {
-//     if (!numero) return;
-
-//     mutationActiveTag.mutate(numero);
-//   };
-
-//   const handleInUse = () => async () => {
-//     return toast.error("Comanda em uso");
-//   };
-
-//   const iconActiveInactive = (status: number, numero?: number) => {
-//     switch (status) {
-//       case 0:
-//         return (
-//           <LockSimpleOpen
-//             onClick={handleActiveTag(numero)}
-//             size={24}
-//             className="cursor-pointer text-green-500"
-//           />
-//         );
-//       case 1:
-//         return (
-//           <LockSimple
-//             onClick={handleDisableTag(numero)}
-//             size={24}
-//             className="cursor-pointer text-red-500"
-//           />
-//         );
-//       case 2:
-//         return (
-//           <Clock
-//             onClick={handleInUse()}
-//             size={24}
-//             className="cursor-pointer text-yellow-500"
-//           />
-//         );
-//     }
-//   };
-
-//   const Status = (status: number) =>{
-//     switch (status) {
-//       case 0:
-//         return (
-//           <div className="tag-bloqueada" >Bloqueada</div>
-//         );
-//       case 1:
-//         return (
-//           <div className="tag-liberada">Liberada</div>
-//         );
-//       case 2:
-//         return (
-//           <div className="tag-ocupada">Em uso</div>
-//         );
-//     }
-//   }
 
   if (isLoading) return <GenericLoading size={60} />;
   if (error) return <div>ERRO</div>;

@@ -71,8 +71,8 @@ const OrderTable = ({ searchText }: Props) => {
         await queryClient.invalidateQueries(["getSteps"]);
         toast.success("Pedido impresso com sucesso!");
       },
-      onError: () => {
-        toast.error("Erro ao imprimir pedido");
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
       },
     }
   );
