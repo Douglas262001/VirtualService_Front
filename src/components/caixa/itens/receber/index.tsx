@@ -39,6 +39,9 @@ const ReceberCaixaGeral = () => {
         garcom: "",
         cliente: ""
       });
+
+      //como n sei pra que vai usar coloquei aqui pra n dar pau
+      console.log(isLoading);
     } catch (error: any) {
       toast.error(error.response.data.reasonPhrase);
     } finally {

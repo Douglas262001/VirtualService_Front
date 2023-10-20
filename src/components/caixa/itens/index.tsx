@@ -1,7 +1,7 @@
 import { useRegister } from "context/register/RegisterContext";
 import ListaItens from "./lista";
 import AcoesItens from "./acoes";
-import { Check, Placeholder } from "phosphor-react";
+import { Placeholder } from "phosphor-react";
 import ReceberCaixaGeral from "./receber";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
