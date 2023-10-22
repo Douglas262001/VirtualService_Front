@@ -1,13 +1,12 @@
 import api from "@utils/api";
 import { useRegister } from "context/register/RegisterContext";
 import { Gear } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import { ItensComanda } from "types/Caixa";
 
 const ReceberCaixaGeral = () => {
   const { codigoComanda, setCaixaGeral, caixaGeral } = useRegister();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     if (codigoComanda === 0) return;
 
@@ -15,7 +14,6 @@ const ReceberCaixaGeral = () => {
   }, [codigoComanda]);
 
   const buscarCaixaGeral = async () => {
-    setIsLoading(true);
     try {
       const response = await api.get(
         `Caixa/BuscarItensComanda/${codigoComanda}`
@@ -39,13 +37,8 @@ const ReceberCaixaGeral = () => {
         garcom: "",
         cliente: ""
       });
-
-      //como n sei pra que vai usar coloquei aqui pra n dar pau
-      console.log(isLoading);
     } catch (error: any) {
       toast.error(error.response.data.reasonPhrase);
-    } finally {
-      setIsLoading(false);
     }
   };  
 
