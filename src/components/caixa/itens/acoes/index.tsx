@@ -3,57 +3,78 @@ import { Divide, Plus } from "phosphor-react";
 import Swal from "sweetalert2";
 
 const AcoesItens = () => {
-  const { caixaGeral } = useRegister();
+  const { caixaGeral, calcular } = useRegister();
 
-  const handleDivide= () => async () => {
+  const handleDivide = () => async () => {
     Swal.fire({
-      title: 'Dividir para quantas pessoas?',
-      input: 'number',
+      title: "Dividir para quantas pessoas?",
+      input: "number",
       background: "#333",
       color: "#cccccc",
       inputAttributes: {
-        autocapitalize: 'off'
+        autocapitalize: "off",
       },
       showCancelButton: true,
-      confirmButtonText: 'Dividir',
-      cancelButtonText: 'Cancelar',
-      cancelButtonColor: '#ef4444',
-      confirmButtonColor: '#84cc16',
+      confirmButtonText: "Dividir",
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#ef4444",
+      confirmButtonColor: "#84cc16",
       showLoaderOnConfirm: true,
-      preConfirm: (login) => {
-        return fetch(`//api.github.com/users/${login}`)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(response.statusText)
+      preConfirm: (pessoas) => {
+        return calcular({
+          ...caixaGeral,
+          dividirEmQuantasPessoas: Number(pessoas),
+        })
+          .then((response: any) => {
+            if (!response.success) {
+              throw new Error(response.reasonPhrase);
             }
-            return response.json()
+            return response;
           })
-          .catch(error => {
-            Swal.showValidationMessage(
-              `Request failed: ${error}`
-            )
-          })
+          .catch((error: any) => {
+            Swal.showValidationMessage(`Algo deu errado: ${error}`);
+          });
       },
-      allowOutsideClick: () => !Swal.isLoading()
+      allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
       if (result.isConfirmed) {
+        debugger;
         Swal.fire({
-          title: `${result.value.login}'s avatar`,
-          imageUrl: result.value.avatar_url
-        })
+          title: `${result.value.body.valorTotalReceberPorPessoa.toLocaleString(
+            "pt-br",
+            {
+              style: "currency",
+              currency: "BRL",
+            }
+          )}`,
+          text: "Valor por pessoa",
+          showCancelButton: true,
+          color: "#cccccc",
+          background: "#333",
+          cancelButtonColor: "#ef4444",
+          confirmButtonColor: "#84cc16",
+          cancelButtonText: "Cancelar",
+          confirmButtonText: "Receber e finalizar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            document.getElementById('receber-e-finalizar')?.click()
+          }
+        });
       }
-    })
+    });
   };
 
   return (
     <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-between items-center py-5	">
       <div className="flex gap-2">
-        <button onClick={handleDivide()}
-          className="btn btn-info font-semibold text-zinc-900 text-base">
+        <button
+          onClick={handleDivide()}
+          className="btn btn-info font-semibold text-zinc-900 text-base"
+        >
           Dividir
           <Divide size={24} />
         </button>
-        <button className="btn btn-primary text-base">
+        <button onClick={handleDivide()} className="btn btn-primary text-base">
           Item não cadastrado <Plus size={24} />
         </button>
       </div>
