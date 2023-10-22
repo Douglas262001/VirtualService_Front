@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SidebarData from "./SidebarData";
 import { ArrowLeft, ArrowRight, SignOut } from "phosphor-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames";
-
 import useAuth from "@hooks/auth";
 
 const Sidebar = () => {
@@ -13,16 +12,25 @@ const Sidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
 
+  const { pathname } = useLocation();
+
   const [activeId, setActiveId] = useState(1);
 
   const handleLogOut = async () => {
     signOut();
   };
 
+  useEffect(() => {
+    if (pathname !== "tablets") return;
+
+    setIsCollapsed(true);
+  }, [pathname]);
+
   return (
     <aside
+      hidden={pathname === "/tablets"}
       className={classNames(
-        "min-h-[calc(100vh-5.7rem)] text-[#303030] min-w-min pb-6 text-center transition-[width] duration-300 ease-in bg-gradient-to-b from-[#fec80a] to-[#d4a90b] w-[20%] m-2 rounded-md p-5",
+        "min-h-[calc(100vh-5.7rem)]  text-[#303030] min-w-min pb-6 text-center transition-[width] duration-300 ease-in bg-gradient-to-b from-[#fec80a] to-[#d4a90b] w-[20%] m-2 rounded-md p-5",
         {
           "w-[5%]": isCollapsed,
         }

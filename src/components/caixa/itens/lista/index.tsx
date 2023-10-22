@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { ItensComanda, ItensComandaSearch } from "types/Caixa";
 
 const ListaItens = () => {
-  const { codigoComanda } = useRegister();
+  const { codigoComanda, setCaixaGeral, caixaGeral } = useRegister();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     if (codigoComanda === 0) return;
@@ -17,6 +17,15 @@ const ListaItens = () => {
 
   const [itensComanda, setItensComanda] = useState<ItensComandaSearch[]>([]);
   const [itensSelecionados, setItensSelecionados] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (!itensSelecionados.length) return;
+
+    setCaixaGeral({
+      ...caixaGeral,
+      codigosPedidosItens: [...itensSelecionados],
+    });
+  }, [itensSelecionados]);
 
   const buscarItensComanda = async () => {
     setIsLoading(true);
@@ -43,12 +52,20 @@ const ListaItens = () => {
     }
   };
 
-  if (isLoading) return <GenericLoading />;
+  if (isLoading)
+    return (
+      <div className="h-[400px] bg-zinc-700 rounded-lg border-4 border-zinc-700 justify-center flex">
+        <GenericLoading />
+      </div>
+    );
 
   if (!itensComanda.length)
-    return <p className="text-center text-[#ffff]">Nenhum item encontrado</p>;
-
-  const handleChangeCheckbox = (id: number) => {
+    return (
+      <div className="h-[400px] bg-zinc-700 rounded-lg border-4 border-zinc-700 justify-center flex">
+        <p className="text-center text-[#ffff]">Nenhum item encontrado</p>
+      </div>
+    );
+  const handleChangeCheckbox = async (id: number) => {
     setItensSelecionados((prev) => {
       if (prev.some((p) => p === id)) {
         return prev.filter((p) => p !== id);

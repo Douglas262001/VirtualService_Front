@@ -26,6 +26,7 @@ import OrderItemsWindow from "./OrderItemsWindow";
 import OrderStatusWindow from "./OrderStatusWindow";
 import "./OrderTable.modules.css";
 import Swal from "sweetalert2";
+import { useLocation } from "react-router-dom";
 
 type Props = {
   searchText?: string;
@@ -55,6 +56,8 @@ const TagStatus = ({ status }: { status: StatusPedido }) => {
 };
 
 const OrderTable = ({ searchText }: Props) => {
+  const { pathname } = useLocation();
+
   const { data: orders, error, isLoading } = useGetOrders();
   const filteredOrders = useFilterData(orders, searchText);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -63,6 +66,18 @@ const OrderTable = ({ searchText }: Props) => {
   const [selectedOrder, setSelectedOrder] = useState<PedidoSearchType>();
   const [codigoStatus, setCodigoStatus] = useState<number>();
   const [codigoPedido, setCodigoPedido] = useState<number>(0);
+
+  const colunas = [
+    "Itens",
+    "Alterar",
+    "id",
+    "numero",
+    "valor",
+    "data/hora",
+    "Status",
+  ];
+
+  if (pathname === "/pedidos") colunas.push("Imprimir");
 
   const mutationImprimir = useMutation(
     (s?: ImprimirDto) => api.post(`Tenant/Imprimir`, s),
@@ -240,19 +255,7 @@ const OrderTable = ({ searchText }: Props) => {
 
   return (
     <>
-      <GenericTable
-        values={tableValuesWithIcons}
-        columns={[
-          "Itens",
-          "Alterar",
-          "id",
-          "numero",
-          "valor",
-          "data/hora",
-          "Status",
-          "Imprimir",
-        ]}
-      />
+      <GenericTable values={tableValuesWithIcons} columns={colunas} />
       <OrderItemsWindow
         numeroPedido={selectedOrder?.numero as number}
         items={selectedOrder?.items as PedidoItemsSearchType[]}

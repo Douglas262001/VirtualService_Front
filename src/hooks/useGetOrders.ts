@@ -11,19 +11,19 @@ const useGetOrders = () => {
 const getOrders = () => {
   return (): Promise<PedidoType[]> =>
     api
-      .get(`Pedido/Listar`, /* {
+      .get(`Pedido/Listar`, {
         headers: {
           filters: JSON.stringify([
             {
               property: "DataHoraPedido",
               operator: "greaterOrEqual",
-              value: new Date().toISOString(),
+              value: new Date(new Date().setHours(0, 0, 0, 0)),
               and: true,
               not: false
             },
           ]),
         },
-      } */)
+      })
       .then(({ data }) =>
         data.body.map((pedido: PedidoType) => ({
           id: pedido.id,
