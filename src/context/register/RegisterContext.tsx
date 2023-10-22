@@ -1,4 +1,5 @@
 import api from "@utils/api";
+import { de } from "date-fns/locale";
 import * as React from "react";
 import { CaixaGeral } from "types/Caixa";
 
@@ -9,13 +10,12 @@ type IRegisterContext = {
   setNumeroComanda: React.Dispatch<React.SetStateAction<number>>;
   setCaixaGeral: React.Dispatch<React.SetStateAction<CaixaGeral>>;
   caixaGeral: CaixaGeral;
-  calcular: (dto: CalculadorDto) => Promise<number>;
+  calcular: (dto: CalculadorDto) => Promise<unknown>;
   refetchComandas: boolean;
   setRefetchComandas: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type CalculadorDto = {
-  valorTotalItem: number;
   calculaDescontoPorPercentual: boolean;
   percDesconto: number;
   valorDesconto: number;
@@ -23,6 +23,7 @@ type CalculadorDto = {
   percTaxaServico: number;
   valorTaxaServico: number;
   dividirEmQuantasPessoas: number;
+  codigosPedidosItens: number[];
 };
 
 const RegisterContext = React.createContext<IRegisterContext | null>(null);
@@ -61,10 +62,33 @@ export const ResgisterContextProvider = ({
     cliente: "",
   });
 
-  const calcular = async (dto: CalculadorDto) => {
-    const response = await api.post("Caixa/CalculadoraCaixa", dto);
-
-    return response.data.body;
+  const calcular = (dto: CalculadorDto) => {
+    return new Promise((resolve, reject) => {
+      api
+        .post("Caixa/CalculadoraCaixa", dto)
+        .then((response) => {
+          if (response.data.success) {
+            setCaixaGeral({
+              ...caixaGeral,
+              calculaDescontoPorPercentual:
+                response.data.body.calculaDescontoPorPercentual,
+              calculaTaxaServicoPorPercentual:
+                response.data.body.calculaTaxaServicoPorPercentual,
+              dividirEmQuantasPessoas: Number(
+                response.data.body.dividirEmQuantasPessoas
+              ),
+              percDesconto: response.data.body.percDesconto,
+              percTaxaServico: response.data.body.percDesconto,
+              valorDesconto: response.data.body.valorDesconto,
+              valorTaxaServico: response.data.body.valorTaxaServico,
+            });
+            resolve(response.data);
+          }
+        })
+        .catch((e: any) => {
+          reject(e.response.data.reasonPhrase);
+        });
+    });
   };
 
   return (
@@ -78,7 +102,7 @@ export const ResgisterContextProvider = ({
         setCaixaGeral,
         caixaGeral,
         refetchComandas,
-        setRefetchComandas,
+        setRefetchComandas
       }}
     >
       {children}
