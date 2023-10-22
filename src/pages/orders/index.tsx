@@ -2,12 +2,18 @@ import OrderTable from "@components/orders/OrderTable";
 import { useState } from "react";
 
 const Orders = () => {
+  const dataAtual = new Date();
+
   const [searchText, setSearchText] = useState("");
   const [dataInicial, setDataInicial] = useState(
-    new Date().toISOString().slice(0, 10)
+    `${dataAtual.getFullYear()}-${
+      dataAtual.getMonth() + 1
+    }-${dataAtual.getDate()}`
   );
   const [dataFinal, setDataFinal] = useState(
-    new Date().toISOString().slice(0, 10)
+    `${dataAtual.getFullYear()}-${
+      dataAtual.getMonth() + 1
+    }-${dataAtual.getDate()}`
   );
   const [mostrarApenasAtivos, setMostrarApenasAtivos] = useState(false);
 

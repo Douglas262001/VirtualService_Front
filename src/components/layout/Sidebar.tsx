@@ -14,8 +14,6 @@ const Sidebar = () => {
 
   const { pathname } = useLocation();
 
-  const [activeId, setActiveId] = useState(1);
-
   const handleLogOut = async () => {
     signOut();
   };
@@ -65,7 +63,7 @@ const Sidebar = () => {
                 className={classNames(
                   "p-5 rounded-md hover:bg-white/30 backdrop-blur-sm transition ease-in-out duration-300",
                   {
-                    "bg-white/30": activeId === item.id,
+                    "bg-white/30": pathname === item.path,
                   }
                 )}
                 key={item.id}
@@ -75,7 +73,6 @@ const Sidebar = () => {
                   className={classNames("flex text-center", {
                     "tooltip tooltip-right": isCollapsed,
                   })}
-                  onClick={() => setActiveId(item.id)}
                   to={item.path}
                 >
                   <span className="sm:justify-around">

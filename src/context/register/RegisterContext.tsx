@@ -1,5 +1,4 @@
 import api from "@utils/api";
-import { de } from "date-fns/locale";
 import * as React from "react";
 import { CaixaGeral } from "types/Caixa";
 

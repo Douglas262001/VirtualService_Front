@@ -2,9 +2,17 @@ type Props = {
   values?: any[];
   columns?: string[];
   onClickRow?: (row: any) => void;
+  activeColParam?: string;
+  activeColValue?: any;
 };
 
-const GenericTable = ({ values, columns, onClickRow }: Props) => {
+const GenericTable = ({
+  values,
+  columns,
+  onClickRow,
+  activeColParam,
+  activeColValue,
+}: Props) => {
   return (
     <div className="max-h-full overflow-y-auto">
       <table className="table w-full">
@@ -18,10 +26,19 @@ const GenericTable = ({ values, columns, onClickRow }: Props) => {
         <tbody>
           {values?.map((rowValues, i) => (
             <tr key={i} onClick={() => onClickRow && onClickRow(rowValues)}>
-              {columns?.map((columnName, j) => (
-                <td key={j}>{rowValues[columnName]}</td>
-                // <td key={j}>{rowValues[columnName]}</td>
-              ))}
+              {columns?.map((columnName, j) => {
+                let className = "";
+                if (activeColParam) {
+                  if (rowValues[activeColParam] === activeColValue) {
+                    className = "bg-green-800";
+                  }
+                }
+                return (
+                  <td className={className} key={j}>
+                    {rowValues[columnName]}
+                  </td>
+                ); // <td key={j}>{rowValues[columnName]}</td>
+              })}
             </tr>
           ))}
         </tbody>

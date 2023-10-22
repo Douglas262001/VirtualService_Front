@@ -83,6 +83,7 @@ const ListaItens = () => {
             <input
               type="checkbox"
               className="checkbox"
+              disabled={item.pago === "Sim"}
               onChange={() => handleChangeCheckbox(item.id)}
               checked={itensSelecionados.some((p) => p === item.id)}
             />
@@ -90,6 +91,8 @@ const ListaItens = () => {
           ...item,
         }))}
         columns={["", "nome", "qntd", "valor", "total", "pago"]}
+        activeColParam="pago"
+        activeColValue="Sim"
       />
     </div>
   );
