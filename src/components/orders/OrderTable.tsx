@@ -67,17 +67,19 @@ const OrderTable = ({ searchText }: Props) => {
   const [codigoStatus, setCodigoStatus] = useState<number>();
   const [codigoPedido, setCodigoPedido] = useState<number>(0);
 
-  const colunas = [
-    "Itens",
-    "Alterar",
-    "id",
-    "numero",
-    "valor",
-    "data/hora",
-    "Status",
-  ];
-
-  if (pathname === "/pedidos") colunas.push("Imprimir");
+  const colunas =
+    pathname === "pedidos"
+      ? [
+          "Itens",
+          "Alterar",
+          "id",
+          "numero",
+          "valor",
+          "data/hora",
+          "Status",
+          "Imprimir",
+        ]
+      : ["Itens", "Alterar", "numero", "data/hora", "Status"];
 
   const mutationImprimir = useMutation(
     (s?: ImprimirDto) => api.post(`Tenant/Imprimir`, s),
