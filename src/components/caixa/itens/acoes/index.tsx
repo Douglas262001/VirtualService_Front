@@ -49,7 +49,7 @@ const AcoesItens = () => {
     <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-between items-center py-5	">
       <div className="flex gap-2">
         <button onClick={handleDivide()}
-          className="btn bg-sky-400 font-semibold text-zinc-900 text-base">
+          className="btn btn-info font-semibold text-zinc-900 text-base">
           Dividir
           <Divide size={24} />
         </button>
