@@ -68,7 +68,6 @@ export const ResgisterContextProvider = ({
         .post("Caixa/CalculadoraCaixa", dto)
         .then((response) => {
           if (response.data.success) {
-            debugger
             setCaixaGeral({
               ...caixaGeral,
               calculaDescontoPorPercentual:

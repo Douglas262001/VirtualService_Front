@@ -38,7 +38,6 @@ const AcoesItens = () => {
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
       if (result.isConfirmed) {
-        debugger;
         Swal.fire({
           title: `${result.value.body.valorTotalReceberPorPessoa.toLocaleString(
             "pt-br",
@@ -64,6 +63,10 @@ const AcoesItens = () => {
     });
   };
 
+  const handleAddItem = () => async () => {
+
+  }
+
   return (
     <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-between items-center py-5	">
       <div className="flex gap-2">
@@ -74,7 +77,7 @@ const AcoesItens = () => {
           Dividir
           <Divide size={24} />
         </button>
-        <button onClick={handleDivide()} className="btn btn-primary text-base">
+        <button onClick={handleAddItem()} className="btn btn-primary text-base">
           Item não cadastrado <Plus size={24} />
         </button>
       </div>
