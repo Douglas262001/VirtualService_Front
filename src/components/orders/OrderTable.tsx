@@ -1,4 +1,3 @@
-import useGetOrders from "@hooks/useGetOrders";
 import useFilterData from "../../hooks/useFilterData";
 import GenericLoading from "../base/GenericLoading";
 import GenericTable from "../base/GenericTable";
@@ -19,22 +18,36 @@ import {
   EnumStatusPedido,
   PedidoItemsSearchType,
   PedidoSearchType,
+  PedidoType,
   StatusPedido,
 } from "types/Pedido";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OrderItemsWindow from "./OrderItemsWindow";
 import OrderStatusWindow from "./OrderStatusWindow";
 import "./OrderTable.modules.css";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 type Props = {
   searchText?: string;
+  dataInicial: string;
+  dataFinal: string;
+  pedidosAtivos: boolean;
 };
 
 type ImprimirDto = {
   codigoPedido: number;
   texto: string;
+};
+
+type Filter = {
+  property: string;
+  operator: string;
+  value: any;
+  and: boolean;
+  not: boolean;
 };
 
 const TagStatus = ({ status }: { status: StatusPedido }) => {
@@ -55,20 +68,30 @@ const TagStatus = ({ status }: { status: StatusPedido }) => {
   );
 };
 
-const OrderTable = ({ searchText }: Props) => {
+const OrderTable = ({
+  searchText,
+  dataInicial,
+  dataFinal,
+  pedidosAtivos,
+}: Props) => {
   const { pathname } = useLocation();
+  const [orders, setOrders] = useState<PedidoSearchType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
-  const { data: orders, error, isLoading } = useGetOrders();
+  useEffect(() => {
+    listarPedidos();
+  }, [dataInicial, dataFinal, pedidosAtivos]);
+
   const filteredOrders = useFilterData(orders, searchText);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenStatus, setIsOpenStatus] = useState<boolean>(false);
-
   const [selectedOrder, setSelectedOrder] = useState<PedidoSearchType>();
   const [codigoStatus, setCodigoStatus] = useState<number>();
   const [codigoPedido, setCodigoPedido] = useState<number>(0);
 
   const colunas =
-    pathname === "pedidos"
+    pathname === "/orders"
       ? [
           "Itens",
           "Alterar",
@@ -80,6 +103,71 @@ const OrderTable = ({ searchText }: Props) => {
           "Imprimir",
         ]
       : ["Itens", "Alterar", "numero", "data/hora", "Status"];
+
+  const listarPedidos = async () => {
+    setIsLoading(true);
+    const filters: Filter[] = [
+      {
+        property: "DataHoraPedido",
+        operator: "greaterOrEqual",
+        value: new Date(new Date(dataInicial).setHours(0, 0, 0, 0)),
+        and: true,
+        not: false,
+      },
+      {
+        property: "DataHoraPedido",
+        operator: "lessOrEqual",
+        value: new Date(new Date(dataFinal).setHours(23, 59, 59, 999)),
+        and: true,
+        not: false,
+      },
+    ];
+
+    if (pedidosAtivos)
+      filters.push({
+        property: "Status",
+        operator: "in",
+        value: [
+          StatusPedido.EmPreparo,
+          StatusPedido.FilaDePreparo,
+          StatusPedido.FilaDeEntrega,
+        ],
+        and: true,
+        not: false,
+      });
+    try {
+      const response = await api.get(`Pedido/Listar`, {
+        headers: {
+          filters: JSON.stringify(filters),
+        },
+      });
+
+      setOrders(
+        response.data.body.map((pedido: PedidoType) => ({
+          id: pedido.id,
+          numero: pedido.numeroPedido,
+          codigoStatus: pedido.status,
+          valor: pedido.valorTotal,
+          "data/hora": format(
+            new Date(pedido.dataHoraPedido),
+            "dd/MM/yyyy hh:mm:ss",
+            { locale: ptBR }
+          ),
+          items: pedido.pedidoItems?.map((item) => ({
+            nome: item.nomeItem,
+            quantidade: item.qtd,
+            valor: item.valorUn,
+            total: item.valorTotal,
+            pago: item.pago ? "Sim" : "Não",
+          })),
+        }))
+      );
+    } catch (error) {
+      setError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const mutationImprimir = useMutation(
     (s?: ImprimirDto) => api.post(`Tenant/Imprimir`, s),
@@ -98,7 +186,7 @@ const OrderTable = ({ searchText }: Props) => {
     (s: AlterarPedidoDto) => api.put(`Pedido/Alterar/`, s),
     {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(["getOrders"]);
+        listarPedidos();
         toast.success("Pedido alterado com sucesso!");
       },
       onError: (error: any) => {

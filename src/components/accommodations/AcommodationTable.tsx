@@ -71,22 +71,22 @@ const AccommodationTable = ({ searchText }: Props) => {
     if (!id) return;
 
     Swal.fire({
-      title: 'Confirmação',
+      title: "Confirmação",
       text: "Tem certeza que deseja excluir esta acomodação?",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      iconColor: '#ef4444',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Sim, excluir!',
-      background: '#333',
-      color: '#fff'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      iconColor: "#ef4444",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Sim, excluir!",
+      background: "#333",
+      color: "#fff",
     }).then((result) => {
       if (result.isConfirmed) {
         mutationDelete.mutate(id);
       }
-    })
+    });
   };
 
   return (
