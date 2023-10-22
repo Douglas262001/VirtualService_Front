@@ -67,6 +67,7 @@ const ItensContainer = () => {
         <div className="w-[100%] h-20 content-end	">
           <button
             onClick={handlePagar()}
+            id="receber-e-finalizar"
             className="w-1/2 h-12 px-6 text-zinc-900 transition-colors duration-150 bg-lime-400 rounded-lg focus:shadow-outline hover:bg-lime-600 text-2xl font-semibold my-5 ml-[50%]"
           >
             Receber e finalizar
