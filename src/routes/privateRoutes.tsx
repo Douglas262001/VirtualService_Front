@@ -11,7 +11,7 @@ import Submenus from "@pages/submenus";
 import Tables from "@pages/table";
 import Teacher from "@pages/teacher";
 import Categories from "@pages/categories";
-import Tags from "@pages/tags/Tags"
+import Tags from "@pages/tags/Tags";
 import Register from "@pages/register";
 
 export const PrivateRoutes = () => {
@@ -32,6 +32,7 @@ export const PrivateRoutes = () => {
       { path: "/submenus", element: <Submenus /> },
       { path: "/categories", element: <Categories /> },
       { path: "/tags", element: <Tags /> },
+      { path: "/tablets", element: <Orders /> },
     ],
   };
 };

@@ -5,8 +5,10 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import api from "@utils/api";
 import GenericLoading from "@components/base/GenericLoading";
+import { useRegister } from "context/register/RegisterContext";
 
 const ComandaList: React.FC = () => {
+  const { refetchComandas, setRefetchComandas } = useRegister();
   const [comandasAbertas, setComandasAbertas] = React.useState<
     ComandasAbertas[]
   >([]);
@@ -15,6 +17,13 @@ const ComandaList: React.FC = () => {
   useEffect(() => {
     listarComandasAbertas();
   }, []);
+
+  useEffect(() => {
+    if (!refetchComandas) return;
+
+    listarComandasAbertas();
+    setRefetchComandas(false);
+  });
 
   const listarComandasAbertas = async () => {
     setIsLoading(true);

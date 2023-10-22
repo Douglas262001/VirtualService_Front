@@ -10,7 +10,7 @@ import api from "@utils/api";
 import Swal from "sweetalert2";
 
 const ItensContainer = () => {
-  const { caixaGeral, numeroComanda } = useRegister();
+  const { caixaGeral, numeroComanda, setRefetchComandas } = useRegister();
 
   const handlePagar = () => async () => {
     mutationPagar.mutate(caixaGeral);
@@ -32,6 +32,7 @@ const ItensContainer = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        setRefetchComandas(true);
       },
       onError: (error: any) => {
         toast.error(error.response.data.reasonPhrase);
