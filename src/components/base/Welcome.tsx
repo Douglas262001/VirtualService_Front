@@ -14,11 +14,11 @@ const Welcome = () => {
           style={{ margin: "0px 10px 0px 15px" }}
         >
           Yellow Software!
-        </span>{" "}
+        </span>
       </h1>
       <Link to="/tablets">
         <button className="btn btn-primary mr-8">
-          Versão tablets <DeviceTabletCamera className="ml-3" size={24} />
+          Visualizar pedidos versão tablets <DeviceTabletCamera className="ml-3" size={24} />
         </button>
       </Link>
     </div>

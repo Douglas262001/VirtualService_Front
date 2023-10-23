@@ -37,7 +37,7 @@ export enum StatusPedido {
   EmPreparo = 1,
   FilaDeEntrega = 2,
   Finalizado = 3,
-  Cancelado = 4
+  Cancelado = 4,
 }
 
 export const EnumStatusPedido = new Map<number, string>([
@@ -47,3 +47,15 @@ export const EnumStatusPedido = new Map<number, string>([
   [StatusPedido.Finalizado, "Finalizado"],
   [StatusPedido.Cancelado, "Cancelado"],
 ]);
+
+export type PedidoRapidoType = {
+  codigoTag: number;
+  items: PedidoRapidoItemType[];
+};
+
+export type PedidoRapidoItemType = {
+  codigoProdutoServico?: number;
+  nome: string;
+  qtd: number;
+  valorUn: number;
+};

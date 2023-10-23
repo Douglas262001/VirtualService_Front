@@ -55,7 +55,15 @@ const GenericWindow: React.FC<Props> = ({
               >
                 {title}
               </Dialog.Title>
-              <div className="mt-2">{children}</div>
+              <div className="mt-2">
+                <button
+                  className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  ✕
+                </button>
+                {children}
+              </div>
             </div>
           </Transition.Child>
         </div>

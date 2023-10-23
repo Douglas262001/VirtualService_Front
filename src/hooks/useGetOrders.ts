@@ -4,11 +4,11 @@ import { format } from "date-fns";
 import { PedidoType } from "types/Pedido";
 import ptBR from "date-fns/locale/pt-BR";
 
-const useGetOrders = () => {
-  return useQuery(["getOrders"], getOrders());
+const useGetOrders = (dataFiltro: string) => {
+  return useQuery(["getOrders"], getOrders(dataFiltro));
 };
 
-const getOrders = () => {
+const getOrders = (dataFiltro: string) => {
   return (): Promise<PedidoType[]> =>
     api
       .get(`Pedido/Listar`, {
@@ -17,7 +17,7 @@ const getOrders = () => {
             {
               property: "DataHoraPedido",
               operator: "greaterOrEqual",
-              value: new Date(new Date().setHours(0, 0, 0, 0)),
+              value: new Date(new Date(dataFiltro).setHours(0, 0, 0, 0)),
               and: true,
               not: false
             },
