@@ -83,19 +83,19 @@ const AcoesItens = () => {
         </div>
         </div>
         </form>`,
-        confirmButtonText: "Lançar item",
-        showCancelButton: true,
-        cancelButtonText: "Cancelar",
-        cancelButtonColor: "#ef4444",
-        confirmButtonColor: "#84cc16",
-        background: "#333",
-        color: "#cccccc",
+      confirmButtonText: "Lançar item",
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#ef4444",
+      confirmButtonColor: "#84cc16",
+      background: "#333",
+      color: "#cccccc",
     })
   }
 
   return (
-    <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-between items-center py-5	">
-      <div className="flex gap-2">
+    <>
+      <div className="flex gap-2 my-3">
         <button
           onClick={handleDivide()}
           className="btn btn-info font-semibold text-zinc-900 text-base"
@@ -107,11 +107,13 @@ const AcoesItens = () => {
           Item não cadastrado <Plus size={24} />
         </button>
       </div>
-      <span className="text-4xl mx-10 font-semibold">
-        {" "}
-        R${caixaGeral?.valorTotalReceber}
-      </span>
-    </div>
+      <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-right items-right py-5	">
+        <span className="text-4xl mx-10 font-semibold">
+          {" "}
+          R${caixaGeral?.valorTotalReceber}
+        </span>
+      </div>
+    </>
   );
 };
 

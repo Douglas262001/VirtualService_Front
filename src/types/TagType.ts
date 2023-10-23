@@ -12,6 +12,11 @@ export type TagSearchType = {
   status: Status;
 };
 
+export type TagOpenSearchType = {
+  id?: number;
+  numero: string;
+};
+
 export enum Status {
   Bloqueada = 0,
   Liberada = 1,

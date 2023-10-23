@@ -44,7 +44,7 @@ const ReceberCaixaGeral = () => {
 
   return (
     <div className="w-full flex justify-between mt-3">
-      <div className=" bg-zinc-700 flex flex-col rounded-md p-5 min-w-[14vw] text-base">
+      <div className=" bg-zinc-700 flex flex-col rounded-md p-5 min-w-[19vw] text-base">
       <Gear weight="fill"/>
         <div className="flex justify-between ">
           <div>Subtotal:</div>
