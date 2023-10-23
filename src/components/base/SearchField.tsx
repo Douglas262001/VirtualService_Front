@@ -27,7 +27,7 @@ function SearchField<T>({
     query === ""
       ? data
       : data.filter((item) =>
-          (item[displayValue] as string)
+          (item[displayValue] as string).toString()
             .toLowerCase()
             .replace(/\s+/g, "")
             .includes(query.toLowerCase().replace(/\s+/g, ""))

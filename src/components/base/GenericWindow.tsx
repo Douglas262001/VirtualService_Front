@@ -6,6 +6,7 @@ type Props = {
   children: JSX.Element;
   isOpen: boolean;
   setIsOpen: React.Dispatch<boolean>;
+  maxWidth?: string;
 };
 
 const GenericWindow: React.FC<Props> = ({
@@ -13,6 +14,7 @@ const GenericWindow: React.FC<Props> = ({
   isOpen,
   setIsOpen,
   children,
+  maxWidth = "max-w-3xl",
 }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -48,7 +50,7 @@ const GenericWindow: React.FC<Props> = ({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="inline-block w-full max-w-3xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-[#292929] shadow-xl rounded-2xl">
+            <div className={`inline-block w-full ${maxWidth} p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-[#292929] shadow-xl rounded-2xl`}>
               <Dialog.Title
                 as="h3"
                 className="text-lg font-medium leading-6 text-#d6d6d6-900"
