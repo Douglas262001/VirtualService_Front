@@ -23,7 +23,7 @@ const ComandaList: React.FC = () => {
 
     listarComandasAbertas();
     setRefetchComandas(false);
-  });
+  }, [refetchComandas]);
 
   const listarComandasAbertas = async () => {
     setIsLoading(true);

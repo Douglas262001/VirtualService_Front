@@ -32,6 +32,7 @@ const ItensContainer = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+
         setRefetchComandas(true);
       },
       onError: (error: any) => {

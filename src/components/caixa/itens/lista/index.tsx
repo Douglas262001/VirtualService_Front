@@ -13,6 +13,7 @@ const ListaItens = () => {
     if (codigoComanda === 0) return;
 
     buscarItensComanda();
+    setItensSelecionados([]);
   }, [codigoComanda]);
 
   const [itensComanda, setItensComanda] = useState<ItensComandaSearch[]>([]);
