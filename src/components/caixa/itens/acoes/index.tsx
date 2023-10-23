@@ -64,7 +64,33 @@ const AcoesItens = () => {
   };
 
   const handleAddItem = () => async () => {
-
+    Swal.fire({
+      title: 'Lançar item não cadastrado',
+      html:
+        `<form>
+        <div>
+            <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descrição</label>
+            <input type="text" id="company" class="input input-bordered w-full" required>
+        </div> 
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+          <div>
+              <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantidade</label>
+              <input type="umber" id="first_name" class="input input-bordered w-full" required>
+          </div>
+        <div>
+            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valor unitário</label>
+            <input type="number" id="last_name" class="input input-bordered w-full" required>
+        </div>
+        </div>
+        </form>`,
+        confirmButtonText: "Lançar item",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        cancelButtonColor: "#ef4444",
+        confirmButtonColor: "#84cc16",
+        background: "#333",
+        color: "#cccccc",
+    })
   }
 
   return (
