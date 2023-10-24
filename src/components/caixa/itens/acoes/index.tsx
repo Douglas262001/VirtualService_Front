@@ -110,7 +110,7 @@ const AcoesItens = () => {
       <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-right items-right py-5	">
         <span className="text-4xl mx-10 font-semibold">
           {" "}
-          R${caixaGeral?.valorTotalReceber}
+          R{caixaGeral?.valorTotalReceber}
         </span>
       </div>
     </>
