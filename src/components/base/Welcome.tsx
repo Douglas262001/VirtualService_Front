@@ -16,11 +16,6 @@ const Welcome = () => {
           Yellow Software!
         </span>
       </h1>
-      <Link to="/tablets">
-        <button className="btn btn-primary mr-8">
-          Visualizar pedidos versão tablets <DeviceTabletCamera className="ml-3" size={24} />
-        </button>
-      </Link>
     </div>
   );
 };

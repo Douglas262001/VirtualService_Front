@@ -64,12 +64,38 @@ const AcoesItens = () => {
   };
 
   const handleAddItem = () => async () => {
-
+    Swal.fire({
+      title: 'Lançar item não cadastrado',
+      html:
+        `<form>
+        <div>
+            <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descrição</label>
+            <input type="text" id="company" class="input input-bordered w-full" required>
+        </div> 
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+          <div>
+              <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantidade</label>
+              <input type="umber" id="first_name" class="input input-bordered w-full" required>
+          </div>
+        <div>
+            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valor unitário</label>
+            <input type="number" id="last_name" class="input input-bordered w-full" required>
+        </div>
+        </div>
+        </form>`,
+      confirmButtonText: "Lançar item",
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#ef4444",
+      confirmButtonColor: "#84cc16",
+      background: "#333",
+      color: "#cccccc",
+    })
   }
 
   return (
-    <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-between items-center py-5	">
-      <div className="flex gap-2">
+    <>
+      <div className="flex gap-2 my-3">
         <button
           onClick={handleDivide()}
           className="btn btn-info font-semibold text-zinc-900 text-base"
@@ -81,11 +107,13 @@ const AcoesItens = () => {
           Item não cadastrado <Plus size={24} />
         </button>
       </div>
-      <span className="text-4xl mx-10 font-semibold">
-        {" "}
-        R${caixaGeral?.valorTotalReceber}
-      </span>
-    </div>
+      <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-right items-right py-5	">
+        <span className="text-4xl mx-10 font-semibold">
+          {" "}
+          R{caixaGeral?.valorTotalReceber}
+        </span>
+      </div>
+    </>
   );
 };
 
