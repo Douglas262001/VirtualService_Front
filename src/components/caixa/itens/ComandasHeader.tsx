@@ -17,7 +17,7 @@ const ComandasHeader = () => {
 
   return (
     <div className="h-16 bg-[#27272a] mb-5 ml-8 mr-12 rounded-md flex justify-between items-center p-4">
-      <h2 className="text-2xl">Comandas</h2>
+      <h2 className="text-2xl"></h2>
       <div className="flex gap-2">
         <button onClick={handleClickAgruparComandas} className="btn btn-info h-2">
           Agrupar comandas <SubtractSquare size={24} />

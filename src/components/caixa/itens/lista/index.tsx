@@ -5,6 +5,7 @@ import { useRegister } from "context/register/RegisterContext";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ItensComanda, ItensComandaSearch } from "types/Caixa";
+import "./index.css"
 
 const ListaItens = () => {
   const { codigoComanda, setCaixaGeral, caixaGeral, clicouComanda, setClicouComanda } = useRegister();
@@ -84,7 +85,7 @@ const ListaItens = () => {
   };
 
   return (
-    <div className="h-[400px] bg-zinc-700 rounded-lg border-4 border-zinc-700">
+    <div className="h-[400px] lg:h-[300px] lg:text-sm	bg-zinc-700 rounded-lg border-4 border-zinc-700">
       <GenericTable
         values={itensComanda?.map((item) => ({
           "": (
@@ -96,9 +97,12 @@ const ListaItens = () => {
               checked={itensSelecionados.some((p) => p === item.id)}
             />
           ),
+          "Item":(
+            <a title={item.nome} className="item-desc-grid">{item.nome}</a>
+          ),
           ...item,
         }))}
-        columns={["", "nome", "qntd", "valor", "total", "pago"]}
+        columns={["", "Item", "qntd", "valor", "total", "pago"]}
         activeColParam="pago"
         activeColValue="Sim"
       />

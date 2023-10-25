@@ -62,7 +62,7 @@ const ItensContainer = () => {
         <h2 className="text-2xl font-bold mb-2 w-[50%]">
           Comanda {numeroComanda}
         </h2>
-        <h2 className="text-2xl font-bold mb-2 w-[50%]">
+        <h2 className="text-2xl font-bold mb-2 w-[50%] lg:text-lg">
           Mesa {caixaGeral?.numeroQuartoMesa}
         </h2>
       </div>
@@ -74,7 +74,9 @@ const ItensContainer = () => {
           <button
             onClick={handlePagar()}
             id="receber-e-finalizar"
-            className="w-1/2 h-12 px-6 text-zinc-900 transition-colors duration-150 bg-lime-400 rounded-lg focus:shadow-outline hover:bg-lime-600 text-2xl font-semibold my-5 ml-[50%]"
+            className="w-1/2 h-12 px-6 text-zinc-900 transition-colors duration-150 bg-lime-400 rounded-lg focus:shadow-outline hover:bg-lime-600 text-2xl font-semibold my-5 ml-[50%]
+            xl:h-10 xl:px-1 xl:p-1 xl:text-lg xl:font-bold xl:my-3
+            "
           >
             Receber e finalizar
           </button>

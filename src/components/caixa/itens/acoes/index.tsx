@@ -98,17 +98,21 @@ const AcoesItens = () => {
       <div className="flex gap-2 my-3">
         <button
           onClick={handleDivide()}
-          className="btn btn-info font-semibold text-zinc-900 text-base"
+          className="btn btn-info font-semibold text-zinc-900 text-base 
+          xl:h-1 xl:px-2 xl:p-1 xl:text-xs xl:font-bold
+          "
         >
           Dividir
           <Divide size={24} />
         </button>
-        <button onClick={handleAddItem()} className="btn btn-primary text-base">
+        <button onClick={handleAddItem()} className="btn btn-primary text-base
+        xl:h-1 xl:px-2 xl:p-1 xl:text-xs xl:font-bold
+        ">
           Item não cadastrado <Plus size={24} />
         </button>
       </div>
-      <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-right items-right py-5	">
-        <span className="text-4xl mx-10 font-semibold">
+      <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-right items-right py-5	xl:h-10 xl:mt-0 xl:p-1 xl:gap-1">
+        <span className="text-4xl mx-10 font-semibold xl:text-2xl xl:mx-2">
           {" "}
           R${caixaGeral?.valorTotalReceber}
         </span>
