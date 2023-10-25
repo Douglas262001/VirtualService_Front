@@ -1,9 +1,12 @@
 import { useRegister } from "context/register/RegisterContext";
 import { Divide, Plus } from "phosphor-react";
+import { useState } from "react";
 import Swal from "sweetalert2";
+import LancarPedidoWindow from "../lancarpedido";
 
 const AcoesItens = () => {
-  const { caixaGeral, calcular } = useRegister();
+  const { caixaGeral, calcular, codigoComanda } = useRegister();
+  const [isLancarPedidoOpen, setIsLancarPedidoOpen] = useState<boolean>(false);
 
   const handleDivide = () => async () => {
     Swal.fire({
@@ -56,7 +59,7 @@ const AcoesItens = () => {
           confirmButtonText: "Receber e finalizar",
         }).then((result) => {
           if (result.isConfirmed) {
-            document.getElementById('receber-e-finalizar')?.click()
+            document.getElementById("receber-e-finalizar")?.click();
           }
         });
       }
@@ -64,7 +67,8 @@ const AcoesItens = () => {
   };
 
   const handleAddItem = () => async () => {
-    Swal.fire({
+    setIsLancarPedidoOpen(true);
+    /*   Swal.fire({
       title: 'Lançar item não cadastrado',
       html:
         `<form>
@@ -90,8 +94,8 @@ const AcoesItens = () => {
       confirmButtonColor: "#84cc16",
       background: "#333",
       color: "#cccccc",
-    })
-  }
+    }) */
+  };
 
   return (
     <>
@@ -105,18 +109,25 @@ const AcoesItens = () => {
           Dividir
           <Divide size={24} />
         </button>
-        <button onClick={handleAddItem()} className="btn btn-primary text-base
+        <button
+          onClick={handleAddItem()}
+          className="btn btn-primary text-base
         xl:h-1 xl:px-2 xl:p-1 xl:text-xs xl:font-bold
-        ">
-          Item não cadastrado <Plus size={24} />
+        "
+        >
+          Lançar itens <Plus size={24} />
         </button>
       </div>
       <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-right items-right py-5	xl:h-10 xl:mt-0 xl:p-1 xl:gap-1">
         <span className="text-4xl mx-10 font-semibold xl:text-2xl xl:mx-2">
-          {" "}
           R${caixaGeral?.valorTotalReceber}
         </span>
       </div>
+      <LancarPedidoWindow
+        isOpen={isLancarPedidoOpen}
+        setIsOpen={setIsLancarPedidoOpen}
+        codigoTag={codigoComanda}
+      />
     </>
   );
 };

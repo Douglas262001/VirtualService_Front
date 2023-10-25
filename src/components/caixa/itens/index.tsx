@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import api from "@utils/api";
 import Swal from "sweetalert2";
+import ItensSelecionados from "./itensselecionados";
 
 const ItensContainer = () => {
   const { caixaGeral, numeroComanda, setRefetchComandas, codigoComanda } =
@@ -68,7 +69,10 @@ const ItensContainer = () => {
       </div>
       <div className="text-[#cccccc] max-h-96 itens-caixa">
         <ListaItens />
-        <ReceberCaixaGeral />
+        <div className="flex justify-between">
+          <ReceberCaixaGeral />
+          <ItensSelecionados />
+        </div>
         <AcoesItens />
         <div className="w-[100%] h-20 content-end	">
           <button

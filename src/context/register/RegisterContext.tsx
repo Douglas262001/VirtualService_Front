@@ -16,6 +16,8 @@ type IRegisterContext = {
   buscarCaixaGeral: () => Promise<void>;
   clicouComanda: boolean;
   setClicouComanda: React.Dispatch<React.SetStateAction<boolean>>;
+  totalSelecionados: number;
+  setTotalSelecionados: React.Dispatch<React.SetStateAction<number>>;
 };
 
 type CalculadorDto = {
@@ -46,6 +48,7 @@ export const ResgisterContextProvider = ({
   const [codigoComanda, setCodigoComanda] = React.useState<number>(0);
   const [numeroComanda, setNumeroComanda] = React.useState<number>(0);
   const [refetchComandas, setRefetchComandas] = React.useState<boolean>(false);
+  const [totalSelecionados, setTotalSelecionados] = React.useState<number>(0);
   const [caixaGeral, setCaixaGeral] = React.useState<CaixaGeral>({
     calculaDescontoPorPercentual: false,
     calculaTaxaServicoPorPercentual: false,
@@ -145,6 +148,8 @@ export const ResgisterContextProvider = ({
         buscarCaixaGeral,
         clicouComanda,
         setClicouComanda,
+        totalSelecionados,
+        setTotalSelecionados,
       }}
     >
       {children}
