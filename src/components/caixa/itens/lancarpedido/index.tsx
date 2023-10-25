@@ -24,6 +24,7 @@ type ProdutoServico = {
 };
 
 const LancarPedidoWindow = ({ isOpen, setIsOpen }: Props) => {
+  const { setRefetchComandas, codigoComanda } = useRegister();
   const [produtosServicos, setProdutosServicos] = useState<ProdutoServico[]>(
     []
   );
@@ -45,8 +46,6 @@ const LancarPedidoWindow = ({ isOpen, setIsOpen }: Props) => {
   const [indexEditing, setIndexEditing] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { setRefetchComandas, codigoComanda, setCodigoComanda } = useRegister();
-
   useEffect(() => {
     if (!isOpen) return;
 
@@ -65,20 +64,19 @@ const LancarPedidoWindow = ({ isOpen, setIsOpen }: Props) => {
   const mutation = useMutation(
     (s: PedidoRapidoType) => api.post(`Pedido/FazerPedidoRapido`, s),
     {
-      onSuccess: async () => {
-        setIsOpen(false);
+      onSuccess: async function () {
         limparCampos();
         toast.success("Pedido realizado com sucesso");
         setIsLoading(false);
+
+        const $cardComanda = document.getElementById(
+          `comanda-${codigoComanda}`
+        );
+
+        $cardComanda && $cardComanda.click();
+
         setRefetchComandas(true);
-        
-        const codigoComandaAnterior = codigoComanda;
-
-        setCodigoComanda(0);
-
-        setTimeout(() => {
-          setCodigoComanda(codigoComandaAnterior);
-        }, 1000);
+        setIsOpen(false);
       },
       onError: (error: any) => {
         toast.error(error.response.data.reasonPhrase);
@@ -199,6 +197,7 @@ const LancarPedidoWindow = ({ isOpen, setIsOpen }: Props) => {
               data={comandas}
               displayValue="numero"
               valueField="id"
+              optionsHeight="500"
             />
           </div>
           <span className="label-text">Item cadastrado</span>

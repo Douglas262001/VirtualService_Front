@@ -106,11 +106,17 @@ const OrderTable = ({
 
   const listarPedidos = async () => {
     setIsLoading(true);
+
+    const diaDataInicial = new Date(dataInicial).getDate();
+    const novaDataInicial = new Date(
+      new Date(dataInicial).setDate(diaDataInicial + 1)
+    );
+
     const filters: Filter[] = [
       {
         property: "DataHoraPedido",
         operator: "greaterOrEqual",
-        value: new Date(new Date(dataInicial).setHours(0, 0, 0, 0)),
+        value: new Date(novaDataInicial.setHours(0, 0, 0, 0)),
         and: true,
         not: false,
       },

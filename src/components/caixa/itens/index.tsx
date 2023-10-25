@@ -5,12 +5,12 @@ import { Placeholder } from "phosphor-react";
 import ReceberCaixaGeral from "./receber";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@utils/queryClient";
 import api from "@utils/api";
 import Swal from "sweetalert2";
 
 const ItensContainer = () => {
-  const { caixaGeral, numeroComanda, setRefetchComandas } = useRegister();
+  const { caixaGeral, numeroComanda, setRefetchComandas, codigoComanda } =
+    useRegister();
 
   const handlePagar = () => async () => {
     mutationPagar.mutate(caixaGeral);
@@ -22,7 +22,6 @@ const ItensContainer = () => {
     },
     {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(["getMenus"]);
         Swal.fire({
           icon: "success",
           background: "#333",
@@ -32,6 +31,13 @@ const ItensContainer = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+
+        const $cardComanda = document.getElementById(
+          `comanda-${codigoComanda}`
+        );
+
+        $cardComanda && $cardComanda.click();
+
         setRefetchComandas(true);
       },
       onError: (error: any) => {

@@ -8,13 +8,15 @@ import { ItensComanda, ItensComandaSearch } from "types/Caixa";
 import "./index.css"
 
 const ListaItens = () => {
-  const { codigoComanda, setCaixaGeral, caixaGeral } = useRegister();
+  const { codigoComanda, setCaixaGeral, caixaGeral, clicouComanda, setClicouComanda } = useRegister();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
-    if (codigoComanda === 0) return;
+    if (!clicouComanda) return;
 
     buscarItensComanda();
-  }, [codigoComanda]);
+    setItensSelecionados([]);
+    setClicouComanda(false);
+  }, [clicouComanda]);
 
   const [itensComanda, setItensComanda] = useState<ItensComandaSearch[]>([]);
   const [itensSelecionados, setItensSelecionados] = useState<number[]>([]);
@@ -36,8 +38,14 @@ const ListaItens = () => {
       );
       const itens: ItensComanda[] = response.data.body.items;
 
+      const sortedItens = itens.sort((a, b) => {
+        if (a.pago && !b.pago) return 1;
+        if (!a.pago && b.pago) return -1;
+        return 0;
+      });
+
       setItensComanda(
-        itens.map((item) => ({
+        sortedItens.map((item) => ({
           id: item.id,
           nome: item.nomeItem,
           valor: item.valorUn,
