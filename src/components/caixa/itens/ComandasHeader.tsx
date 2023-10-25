@@ -8,7 +8,7 @@ const ComandasHeader = () => {
   const [isLancarPedidoOpen, setIsLancarPedidoOpen] = useState(false);
   const [isGroupTagOpen, setIsGroupTagOpen] = useState(false);
   const handleClickLancarPedido = () => {
-    setIsGroupTagOpen(true);
+    setIsLancarPedidoOpen(true);
   };
 
   const handleClickAgruparComandas = () => {
@@ -21,11 +21,11 @@ const ComandasHeader = () => {
       <div className="flex gap-2">
         <button onClick={handleClickAgruparComandas} className="btn btn-info h-2">
           Agrupar comandas <SubtractSquare size={24} />
+        </button>
           <GroupTagWindow
            isOpen={isGroupTagOpen}
            setIsOpen={setIsGroupTagOpen}
           />
-        </button>
         <button onClick={handleClickLancarPedido} className="btn btn-info h-2">
           Lançar pedido <Bell size={24} />
         </button>
