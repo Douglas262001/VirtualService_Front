@@ -8,7 +8,13 @@ import GenericLoading from "@components/base/GenericLoading";
 import { useRegister } from "context/register/RegisterContext";
 
 const ComandaList: React.FC = () => {
-  const { refetchComandas, setRefetchComandas } = useRegister();
+  const {
+    codigoComanda,
+    setCodigoComanda,
+    setNumeroComanda,
+    refetchComandas,
+    setRefetchComandas
+  } = useRegister();
   const [comandasAbertas, setComandasAbertas] = React.useState<
     ComandasAbertas[]
   >([]);
@@ -20,7 +26,6 @@ const ComandaList: React.FC = () => {
 
   useEffect(() => {
     if (!refetchComandas) return;
-
     listarComandasAbertas();
     setRefetchComandas(false);
   }, [refetchComandas]);
@@ -31,6 +36,15 @@ const ComandaList: React.FC = () => {
       const response = await api.get("Caixa/ListarComandasAbertas");
 
       setComandasAbertas(response.data.body);
+
+      if (
+        !response.data.body.some(
+          (p: { id: number; numero: string }) => p.id === codigoComanda
+        )
+      ) {
+        setCodigoComanda(0);
+        setNumeroComanda(0);
+      }
     } catch (error: any) {
       toast.error(error.response.data.reasonPhrase);
     } finally {
