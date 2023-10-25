@@ -5,10 +5,17 @@ import { useRegister } from "context/register/RegisterContext";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ItensComanda, ItensComandaSearch } from "types/Caixa";
-import "./index.css"
+import "./index.css";
 
 const ListaItens = () => {
-  const { codigoComanda, setCaixaGeral, caixaGeral, clicouComanda, setClicouComanda } = useRegister();
+  const {
+    codigoComanda,
+    setCaixaGeral,
+    caixaGeral,
+    clicouComanda,
+    setClicouComanda,
+    setTotalSelecionados,
+  } = useRegister();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     if (!clicouComanda) return;
@@ -28,6 +35,14 @@ const ListaItens = () => {
       ...caixaGeral,
       codigosPedidosItens: [...itensSelecionados],
     });
+  }, [itensSelecionados]);
+
+  useEffect(() => {
+    setTotalSelecionados(
+      itensComanda
+        .filter((item) => itensSelecionados.some((p) => p === item.id))
+        .reduce((acc, cur) => acc + cur.total, 0)
+    );
   }, [itensSelecionados]);
 
   const buscarItensComanda = async () => {
@@ -97,8 +112,10 @@ const ListaItens = () => {
               checked={itensSelecionados.some((p) => p === item.id)}
             />
           ),
-          "Item":(
-            <a title={item.nome} className="item-desc-grid">{item.nome}</a>
+          Item: (
+            <a title={item.nome} className="item-desc-grid">
+              {item.nome}
+            </a>
           ),
           ...item,
         }))}
