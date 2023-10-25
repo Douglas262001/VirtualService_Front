@@ -59,8 +59,8 @@ const ItensContainer = () => {
 
   return (
     <div className="bg-zinc-800 w-[50%] h-[97.5vh] rounded-md p-5 mr-2 flex flex-col text-[#cccccc]">
-      <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-between items-center py-2 my-2">
-        <h2 className="text-2xl font-bold mb-2 w-[50%]">
+      <div className="w-full bg-zinc-700 rounded-md mt-1 flex p-2 gap-2 justify-between items-center py-1 my-1">
+        <h2 className="text-2xl font-bold mb-2 w-[50%] lg:text-lg">
           Comanda {numeroComanda}
         </h2>
         <h2 className="text-2xl font-bold mb-2 w-[50%] lg:text-lg">
