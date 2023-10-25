@@ -5,15 +5,25 @@ import { useRegister } from "context/register/RegisterContext";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ItensComanda, ItensComandaSearch } from "types/Caixa";
+import "./index.css";
 
 const ListaItens = () => {
-  const { codigoComanda, setCaixaGeral, caixaGeral } = useRegister();
+  const {
+    codigoComanda,
+    setCaixaGeral,
+    caixaGeral,
+    clicouComanda,
+    setClicouComanda,
+    setTotalSelecionados,
+  } = useRegister();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
-    if (codigoComanda === 0) return;
+    if (!clicouComanda) return;
 
     buscarItensComanda();
-  }, [codigoComanda]);
+    setItensSelecionados([]);
+    setClicouComanda(false);
+  }, [clicouComanda]);
 
   const [itensComanda, setItensComanda] = useState<ItensComandaSearch[]>([]);
   const [itensSelecionados, setItensSelecionados] = useState<number[]>([]);
@@ -27,6 +37,14 @@ const ListaItens = () => {
     });
   }, [itensSelecionados]);
 
+  useEffect(() => {
+    setTotalSelecionados(
+      itensComanda
+        .filter((item) => itensSelecionados.some((p) => p === item.id))
+        .reduce((acc, cur) => acc + cur.total, 0)
+    );
+  }, [itensSelecionados]);
+
   const buscarItensComanda = async () => {
     setIsLoading(true);
     try {
@@ -35,8 +53,14 @@ const ListaItens = () => {
       );
       const itens: ItensComanda[] = response.data.body.items;
 
+      const sortedItens = itens.sort((a, b) => {
+        if (a.pago && !b.pago) return 1;
+        if (!a.pago && b.pago) return -1;
+        return 0;
+      });
+
       setItensComanda(
-        itens.map((item) => ({
+        sortedItens.map((item) => ({
           id: item.id,
           nome: item.nomeItem,
           valor: item.valorUn,
@@ -76,7 +100,7 @@ const ListaItens = () => {
   };
 
   return (
-    <div className="h-[400px] bg-zinc-700 rounded-lg border-4 border-zinc-700">
+    <div className="h-[400px] lg:h-[300px] lg:text-sm	bg-zinc-700 rounded-lg border-4 border-zinc-700">
       <GenericTable
         values={itensComanda?.map((item) => ({
           "": (
@@ -88,9 +112,14 @@ const ListaItens = () => {
               checked={itensSelecionados.some((p) => p === item.id)}
             />
           ),
+          Item: (
+            <a title={item.nome} className="item-desc-grid">
+              {item.nome}
+            </a>
+          ),
           ...item,
         }))}
-        columns={["", "nome", "qntd", "valor", "total", "pago"]}
+        columns={["", "Item", "qntd", "valor", "total", "pago"]}
         activeColParam="pago"
         activeColValue="Sim"
       />

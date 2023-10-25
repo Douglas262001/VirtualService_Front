@@ -1,6 +1,6 @@
 import GenericWindow from "@components/base/GenericWindow";
 import * as React from "react";
-import { TagOpenSearchType, TagSearchType, TagType } from "types/TagType";
+import { TagSearchType, TagType } from "types/TagType";
 import SearchField from "@components/base/SearchField";
 import api from "@utils/api";
 import { toast } from "sonner";
@@ -23,7 +23,7 @@ const GroupTagWindow = ({ isOpen, setIsOpen }: Props) => {
         numero: "0",
         status: 0,
     });
-    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const [isLoading] = React.useState<boolean>(false);
 
     const buscarComandasAbertas = async () => {
         try {

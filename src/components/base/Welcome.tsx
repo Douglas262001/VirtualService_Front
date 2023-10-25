@@ -1,6 +1,3 @@
-import { DeviceTabletCamera } from "phosphor-react";
-import { Link } from "react-router-dom";
-
 const Welcome = () => {
   return (
     <div className="flex justify-between">

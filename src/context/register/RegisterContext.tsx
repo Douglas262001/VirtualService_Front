@@ -1,6 +1,7 @@
 import api from "@utils/api";
 import * as React from "react";
-import { CaixaGeral } from "types/Caixa";
+import { toast } from "sonner";
+import { CaixaGeral, ItensComanda } from "types/Caixa";
 
 type IRegisterContext = {
   codigoComanda: number;
@@ -12,6 +13,11 @@ type IRegisterContext = {
   calcular: (dto: CalculadorDto) => Promise<unknown>;
   refetchComandas: boolean;
   setRefetchComandas: React.Dispatch<React.SetStateAction<boolean>>;
+  buscarCaixaGeral: () => Promise<void>;
+  clicouComanda: boolean;
+  setClicouComanda: React.Dispatch<React.SetStateAction<boolean>>;
+  totalSelecionados: number;
+  setTotalSelecionados: React.Dispatch<React.SetStateAction<number>>;
 };
 
 type CalculadorDto = {
@@ -42,6 +48,7 @@ export const ResgisterContextProvider = ({
   const [codigoComanda, setCodigoComanda] = React.useState<number>(0);
   const [numeroComanda, setNumeroComanda] = React.useState<number>(0);
   const [refetchComandas, setRefetchComandas] = React.useState<boolean>(false);
+  const [totalSelecionados, setTotalSelecionados] = React.useState<number>(0);
   const [caixaGeral, setCaixaGeral] = React.useState<CaixaGeral>({
     calculaDescontoPorPercentual: false,
     calculaTaxaServicoPorPercentual: false,
@@ -60,6 +67,8 @@ export const ResgisterContextProvider = ({
     garcom: "",
     cliente: "",
   });
+
+  const [clicouComanda, setClicouComanda] = React.useState<boolean>(false);
 
   const calcular = (dto: CalculadorDto) => {
     return new Promise((resolve, reject) => {
@@ -90,6 +99,40 @@ export const ResgisterContextProvider = ({
     });
   };
 
+  const buscarCaixaGeral = async () => {
+    try {
+      const response = await api.get(
+        `Caixa/BuscarItensComanda/${codigoComanda}`
+      );
+
+      setCaixaGeral({
+        calculaDescontoPorPercentual:
+          response.data.body.calculaDescontoPorPercentual,
+        calculaTaxaServicoPorPercentual:
+          response.data.body.calculaTaxaServicoPorPercentual,
+        dividirEmQuantasPessoas: response.data.body.dividirEmQuantasPessoas,
+        percDesconto: response.data.body.percDesconto,
+        numeroQuartoMesa: response.data.body.numeroQuartoMesa,
+        percTaxaServico: response.data.body.percTaxaServico,
+        valorDesconto: response.data.body.valorDesconto,
+        valorTaxaServico: response.data.body.valorTaxaServico,
+        valorTotalBruto: response.data.body.valorTotalBruto,
+        valorTotalItem: response.data.body.valorTotalItem,
+        valorTotalReceber: response.data.body.valorTotalReceber,
+        valorTotalReceberPorPessoa:
+          response.data.body.valorTotalReceberPorPessoa,
+        codigosPedidosItens: response.data.body.items.map(
+          (p: ItensComanda) => p.id
+        ),
+        codigoComanda: codigoComanda,
+        garcom: "",
+        cliente: "",
+      });
+    } catch (error: any) {
+      toast.error(error.response.data.reasonPhrase);
+    }
+  };
+
   return (
     <RegisterContext.Provider
       value={{
@@ -101,7 +144,12 @@ export const ResgisterContextProvider = ({
         setCaixaGeral,
         caixaGeral,
         refetchComandas,
-        setRefetchComandas
+        setRefetchComandas,
+        buscarCaixaGeral,
+        clicouComanda,
+        setClicouComanda,
+        totalSelecionados,
+        setTotalSelecionados,
       }}
     >
       {children}

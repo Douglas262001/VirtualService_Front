@@ -5,12 +5,13 @@ import { Placeholder } from "phosphor-react";
 import ReceberCaixaGeral from "./receber";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@utils/queryClient";
 import api from "@utils/api";
 import Swal from "sweetalert2";
+import ItensSelecionados from "./itensselecionados";
 
 const ItensContainer = () => {
-  const { caixaGeral, numeroComanda, setRefetchComandas } = useRegister();
+  const { caixaGeral, numeroComanda, setRefetchComandas, codigoComanda } =
+    useRegister();
 
   const handlePagar = () => async () => {
     mutationPagar.mutate(caixaGeral);
@@ -22,7 +23,6 @@ const ItensContainer = () => {
     },
     {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(["getMenus"]);
         Swal.fire({
           icon: "success",
           background: "#333",
@@ -32,6 +32,13 @@ const ItensContainer = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+
+        const $cardComanda = document.getElementById(
+          `comanda-${codigoComanda}`
+        );
+
+        $cardComanda && $cardComanda.click();
+
         setRefetchComandas(true);
       },
       onError: (error: any) => {
@@ -52,23 +59,28 @@ const ItensContainer = () => {
 
   return (
     <div className="bg-zinc-800 w-[50%] h-[97.5vh] rounded-md p-5 mr-2 flex flex-col text-[#cccccc]">
-      <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-between items-center py-2 my-2">
-        <h2 className="text-2xl font-bold mb-2 w-[50%]">
+      <div className="w-full bg-zinc-700 rounded-md mt-1 flex p-2 gap-2 justify-between items-center py-1 my-1">
+        <h2 className="text-2xl font-bold mb-2 w-[50%] lg:text-lg">
           Comanda {numeroComanda}
         </h2>
-        <h2 className="text-2xl font-bold mb-2 w-[50%]">
+        <h2 className="text-2xl font-bold mb-2 w-[50%] lg:text-lg">
           Mesa {caixaGeral?.numeroQuartoMesa}
         </h2>
       </div>
       <div className="text-[#cccccc] max-h-96 itens-caixa">
         <ListaItens />
-        <ReceberCaixaGeral />
+        <div className="flex justify-between">
+          <ReceberCaixaGeral />
+          <ItensSelecionados />
+        </div>
         <AcoesItens />
         <div className="w-[100%] h-20 content-end	">
           <button
             onClick={handlePagar()}
             id="receber-e-finalizar"
-            className="w-1/2 h-12 px-6 text-zinc-900 transition-colors duration-150 bg-lime-400 rounded-lg focus:shadow-outline hover:bg-lime-600 text-2xl font-semibold my-5 ml-[50%]"
+            className="w-1/2 h-12 px-6 text-zinc-900 transition-colors duration-150 bg-lime-400 rounded-lg focus:shadow-outline hover:bg-lime-600 text-2xl font-semibold my-5 ml-[50%]
+            xl:h-10 xl:px-1 xl:p-1 xl:text-lg xl:font-bold xl:my-3
+            "
           >
             Receber e finalizar
           </button>
