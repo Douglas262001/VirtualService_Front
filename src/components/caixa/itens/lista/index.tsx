@@ -6,6 +6,10 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ItensComanda, ItensComandaSearch } from "types/Caixa";
 import "./index.css";
+import { TrashSimple } from "phosphor-react";
+import Swal from "sweetalert2";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@utils/queryClient";
 
 const ListaItens = () => {
   const {
@@ -37,13 +41,25 @@ const ListaItens = () => {
     });
   }, [itensSelecionados]);
 
-  useEffect(() => {
+  useEffect(() => {0
     setTotalSelecionados(
       itensComanda
         .filter((item) => itensSelecionados.some((p) => p === item.id))
         .reduce((acc, cur) => acc + cur.total, 0)
     );
   }, [itensSelecionados]);
+
+  const mutationDelete = useMutation(
+    (s?: number) => api.delete(`Pedido/CancelarPedidoItem/${s}`),
+    {
+      onSuccess: async () => {
+        toast.success("Item excluído com sucesso!");
+      },
+      onError: (error: any) => {
+        toast.error(error.response.data.reasonPhrase);
+      },
+    }
+  );
 
   const buscarItensComanda = async () => {
     setIsLoading(true);
@@ -78,14 +94,14 @@ const ListaItens = () => {
 
   if (isLoading)
     return (
-      <div className="h-[400px] bg-zinc-700 rounded-lg border-4 border-zinc-700 justify-center flex">
+      <div className="h-[300px] bg-zinc-700 rounded-lg border-4 border-zinc-700 justify-center flex">
         <GenericLoading />
       </div>
     );
 
   if (!itensComanda.length)
     return (
-      <div className="h-[400px] bg-zinc-700 rounded-lg border-4 border-zinc-700 justify-center flex">
+      <div className="h-[300px] bg-zinc-700 rounded-lg border-4 border-zinc-700 justify-center flex">
         <p className="text-center text-[#ffff]">Nenhum item encontrado</p>
       </div>
     );
@@ -98,6 +114,28 @@ const ListaItens = () => {
       }
     });
   };
+
+  const handleDeleteItemPedido = (id?: number) => async () => {
+    if (!id) return;
+    
+    Swal.fire({
+      title: "Confirmação",
+      text: "Deseja realmente excluir este item?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      iconColor: "#ef4444",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Sim, excluir!",
+      background: "#333",
+      color: "#fff",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        mutationDelete.mutate(id);
+      }
+    });
+  }
 
   return (
     <div className="h-[400px] lg:h-[300px] lg:text-sm	bg-zinc-700 rounded-lg border-4 border-zinc-700">
@@ -118,8 +156,15 @@ const ListaItens = () => {
             </a>
           ),
           ...item,
+          excluir: (
+            <TrashSimple
+              onClick={handleDeleteItemPedido(item.id)}
+              size={24}
+              className="cursor-pointer text-red-500"
+            />
+          ),
         }))}
-        columns={["", "Item", "qntd", "valor", "total", "pago"]}
+        columns={["", "Item", "qntd", "valor", "total", "pago", "excluir"]}
         activeColParam="pago"
         activeColValue="Sim"
       />

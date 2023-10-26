@@ -107,7 +107,6 @@ const LancarPedidoWindow = ({ isOpen, setIsOpen, codigoTag }: Props) => {
       const response = await api.get("Tags/Listar");
 
       setComandas(response.data.body);
-      debugger;
       if (codigoTag) {
         const tag = response.data.body.find(
           (tag: TagSearchType) => tag.id === codigoTag

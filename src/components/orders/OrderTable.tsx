@@ -251,7 +251,7 @@ const OrderTable = ({
           className={`${
             status === StatusPedido.EmPreparo
               ? "text-[#303030] rounded-md bg-emerald-400"
-              : "text-stone-3000 hover:text-emerald-400"
+              : "text-stone-3000 rounded-md border border-stone-300 hover:text-emerald-400 hover:border-emerald-400"
           } cursor-pointer`}
         />
         <Package
