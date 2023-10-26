@@ -115,8 +115,13 @@ const ListaItens = () => {
     });
   };
 
-  const handleDeleteItemPedido = (id?: number) => async () => {
+  const handleDeleteItemPedido = (item: ItensComandaSearch, id?: number) => async () => {
     if (!id) return;
+    if(!item) return;
+
+    if(itensComanda.length === 1) return toast.error("Não é possível remover pois a comanda só tem um item");
+    if(item.pago === "Sim") return toast.error("Não é possível excluir item pago");
+    
     
     Swal.fire({
       title: "Confirmação",
@@ -133,6 +138,13 @@ const ListaItens = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         mutationDelete.mutate(id);
+        const $cardComanda = document.getElementById(
+          `comanda-${codigoComanda}`
+        );
+        
+        setTimeout(() => {
+          $cardComanda && $cardComanda.click();
+        }, 1000);
       }
     });
   }
@@ -156,15 +168,15 @@ const ListaItens = () => {
             </a>
           ),
           ...item,
-          excluir: (
+          x: (
             <TrashSimple
-              onClick={handleDeleteItemPedido(item.id)}
+              onClick={handleDeleteItemPedido(item, item.id)}
               size={24}
               className="cursor-pointer text-red-500"
             />
           ),
         }))}
-        columns={["", "Item", "qntd", "valor", "total", "pago", "excluir"]}
+        columns={["", "Item", "qntd", "valor", "total", "pago", "x"]}
         activeColParam="pago"
         activeColValue="Sim"
       />
