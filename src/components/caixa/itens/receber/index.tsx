@@ -20,15 +20,15 @@ const ReceberCaixaGeral = () => {
         <Gear weight="fill" onClick={() => setIsOpen(true)} className="cursor-pointer" />
         <div className="flex justify-between ">
           <div>Subtotal:</div>
-          {caixaGeral?.valorTotalItem}
+          R${caixaGeral?.valorTotalItem}
         </div>
         <div className="flex justify-between">
-          <div>Taxa de serviço:</div>
-          {caixaGeral?.valorTaxaServico}
+          <div>Valor taxa de serviço:</div>
+          R${caixaGeral?.valorTaxaServico}
         </div>
         <div className="flex justify-between">
-          <div>Desconto:</div>
-          {caixaGeral?.valorDesconto}
+          <div>Valor Desconto:</div>
+          R${caixaGeral?.valorDesconto}
         </div>
       </div>
       <ItensConfig isOpen={isOpen} setIsOpen={setIsOpen} />
