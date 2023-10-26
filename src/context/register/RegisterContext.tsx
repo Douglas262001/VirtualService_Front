@@ -24,11 +24,11 @@ type IRegisterContext = {
 
 type CalculadorDto = {
   calculaDescontoPorPercentual: boolean;
-  percDesconto: number;
-  valorDesconto: number;
+  percDesconto?: number;
+  valorDesconto?: number;
   calculaTaxaServicoPorPercentual: boolean;
-  percTaxaServico: number;
-  valorTaxaServico: number;
+  percTaxaServico?: number;
+  valorTaxaServico?: number;
   dividirEmQuantasPessoas: number;
   codigosPedidosItens: number[];
 };

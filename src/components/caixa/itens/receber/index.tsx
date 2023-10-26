@@ -1,6 +1,7 @@
 import { useRegister } from "context/register/RegisterContext";
 import { Gear } from "phosphor-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import ItensConfig from "../config";
 
 const ReceberCaixaGeral = () => {
   const { caixaGeral, buscarCaixaGeral, setClicouComanda, clicouComanda } =
@@ -12,10 +13,11 @@ const ReceberCaixaGeral = () => {
     setClicouComanda(false);
   }, [clicouComanda]);
 
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <div className="w-full flex justify-between mt-3">
-      { <div className=" bg-zinc-700 flex flex-col rounded-md p-5 min-w-[19vw] text-base lg:p-2">
-      <Gear weight="fill"/>
+      <div className=" bg-zinc-700 flex flex-col rounded-md p-5 min-w-[19vw] text-base lg:p-2">
+        <Gear weight="fill" onClick={() => setIsOpen(true)} className="cursor-pointer" />
         <div className="flex justify-between ">
           <div>Subtotal:</div>
           {caixaGeral?.valorTotalItem}
@@ -28,7 +30,8 @@ const ReceberCaixaGeral = () => {
           <div>Desconto:</div>
           {caixaGeral?.valorDesconto}
         </div>
-      </div> }
+      </div>
+      <ItensConfig isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

@@ -4,24 +4,24 @@ export type ComandasAbertas = {
   codigoTag: number;
 };
 
-export type  CaixaGeral = {
-  valorTotalItem: number,
-  valorTotalReceber: number,
-  valorTotalBruto: number,
-  dividirEmQuantasPessoas: number,
-  valorTotalReceberPorPessoa: number,
-  calculaDescontoPorPercentual: boolean,
-  numeroQuartoMesa: string,
-  percDesconto: number,
-  valorDesconto: number,
-  calculaTaxaServicoPorPercentual: boolean,
-  percTaxaServico: number,
-  valorTaxaServico: number,
-  garcom: string,
-  cliente: string,
-  codigoComanda: number,
-  codigosPedidosItens: number[]
-}
+export type CaixaGeral = {
+  valorTotalItem: number;
+  valorTotalReceber: number;
+  valorTotalBruto: number;
+  dividirEmQuantasPessoas: number;
+  valorTotalReceberPorPessoa: number;
+  calculaDescontoPorPercentual: boolean;
+  numeroQuartoMesa: string;
+  percDesconto: number;
+  valorDesconto: number;
+  calculaTaxaServicoPorPercentual: boolean;
+  percTaxaServico: number;
+  valorTaxaServico: number;
+  garcom: string;
+  cliente: string;
+  codigoComanda: number;
+  codigosPedidosItens: number[];
+};
 
 export type ItensComanda = {
   id: number;
@@ -40,3 +40,14 @@ export type ItensComandaSearch = {
   total: number;
   pago: "Sim" | "Não";
 };
+
+export enum TipoDesconto {
+  Valor = 0,
+  // Servico = 1,  Descomentar posteriormente
+  Percentual = 1,
+}
+
+export const EnumTipoDesconto = new Map<number, string>([
+  [TipoDesconto.Valor, "Valor"],
+  [TipoDesconto.Percentual, "Percentual"],
+]);
