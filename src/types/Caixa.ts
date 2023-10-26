@@ -1,6 +1,7 @@
 export type ComandasAbertas = {
   id: number;
   numero: number;
+  codigoTag: number;
 };
 
 export type  CaixaGeral = {

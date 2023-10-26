@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import LancarPedidoWindow from "../lancarpedido";
 
 const AcoesItens = () => {
-  const { caixaGeral, calcular, codigoComanda } = useRegister();
+  const { caixaGeral, calcular, codigoTag } = useRegister();
   const [isLancarPedidoOpen, setIsLancarPedidoOpen] = useState<boolean>(false);
 
   const handleDivide = () => async () => {
@@ -118,6 +118,7 @@ const AcoesItens = () => {
           Lançar itens <Plus size={24} />
         </button>
       </div>
+      <a>Valor a receber</a>
       <div className="w-full bg-zinc-700 rounded-md mt-2 flex p-3 gap-2 justify-right items-right py-5	xl:h-10 xl:mt-0 xl:p-1 xl:gap-1 text-right">
         <span className="w-full text-4xl mx-10 font-semibold xl:text-2xl xl:mx-2 text-right">
           R${caixaGeral?.valorTotalReceber}
@@ -126,7 +127,7 @@ const AcoesItens = () => {
       <LancarPedidoWindow
         isOpen={isLancarPedidoOpen}
         setIsOpen={setIsLancarPedidoOpen}
-        codigoTag={codigoComanda}
+        codigoTag={codigoTag}
       />
     </>
   );

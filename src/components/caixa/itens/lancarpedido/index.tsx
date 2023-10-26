@@ -6,7 +6,13 @@ import SearchField from "@components/base/SearchField";
 import { useMutation } from "@tanstack/react-query";
 import api from "@utils/api";
 import { useRegister } from "context/register/RegisterContext";
-import { PencilSimple, Placeholder, Plus, TrashSimple } from "phosphor-react";
+import {
+  Lock,
+  PencilSimple,
+  Placeholder,
+  Plus,
+  TrashSimple,
+} from "phosphor-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { PedidoRapidoItemType, PedidoRapidoType } from "types/Pedido";
@@ -101,7 +107,7 @@ const LancarPedidoWindow = ({ isOpen, setIsOpen, codigoTag }: Props) => {
       const response = await api.get("Tags/Listar");
 
       setComandas(response.data.body);
-      
+      debugger;
       if (codigoTag) {
         const tag = response.data.body.find(
           (tag: TagSearchType) => tag.id === codigoTag
@@ -202,15 +208,18 @@ const LancarPedidoWindow = ({ isOpen, setIsOpen, codigoTag }: Props) => {
         <div className="flex gap-2 items-center mb-2 w-full">
           <div className="flex flex-col">
             <span className="label-text">Comanda</span>
-            <SearchField
-              value={comanda}
-              setValue={setComanda}
-              data={comandas}
-              displayValue="numero"
-              valueField="id"
-              optionsHeight="500"
-              disabled={codigoTag !== undefined}
-            />
+            <div className="flex items-center">
+              <SearchField
+                value={comanda}
+                setValue={setComanda}
+                data={comandas}
+                displayValue="numero"
+                valueField="id"
+                optionsHeight="500"
+                disabled={codigoTag !== undefined}
+              />
+              <Lock weight="fill"  className={`${codigoTag !== undefined ? "visible" : "invisible"}`}/>
+            </div>
           </div>
           <span className="label-text">Item cadastrado</span>
           <input

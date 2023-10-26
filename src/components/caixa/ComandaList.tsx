@@ -57,7 +57,7 @@ const ComandaList: React.FC = () => {
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5 justify-center px-8 ">
       {comandasAbertas?.map((item) => (
-        <CardComanda key={item.id} id={item.id} numero={item.numero} />
+        <CardComanda key={item.id} id={item.id} numero={item.numero} codigoTag={item.codigoTag}/>
       ))}
     </div>
   );

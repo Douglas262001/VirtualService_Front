@@ -9,7 +9,7 @@ export type TagSearchType = {
   id?: number;
   numero: string;
   codigoQrCode?: string;
-  status: Status;
+  status?: Status;
 };
 
 export type TagOpenSearchType = {

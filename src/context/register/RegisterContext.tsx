@@ -8,6 +8,8 @@ type IRegisterContext = {
   setCodigoComanda: React.Dispatch<React.SetStateAction<number>>;
   numeroComanda: number;
   setNumeroComanda: React.Dispatch<React.SetStateAction<number>>;
+  codigoTag: number;
+  setCodigoTag: React.Dispatch<React.SetStateAction<number>>;
   setCaixaGeral: React.Dispatch<React.SetStateAction<CaixaGeral>>;
   caixaGeral: CaixaGeral;
   calcular: (dto: CalculadorDto) => Promise<unknown>;
@@ -47,6 +49,7 @@ export const ResgisterContextProvider = ({
 }: React.PropsWithChildren) => {
   const [codigoComanda, setCodigoComanda] = React.useState<number>(0);
   const [numeroComanda, setNumeroComanda] = React.useState<number>(0);
+  const [codigoTag, setCodigoTag] = React.useState<number>(0);
   const [refetchComandas, setRefetchComandas] = React.useState<boolean>(false);
   const [totalSelecionados, setTotalSelecionados] = React.useState<number>(0);
   const [caixaGeral, setCaixaGeral] = React.useState<CaixaGeral>({
@@ -150,6 +153,8 @@ export const ResgisterContextProvider = ({
         setClicouComanda,
         totalSelecionados,
         setTotalSelecionados,
+        codigoTag,
+        setCodigoTag
       }}
     >
       {children}

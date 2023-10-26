@@ -3,12 +3,14 @@ import * as React from "react";
 interface CardProps {
   id: number;
   numero: number;
+  codigoTag: number;
 }
 
-const CardComanda: React.FC<CardProps> = ({ id, numero }) => {
+const CardComanda: React.FC<CardProps> = ({ id, numero, codigoTag }) => {
   const {
     setCodigoComanda,
     setNumeroComanda,
+    setCodigoTag,
     codigoComanda,
     setClicouComanda,
   } = useRegister();
@@ -24,6 +26,7 @@ const CardComanda: React.FC<CardProps> = ({ id, numero }) => {
       onClick={() => {
         setCodigoComanda(id);
         setNumeroComanda(numero);
+        setCodigoTag(codigoTag);
         setClicouComanda(true);
       }}
     >

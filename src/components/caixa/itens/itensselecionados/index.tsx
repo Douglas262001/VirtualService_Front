@@ -3,9 +3,13 @@ import { useRegister } from "context/register/RegisterContext";
 const ItensSelecionados = () => {
   const { totalSelecionados } = useRegister();
   return (
-    <div className="mt-4 text-lg">
+    <div className="mt-2 text-sm">
       Total selecionados
-      <div className="bg-zinc-700 flex flex-col rounded-md min-w-[10vw] p-5 text-lg lg:p-2">
+      <div className="bg-zinc-700 flex flex-col rounded-md min-w-[17vw] p-5 text-base lg:p-2">
+        {`R$${totalSelecionados}`}
+      </div>
+      Valor pago
+      <div className="bg-zinc-700 flex flex-col rounded-md min-w-[17vw] p-5 text-base lg:p-2">
         {`R$${totalSelecionados}`}
       </div>
     </div>
