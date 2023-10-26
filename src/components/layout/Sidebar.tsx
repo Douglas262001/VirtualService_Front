@@ -56,12 +56,12 @@ const Sidebar = () => {
           "h-[calc(100vh-17.5rem)]": !isCollapsed,
         })}
       >
-        <ul className="text-lg">
+        <ul className="text-lg flex gap-1 flex-col">
           {SidebarData.map((item) => {
             return (
               <li
                 className={classNames(
-                  "p-5 rounded-md hover:bg-white/30 backdrop-blur-sm transition ease-in-out duration-300",
+                  "p-3 rounded-md hover:bg-white/30 text-md backdrop-blur-sm transition ease-in-out duration-300",
                   {
                     "bg-white/30": pathname === item.path,
                   }
