@@ -30,6 +30,7 @@ import { useLocation } from "react-router-dom";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
+import Connector, { EnumAcaoHub } from "@utils/signalR";
 type Props = {
   searchText?: string;
   dataInicial: string;
@@ -78,6 +79,16 @@ const OrderTable = ({
   const [orders, setOrders] = useState<PedidoSearchType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+
+  const { events } = Connector();
+
+  useEffect(() => {
+    events((data) => {
+      if (data.acao == EnumAcaoHub.NovoPedido) {
+        listarPedidos();
+      }
+    });
+  });
 
   useEffect(() => {
     listarPedidos();
