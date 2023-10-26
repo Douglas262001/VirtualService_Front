@@ -9,7 +9,6 @@ import "./index.css";
 import { TrashSimple } from "phosphor-react";
 import Swal from "sweetalert2";
 import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@utils/queryClient";
 
 const ListaItens = () => {
   const {

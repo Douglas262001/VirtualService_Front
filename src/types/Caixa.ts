@@ -20,6 +20,7 @@ export type CaixaGeral = {
   garcom: string;
   cliente: string;
   codigoComanda: number;
+  valorTotalJaPago: number;
   codigosPedidosItens: number[];
 };
 

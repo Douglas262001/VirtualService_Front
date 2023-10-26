@@ -113,7 +113,7 @@ const OrderTable = ({
           "Status",
           "Imprimir",
         ]
-      : ["Itens", "Alterar", "numero", "data/hora", "Status"];
+      : ["Itens", "Alterar", "numero", "data/hora", "Status", "Imprimir"];
 
   const listarPedidos = async () => {
     setIsLoading(true);

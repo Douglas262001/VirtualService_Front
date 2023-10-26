@@ -67,6 +67,7 @@ export const ResgisterContextProvider = ({
     valorTotalReceberPorPessoa: 0,
     codigosPedidosItens: [],
     codigoComanda: 0,
+    valorTotalJaPago: 0,
     garcom: "",
     cliente: "",
   });
@@ -122,6 +123,7 @@ export const ResgisterContextProvider = ({
         valorTotalBruto: response.data.body.valorTotalBruto,
         valorTotalItem: response.data.body.valorTotalItem,
         valorTotalReceber: response.data.body.valorTotalReceber,
+        valorTotalJaPago: response.data.body.valorTotalJaPago,
         valorTotalReceberPorPessoa:
           response.data.body.valorTotalReceberPorPessoa,
         codigosPedidosItens: response.data.body.items.map(
