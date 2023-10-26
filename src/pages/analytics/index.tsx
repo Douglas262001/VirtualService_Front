@@ -20,7 +20,9 @@ const Analytics = () => {
           Visualizar pedidos versão tablets <DeviceTabletCamera className="ml-3" size={24} />
         </button>
       </Link>
-      <GraphicChart />
+      <div className="invisible">
+        <GraphicChart />
+      </div>
     </>
   );
 };
