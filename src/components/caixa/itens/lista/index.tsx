@@ -33,15 +33,20 @@ const ListaItens = () => {
   const [itensSelecionados, setItensSelecionados] = useState<number[]>([]);
 
   useEffect(() => {
-    if (!itensSelecionados.length) return;
+    const novosItens = itensSelecionados.length > 0
+      ? itensSelecionados
+      : itensComanda
+        .filter((p) => p.pago === "Não")
+        .map((p) => p.id);
 
     setCaixaGeral({
       ...caixaGeral,
-      codigosPedidosItens: [...itensSelecionados],
+      codigosPedidosItens: [...novosItens],
     });
   }, [itensSelecionados]);
 
-  useEffect(() => {0
+  useEffect(() => {
+    0
     setTotalSelecionados(
       itensComanda
         .filter((item) => itensSelecionados.some((p) => p === item.id))
@@ -117,12 +122,12 @@ const ListaItens = () => {
 
   const handleDeleteItemPedido = (item: ItensComandaSearch, id?: number) => async () => {
     if (!id) return;
-    if(!item) return;
+    if (!item) return;
 
-    if(itensComanda.length === 1) return toast.error("Não é possível remover pois a comanda só tem um item");
-    if(item.pago === "Sim") return toast.error("Não é possível excluir item pago");
-    
-    
+    if (itensComanda.length === 1) return toast.error("Não é possível remover pois a comanda só tem um item");
+    if (item.pago === "Sim") return toast.error("Não é possível excluir item pago");
+
+
     Swal.fire({
       title: "Confirmação",
       text: "Deseja realmente excluir este item?",
@@ -141,7 +146,7 @@ const ListaItens = () => {
         const $cardComanda = document.getElementById(
           `comanda-${codigoComanda}`
         );
-        
+
         setTimeout(() => {
           $cardComanda && $cardComanda.click();
         }, 1000);
