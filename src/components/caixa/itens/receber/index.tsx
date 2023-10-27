@@ -20,15 +20,15 @@ const ReceberCaixaGeral = () => {
         <Gear weight="fill" onClick={() => setIsOpen(true)} className="cursor-pointer" />
         <div className="flex justify-between ">
           <div>Subtotal:</div>
-          R${caixaGeral?.valorTotalItem}
+          {caixaGeral?.valorTotalItem.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
         </div>
         <div className="flex justify-between">
           <div>Valor taxa de serviço:</div>
-          R${caixaGeral?.valorTaxaServico}
+          {caixaGeral?.valorTaxaServico.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
         </div>
         <div className="flex justify-between">
           <div>Valor Desconto:</div>
-          R${caixaGeral?.valorDesconto}
+          {caixaGeral?.valorDesconto.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
         </div>
       </div>
       <ItensConfig isOpen={isOpen} setIsOpen={setIsOpen} />
