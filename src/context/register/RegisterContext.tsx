@@ -89,6 +89,7 @@ export const ResgisterContextProvider = ({
               dividirEmQuantasPessoas: Number(
                 response.data.body.dividirEmQuantasPessoas
               ),
+              valorTotalReceber: response.data.body.valorTotalReceber,
               percDesconto: response.data.body.percDesconto,
               percTaxaServico: response.data.body.percDesconto,
               valorDesconto: response.data.body.valorDesconto,
@@ -156,7 +157,7 @@ export const ResgisterContextProvider = ({
         totalSelecionados,
         setTotalSelecionados,
         codigoTag,
-        setCodigoTag
+        setCodigoTag,
       }}
     >
       {children}
