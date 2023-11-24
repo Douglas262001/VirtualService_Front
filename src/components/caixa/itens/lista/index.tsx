@@ -7,7 +7,7 @@ import { TrashSimple } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
-import { ItensComanda, ItensComandaSearch } from "types/Caixa";
+import { ItensComandaSearch } from "types/Caixa";
 import "./index.css";
 
 const ListaItens = () => {
@@ -20,7 +20,6 @@ const ListaItens = () => {
     setTotalSelecionados,
     buscarCaixaGeral,
     itensComanda,
-    // setItensComanda
   } = useRegister();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
@@ -42,7 +41,6 @@ const ListaItens = () => {
       setIsLoading(false);
     }
   }
-  // const [itensComanda, setItensComanda] = useState<ItensComandaSearch[]>([]);
   const [itensSelecionados, setItensSelecionados] = useState<number[]>([]);
 
   useEffect(() => {
@@ -78,38 +76,6 @@ const ListaItens = () => {
       },
     }
   );
-
-  // const buscarItensComanda = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await api.get(
-  //       `Caixa/BuscarItensComanda/${codigoComanda}`
-  //     );
-
-  //     const itens: ItensComanda[] = response.data.body.items;
-
-  //     const sortedItens = itens.sort((a, b) => {
-  //       if (a.pago && !b.pago) return 1;
-  //       if (!a.pago && b.pago) return -1;
-  //       return 0;
-  //     });
-
-  //     setItensComanda(
-  //       sortedItens.map((item) => ({
-  //         id: item.id,
-  //         nome: item.nomeItem,
-  //         valor: item.valorUn,
-  //         qntd: item.qtd,
-  //         total: item.valorTotal,
-  //         pago: item.pago ? "Sim" : "Não",
-  //       }))
-  //     );
-  //   } catch (error: any) {
-  //     toast.error(error.response.data.reasonPhrase);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   if (isLoading)
     return (

@@ -1,17 +1,11 @@
 import { useRegister } from "context/register/RegisterContext";
 import { Gear } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ItensConfig from "../config";
 
 const ReceberCaixaGeral = () => {
-  const { caixaGeral, buscarCaixaGeral, setClicouComanda, clicouComanda } =
+  const { caixaGeral } =
     useRegister();
-  // useEffect(() => {
-  //   // if (!clicouComanda) return;
-
-  //   // buscarCaixaGeral();
-  //   // setClicouComanda(false);
-  // }, [clicouComanda]);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
