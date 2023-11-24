@@ -8,12 +8,16 @@ import { useMutation } from "@tanstack/react-query";
 import api from "@utils/api";
 import Swal from "sweetalert2";
 import ItensSelecionados from "./itensselecionados";
+import { useState } from "react";
+import ButtonReceber from "@components/base/ButtonReceber";
 
 const ItensContainer = () => {
   const { caixaGeral, numeroComanda, setRefetchComandas, codigoComanda } =
     useRegister();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handlePagar = () => async () => {
+    setIsLoading(true);
     mutationPagar.mutate(caixaGeral);
   };
 
@@ -40,9 +44,11 @@ const ItensContainer = () => {
         $cardComanda && $cardComanda.click();
 
         setRefetchComandas(true);
+        setIsLoading(false);
       },
       onError: (error: any) => {
         toast.error(error.response.data.reasonPhrase);
+        setIsLoading(false);
       },
     }
   );
@@ -75,15 +81,14 @@ const ItensContainer = () => {
         </div>
         <AcoesItens />
         <div className="w-[100%] h-20 content-end	">
-          <button
+          <ButtonReceber
+            disabled={isLoading}
+            isLoading={isLoading}
             onClick={handlePagar()}
             id="receber-e-finalizar"
-            className="w-1/2 h-12 px-6 text-zinc-900 transition-colors duration-150 bg-lime-400 rounded-lg focus:shadow-outline hover:bg-lime-600 text-2xl font-semibold my-5 ml-[50%]
-            xl:h-10 xl:px-1 xl:p-1 xl:text-lg xl:font-bold xl:my-3
-            "
           >
             Receber e finalizar
-          </button>
+          </ButtonReceber>
         </div>
       </div>
     </div>

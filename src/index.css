@@ -11,6 +11,10 @@
   --w-base-100: #303030;
 }
 
+.btn-receber:disabled{
+    background-color: #54751c;
+}
+
 #invert-logo {
   filter: invert(1);
   mix-blend-mode: color-dodge;

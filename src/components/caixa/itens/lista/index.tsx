@@ -1,14 +1,14 @@
 import GenericLoading from "@components/base/GenericLoading";
 import GenericTable from "@components/base/GenericTable";
+import { useMutation } from "@tanstack/react-query";
 import api from "@utils/api";
 import { useRegister } from "context/register/RegisterContext";
+import { TrashSimple } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 import { ItensComanda, ItensComandaSearch } from "types/Caixa";
 import "./index.css";
-import { TrashSimple } from "phosphor-react";
-import Swal from "sweetalert2";
-import { useMutation } from "@tanstack/react-query";
 
 const ListaItens = () => {
   const {
@@ -18,17 +18,31 @@ const ListaItens = () => {
     clicouComanda,
     setClicouComanda,
     setTotalSelecionados,
+    buscarCaixaGeral,
+    itensComanda,
+    // setItensComanda
   } = useRegister();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     if (!clicouComanda) return;
 
-    buscarItensComanda();
+    buscarCaixa();
     setItensSelecionados([]);
     setClicouComanda(false);
   }, [clicouComanda]);
 
-  const [itensComanda, setItensComanda] = useState<ItensComandaSearch[]>([]);
+  const buscarCaixa = async () => {
+    try {
+      setIsLoading(true);
+      await buscarCaixaGeral();
+    } catch (error: any) {
+      toast.error(error);
+    }
+    finally{
+      setIsLoading(false);
+    }
+  }
+  // const [itensComanda, setItensComanda] = useState<ItensComandaSearch[]>([]);
   const [itensSelecionados, setItensSelecionados] = useState<number[]>([]);
 
   useEffect(() => {
@@ -65,36 +79,37 @@ const ListaItens = () => {
     }
   );
 
-  const buscarItensComanda = async () => {
-    setIsLoading(true);
-    try {
-      const response = await api.get(
-        `Caixa/BuscarItensComanda/${codigoComanda}`
-      );
-      const itens: ItensComanda[] = response.data.body.items;
+  // const buscarItensComanda = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await api.get(
+  //       `Caixa/BuscarItensComanda/${codigoComanda}`
+  //     );
 
-      const sortedItens = itens.sort((a, b) => {
-        if (a.pago && !b.pago) return 1;
-        if (!a.pago && b.pago) return -1;
-        return 0;
-      });
+  //     const itens: ItensComanda[] = response.data.body.items;
 
-      setItensComanda(
-        sortedItens.map((item) => ({
-          id: item.id,
-          nome: item.nomeItem,
-          valor: item.valorUn,
-          qntd: item.qtd,
-          total: item.valorTotal,
-          pago: item.pago ? "Sim" : "Não",
-        }))
-      );
-    } catch (error: any) {
-      toast.error(error.response.data.reasonPhrase);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     const sortedItens = itens.sort((a, b) => {
+  //       if (a.pago && !b.pago) return 1;
+  //       if (!a.pago && b.pago) return -1;
+  //       return 0;
+  //     });
+
+  //     setItensComanda(
+  //       sortedItens.map((item) => ({
+  //         id: item.id,
+  //         nome: item.nomeItem,
+  //         valor: item.valorUn,
+  //         qntd: item.qtd,
+  //         total: item.valorTotal,
+  //         pago: item.pago ? "Sim" : "Não",
+  //       }))
+  //     );
+  //   } catch (error: any) {
+  //     toast.error(error.response.data.reasonPhrase);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   if (isLoading)
     return (

@@ -1,7 +1,6 @@
 import api from "@utils/api";
 import * as React from "react";
-import { toast } from "sonner";
-import { CaixaGeral, ItensComanda } from "types/Caixa";
+import { CaixaGeral, ItensComanda, ItensComandaSearch } from "types/Caixa";
 
 type IRegisterContext = {
   codigoComanda: number;
@@ -15,11 +14,13 @@ type IRegisterContext = {
   calcular: (dto: CalculadorDto) => Promise<unknown>;
   refetchComandas: boolean;
   setRefetchComandas: React.Dispatch<React.SetStateAction<boolean>>;
-  buscarCaixaGeral: () => Promise<void>;
+  buscarCaixaGeral: () => Promise<unknown>;
   clicouComanda: boolean;
   setClicouComanda: React.Dispatch<React.SetStateAction<boolean>>;
   totalSelecionados: number;
   setTotalSelecionados: React.Dispatch<React.SetStateAction<number>>;
+  itensComanda: ItensComandaSearch[];
+  setItensComanda: React.Dispatch<React.SetStateAction<ItensComandaSearch[]>>;
 };
 
 type CalculadorDto = {
@@ -52,6 +53,9 @@ export const ResgisterContextProvider = ({
   const [codigoTag, setCodigoTag] = React.useState<number>(0);
   const [refetchComandas, setRefetchComandas] = React.useState<boolean>(false);
   const [totalSelecionados, setTotalSelecionados] = React.useState<number>(0);
+  const [itensComanda, setItensComanda] = React.useState<ItensComandaSearch[]>(
+    []
+  );
   const [caixaGeral, setCaixaGeral] = React.useState<CaixaGeral>({
     calculaDescontoPorPercentual: false,
     calculaTaxaServicoPorPercentual: false,
@@ -104,39 +108,60 @@ export const ResgisterContextProvider = ({
     });
   };
 
-  const buscarCaixaGeral = async () => {
-    try {
-      const response = await api.get(
-        `Caixa/BuscarItensComanda/${codigoComanda}`
-      );
+  const buscarCaixaGeral = () => {
+    return new Promise((resolve, reject) => {
+      api.get(`Caixa/BuscarItensComanda/${codigoComanda}`).then((response) => {
+        if (response.data.success) {
+          setCaixaGeral({
+            calculaDescontoPorPercentual:
+              response.data.body.calculaDescontoPorPercentual,
+            calculaTaxaServicoPorPercentual:
+              response.data.body.calculaTaxaServicoPorPercentual,
+            dividirEmQuantasPessoas: response.data.body.dividirEmQuantasPessoas,
+            percDesconto: response.data.body.percDesconto,
+            numeroQuartoMesa: response.data.body.numeroQuartoMesa,
+            percTaxaServico: response.data.body.percTaxaServico,
+            valorDesconto: response.data.body.valorDesconto,
+            valorTaxaServico: response.data.body.valorTaxaServico,
+            valorTotalBruto: response.data.body.valorTotalBruto,
+            valorTotalItem: response.data.body.valorTotalItem,
+            valorTotalReceber: response.data.body.valorTotalReceber,
+            valorTotalJaPago: response.data.body.valorTotalJaPago,
+            valorTotalReceberPorPessoa:
+              response.data.body.valorTotalReceberPorPessoa,
+            codigosPedidosItens: response.data.body.items.map(
+              (p: ItensComanda) => p.id
+            ),
+            codigoComanda: codigoComanda,
+            garcom: "",
+            cliente: "",
+          });
 
-      setCaixaGeral({
-        calculaDescontoPorPercentual:
-          response.data.body.calculaDescontoPorPercentual,
-        calculaTaxaServicoPorPercentual:
-          response.data.body.calculaTaxaServicoPorPercentual,
-        dividirEmQuantasPessoas: response.data.body.dividirEmQuantasPessoas,
-        percDesconto: response.data.body.percDesconto,
-        numeroQuartoMesa: response.data.body.numeroQuartoMesa,
-        percTaxaServico: response.data.body.percTaxaServico,
-        valorDesconto: response.data.body.valorDesconto,
-        valorTaxaServico: response.data.body.valorTaxaServico,
-        valorTotalBruto: response.data.body.valorTotalBruto,
-        valorTotalItem: response.data.body.valorTotalItem,
-        valorTotalReceber: response.data.body.valorTotalReceber,
-        valorTotalJaPago: response.data.body.valorTotalJaPago,
-        valorTotalReceberPorPessoa:
-          response.data.body.valorTotalReceberPorPessoa,
-        codigosPedidosItens: response.data.body.items.map(
-          (p: ItensComanda) => p.id
-        ),
-        codigoComanda: codigoComanda,
-        garcom: "",
-        cliente: "",
+          const itens: ItensComanda[] = response.data.body.items;
+
+          const sortedItens = itens.sort((a, b) => {
+            if (a.pago && !b.pago) return 1;
+            if (!a.pago && b.pago) return -1;
+            return 0;
+          });
+
+          setItensComanda(
+            sortedItens.map((item) => ({
+              id: item.id,
+              nome: item.nomeItem,
+              valor: item.valorUn,
+              qntd: item.qtd,
+              total: item.valorTotal,
+              pago: item.pago ? "Sim" : "Não",
+            }))
+          );
+          resolve(response.data);
+        }
+      })
+      .catch((e: any) => {
+        reject(e.response.data.reasonPhrase);
       });
-    } catch (error: any) {
-      toast.error(error.response.data.reasonPhrase);
-    }
+    });
   };
 
   return (
@@ -158,6 +183,8 @@ export const ResgisterContextProvider = ({
         setTotalSelecionados,
         codigoTag,
         setCodigoTag,
+        itensComanda,
+        setItensComanda,
       }}
     >
       {children}

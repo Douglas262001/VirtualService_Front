@@ -6,12 +6,12 @@ import ItensConfig from "../config";
 const ReceberCaixaGeral = () => {
   const { caixaGeral, buscarCaixaGeral, setClicouComanda, clicouComanda } =
     useRegister();
-  useEffect(() => {
-    if (!clicouComanda) return;
+  // useEffect(() => {
+  //   // if (!clicouComanda) return;
 
-    buscarCaixaGeral();
-    setClicouComanda(false);
-  }, [clicouComanda]);
+  //   // buscarCaixaGeral();
+  //   // setClicouComanda(false);
+  // }, [clicouComanda]);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
