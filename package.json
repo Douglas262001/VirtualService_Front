@@ -18,7 +18,7 @@
     "@tanstack/react-query": "^4.12.0",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
-    "axios": "^1.1.3",
+    "axios": "^1.6.7",
     "classnames": "^2.3.2",
     "daisyui": "^2.31.0",
     "date-fns": "^2.30.0",
@@ -41,12 +41,32 @@
     "yup": "^1.3.1"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.1.0",
+    "json-server": "^1.0.0-alpha.23",
     "tailwindcss": "^3.1.8",
     "typescript": "^4.6.4",
-    "vite": "^3.1.0",
+    "vite": "^3.2.8",
     "vite-tsconfig-paths": "^4.2.1"
-  }
+  },
+  "description": "1. Criar .env conforme o .env.example",
+  "main": "tailwind.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JhonnatanRodrigues/VirtualService_Front.git"
+  },
+  "keywords": [
+    "implantacao",
+    "Front",
+    "End",
+    "Desenv"
+  ],
+  "author": "Jhonnatan Rodrigues",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JhonnatanRodrigues/VirtualService_Front/issues"
+  },
+  "homepage": "https://github.com/JhonnatanRodrigues/VirtualService_Front#readme"
 }

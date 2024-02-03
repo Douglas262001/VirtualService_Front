@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: "https://yellowsoftware-desenv.azurewebsites.net/api",
 });
 
 api.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
