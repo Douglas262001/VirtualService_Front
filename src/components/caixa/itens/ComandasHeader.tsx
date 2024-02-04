@@ -27,7 +27,7 @@ const ComandasHeader = () => {
   const [quartosMesas, setQuartosMesas] = React.useState<QuartoMesaFilterCaixaType[]>([]);
   const [quartoMesa, setQuartoMesa] = React.useState<QuartoMesaFilterCaixaType>({
     id: 0,
-    numero: "Selecionar todas as mesas",    
+    numero: "Selecionar todas deploy as mesas",    
   });
 
   const listarquartosMesasServicos = async () => {
