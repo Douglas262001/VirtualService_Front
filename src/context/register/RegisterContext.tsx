@@ -21,6 +21,8 @@ type IRegisterContext = {
   setTotalSelecionados: React.Dispatch<React.SetStateAction<number>>;
   itensComanda: ItensComandaSearch[];
   setItensComanda: React.Dispatch<React.SetStateAction<ItensComandaSearch[]>>;
+  filterNumeroComandaPorQuartoMesa : string;
+  setFilterNumeroComandaPorQuartoMesa: React.Dispatch<React.SetStateAction<string>>;
 };
 
 type CalculadorDto = {
@@ -53,6 +55,7 @@ export const ResgisterContextProvider = ({
   const [codigoTag, setCodigoTag] = React.useState<number>(0);
   const [refetchComandas, setRefetchComandas] = React.useState<boolean>(false);
   const [totalSelecionados, setTotalSelecionados] = React.useState<number>(0);
+  const [filterNumeroComandaPorQuartoMesa, setFilterNumeroComandaPorQuartoMesa] = React.useState<string>("0");
   const [itensComanda, setItensComanda] = React.useState<ItensComandaSearch[]>(
     []
   );
@@ -185,6 +188,8 @@ export const ResgisterContextProvider = ({
         setCodigoTag,
         itensComanda,
         setItensComanda,
+        filterNumeroComandaPorQuartoMesa,
+        setFilterNumeroComandaPorQuartoMesa
       }}
     >
       {children}

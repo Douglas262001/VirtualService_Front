@@ -4,3 +4,8 @@ export type MesaType = {
     capacidade: number;
     codigoArea: number;
 }
+
+export type QuartoMesaFilterCaixaType = {
+    id?: number;
+    numero: string;
+}

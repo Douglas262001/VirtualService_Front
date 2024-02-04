@@ -19,7 +19,7 @@ function SearchField<T>({
   value,
   setValue,
   optionsHeight,
-  disabled,
+  disabled
 }: SearchFieldProps<T>) {
   const [query, setQuery] = useState("");
 
@@ -34,7 +34,7 @@ function SearchField<T>({
         );
 
   return (
-    <div className="w-80">
+    <div className="w-[25vh]">
       <Combobox value={value} onChange={setValue} disabled={disabled ?? false}>
         <div className="relative mt-1">
           <div className="relative w-full cursor-default rounded-lg text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm">

@@ -13,7 +13,9 @@ const ComandaList: React.FC = () => {
     setCodigoComanda,
     setNumeroComanda,
     refetchComandas,
-    setRefetchComandas
+    setRefetchComandas,
+    filterNumeroComandaPorQuartoMesa,
+    setFilterNumeroComandaPorQuartoMesa
   } = useRegister();
   const [comandasAbertas, setComandasAbertas] = React.useState<
     ComandasAbertas[]
@@ -28,12 +30,13 @@ const ComandaList: React.FC = () => {
     if (!refetchComandas) return;
     listarComandasAbertas();
     setRefetchComandas(false);
+    if (filterNumeroComandaPorQuartoMesa == null) setFilterNumeroComandaPorQuartoMesa("0")
   }, [refetchComandas]);
 
   const listarComandasAbertas = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get("Caixa/ListarComandasAbertas");
+      const response = await api.get(`Caixa/ListarComandasAbertas/${filterNumeroComandaPorQuartoMesa}`);
 
       setComandasAbertas(response.data.body);
 
