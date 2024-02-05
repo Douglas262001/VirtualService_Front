@@ -1,3 +1,5 @@
+import { MesaType } from "./QuartoMesa";
+
 export type TagType = {
   id?: number;
   numero: number;
@@ -28,3 +30,10 @@ export const EnumStatusTag = new Map<number, string>([
   [Status.Liberada, "Liberada"],
   [Status.Ocupada, "Em uso"],
 ]);
+
+export type TagComandaType = {
+  id?: number;
+  numero: number;
+  codigoMesa: number;
+  quartoMesa: MesaType;
+};
