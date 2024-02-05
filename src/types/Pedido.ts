@@ -1,6 +1,9 @@
+import { ComandaType } from "./Comanda";
+
 export type PedidoType = {
   id?: number;
   status: StatusPedido;
+  comanda: ComandaType;
   valorTotal: number;
   numeroPedido: number;
   dataHoraPedido: Date;
@@ -10,6 +13,8 @@ export type PedidoType = {
 export type PedidoSearchType = {
   id: number;
   numero: number;
+  comanda: string;
+  mesa: string;
   codigoStatus: StatusPedido;
   valor: number;
   "data/Hora": string;

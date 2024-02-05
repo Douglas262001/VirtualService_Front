@@ -75,7 +75,7 @@ const OrderTable = ({
   dataFinal,
   pedidosAtivos,
 }: Props) => {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation(); 
   const [orders, setOrders] = useState<PedidoSearchType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -107,6 +107,8 @@ const OrderTable = ({
           "Itens",
           "Alterar",
           "id",
+          "comanda",
+          "mesa",
           "numero",
           "valor",
           "data/hora",
@@ -153,7 +155,7 @@ const OrderTable = ({
         not: false,
       });
     try {
-      const response = await api.get(`Pedido/Listar`, {
+      const response = await api.get(`Pedido/ListarPedidos`, {
         headers: {
           filters: JSON.stringify(filters),
         },
@@ -170,6 +172,8 @@ const OrderTable = ({
             "dd/MM/yyyy hh:mm:ss",
             { locale: ptBR }
           ),
+          comanda: pedido.comanda?.tag?.numero?.toString() ?? "Sem comanda",
+          mesa: pedido.comanda?.tag?.quartoMesa?.numero ?? "Sem mesa",
           items: pedido.pedidoItems?.map((item) => ({
             nome: item.nomeItem,
             quantidade: item.qtd,
